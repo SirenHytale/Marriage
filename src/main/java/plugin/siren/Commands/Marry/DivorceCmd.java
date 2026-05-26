@@ -17,6 +17,7 @@ import plugin.siren.Systems.MarriageComponent;
 import plugin.siren.Systems.MarriageSettingsComponent;
 
 import javax.annotation.Nonnull;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -26,16 +27,13 @@ public class DivorceCmd extends AbstractPlayerCommand {
 
         if(Marriage.getConfig().get().ifCmdPermission()){
             this.requirePermission("marriage.divorce");
-            this.setPermissionGroup(GameMode.Creative);
         }else{
-            this.setPermissionGroup(GameMode.Adventure);
+            this.setPermissionGroups("hytale:None");
         }
     }
 
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-        Player player = store.getComponent(ref, Player.getComponentType());
-
         MarriageSettingsComponent marriageSettings = store.getComponent(ref, MarriageSettingsComponent.getComponentType());
 
         if(marriageSettings == null){
@@ -66,33 +64,21 @@ public class DivorceCmd extends AbstractPlayerCommand {
                             marriageSettings.clearPartnerUUID();
                             marriageSettings.setPartnerUsername("");
 
-                            player.sendMessage(Message.translation("server.commands.marry.divorce.player.msg").param("partnerUsername",partnerPlayerRef.getUsername()));
+                            playerRef.sendMessage(Message.translation("server.commands.marry.divorce.player.msg").param("partnerUsername",partnerPlayerRef.getUsername()));
 
-                            Player partnerPlayer = store.getComponent(partnerPlayerRef.getReference(), Player.getComponentType());
-                            if (partnerPlayer == null) {
-                                Marriage.LOGGER.atInfo().log("Failed to get partnerPlayerRef Player Component : DivorceCmd");
-                            } else {
-                                partnerPlayer.sendMessage(Message.translation("server.commands.marry.divorce.player.msg").param("partnerUsername",playerRef.getUsername()));
-                            }
+                            partnerPlayerRef.sendMessage(Message.translation("server.commands.marry.divorce.player.msg").param("partnerUsername",playerRef.getUsername()));
 
-                            //String consoleSayCommand = "say " + playerRef.getUsername() + " and " + partnerPlayerRef.getUsername() + " have gotten a Divorce!";
-                            //CommandManager.get().handleCommand(ConsoleSender.INSTANCE, consoleSayCommand);
                             Message divorceMessage = Message.translation("server.commands.marry.divorce.console.alert").param("usernameOne", playerRef.getUsername()).param("usernameTwo", partnerPlayerRef.getUsername());
-                            List<PlayerRef> onlinePlayers = Universe.get().getPlayers();
+                            Collection<PlayerRef> onlinePlayersCollection = Universe.get().getPlayers();
+                            List<PlayerRef> onlinePlayers = onlinePlayersCollection.stream().toList();
                             for(PlayerRef plyRef : onlinePlayers){
-                                Player ply = store.getComponent(plyRef.getReference(), Player.getComponentType());
-
-                                if(ply == null){
-                                    Marriage.LOGGER.atFine().log("Failed to get onlinePlayer plyRef Player Component : MarryPlayerCmd");
-                                }else{
-                                    ply.sendMessage(divorceMessage);
-                                }
+                                plyRef.sendMessage(divorceMessage);
                             }
 
                         } else {
                             marriage.setDivorceTimer(1);
 
-                            player.sendMessage(Message.translation("server.commands.marry.divorce.confirmation"));
+                            playerRef.sendMessage(Message.translation("server.commands.marry.divorce.confirmation"));
 
                             HytaleServer.SCHEDULED_EXECUTOR.schedule(() -> {
                                 world.execute(() -> {
@@ -103,12 +89,12 @@ public class DivorceCmd extends AbstractPlayerCommand {
                     }
                 }
             }else{
-                player.sendMessage(Message.translation("server.commands.marry.divorce.unmarried"));
+                playerRef.sendMessage(Message.translation("server.commands.marry.divorce.unmarried"));
             }
         }
 
         if(Marriage.ifDebug()) {
-            Marriage.LOGGER.atInfo().log(Message.translation("server.commands.marry.divorce.success").param("username",player.getDisplayName()).getAnsiMessage());
+            Marriage.LOGGER.atInfo().log(Message.translation("server.commands.marry.divorce.success").param("username",playerRef.getUsername()).getAnsiMessage());
         }
     }
 }

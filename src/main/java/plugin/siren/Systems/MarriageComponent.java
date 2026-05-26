@@ -15,18 +15,24 @@ public class MarriageComponent implements Component<EntityStore> {
     private List<PlayerRef> requestsList;
     private int divorceTimer;
 
+    private boolean updateChecker;
+
     public static ComponentType<EntityStore, MarriageComponent> getComponentType(){
         return Marriage.get().getMarriageComponentType();
     }
 
     public MarriageComponent(){
-        requestsList = new ArrayList<>();
-        divorceTimer = 0;
+        this.requestsList = new ArrayList<>();
+        this.divorceTimer = 0;
+
+        this.updateChecker = false;
     }
 
     public MarriageComponent(MarriageComponent other){
         this.requestsList = other.requestsList;
         this.divorceTimer = other.divorceTimer;
+
+        this.updateChecker = other.updateChecker;
     }
 
     @Nullable
@@ -43,10 +49,6 @@ public class MarriageComponent implements Component<EntityStore> {
         this.requestsList.add(playerRef);
     }
 
-    /*public void setRequestsList(List<PlayerRef> list){
-        this.requestsList = list;
-    }*/
-
     public void clearRequestsList(){
         this.requestsList = new ArrayList<>();
     }
@@ -59,4 +61,11 @@ public class MarriageComponent implements Component<EntityStore> {
         divorceTimer = time;
     }
 
+    public boolean getUpdateCheckerCheck(){
+        return this.updateChecker;
+    }
+
+    public void setCheckOnUpdateChecker(boolean checked){
+        this.updateChecker = checked;
+    }
 }

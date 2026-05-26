@@ -16,20 +16,20 @@ import plugin.siren.Systems.MarriageSettingsComponent;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class MarriedListCmd extends AbstractPlayerCommand {
     public MarriedListCmd() {
         super("list", "server.commands.marry.list.desc");
 
-        this.setPermissionGroup(GameMode.Adventure);
+        this.setPermissionGroups("hytale:None");
     }
 
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-        Player player = store.getComponent(ref, Player.getComponentType());
-
-        List<PlayerRef> onlinePlayers = Universe.get().getPlayers();
+        Collection<PlayerRef> onlinePlayersCollection = Universe.get().getPlayers();
+        List<PlayerRef> onlinePlayers = onlinePlayersCollection.stream().toList();
 
         if(onlinePlayers.isEmpty()){
             Marriage.LOGGER.atInfo().log("No online players.");
@@ -67,7 +67,7 @@ public class MarriedListCmd extends AbstractPlayerCommand {
             }
 
             if(marriedList.isEmpty()){
-                player.sendMessage(Message.raw("No online players are currently married."));
+                playerRef.sendMessage(Message.raw("No online players are currently married."));
             }else{
                 for(PlayerRef marrPlyRef : marriedList){
                     MarriageSettingsComponent marrSettings = store.getComponent(marrPlyRef.getReference(), MarriageSettingsComponent.getComponentType());
@@ -80,7 +80,7 @@ public class MarriedListCmd extends AbstractPlayerCommand {
                         if(marriedPlayerPartner == null){
                             Marriage.LOGGER.atInfo().log("Failed to get marriedPlayerPartner PlayerRef : MarriedListCmd");
                         }else{
-                            player.sendMessage(Message.translation("server.commands.marry.list.married").param("usernameOne", marrPlyRef.getUsername()).param("usernameTwo", marriedPlayerPartner.getUsername()));
+                            playerRef.sendMessage(Message.translation("server.commands.marry.list.married").param("usernameOne", marrPlyRef.getUsername()).param("usernameTwo", marriedPlayerPartner.getUsername()));
                         }
                     }
 
@@ -88,7 +88,7 @@ public class MarriedListCmd extends AbstractPlayerCommand {
             }
         }
         if(Marriage.ifDebug()) {
-            Marriage.LOGGER.atInfo().log(Message.translation("server.commands.marry.list.success").param("username",player.getDisplayName()).getAnsiMessage());
+            Marriage.LOGGER.atInfo().log(Message.translation("server.commands.marry.list.success").param("username",playerRef.getUsername()).getAnsiMessage());
         }
     }
 }

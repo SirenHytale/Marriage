@@ -20,20 +20,17 @@ import javax.annotation.Nonnull;
 
 public class TPCmd extends AbstractPlayerCommand {
     public TPCmd() {
-        super("tp", "Teleports the player to their married partner.");
+        super("tp", "server.commands.marry.tp.player.desc");
 
         if(Marriage.getConfig().get().ifCmdPermission()){
             this.requirePermission("marriage.tp");
-            this.setPermissionGroup(GameMode.Creative);
         }else{
-            this.setPermissionGroup(GameMode.Adventure);
+            this.setPermissionGroups("hytale:None");
         }
     }
 
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-        Player player = store.getComponent(ref, Player.getComponentType());
-
         MarriageSettingsComponent marriageSettings = store.getComponent(ref, MarriageSettingsComponent.getComponentType());
 
         if(marriageSettings == null){
@@ -43,27 +40,21 @@ public class TPCmd extends AbstractPlayerCommand {
                 PlayerRef partnerPlayerRef = Universe.get().getPlayer(marriageSettings.getPartnerUUID());
                 if(partnerPlayerRef == null){
                     Marriage.LOGGER.atInfo().log("Failed to get partnerPlayerRef : PartnerTPCmd, partner is probably offline");
-                    player.sendMessage(Message.translation("server.commands.marry.tp.partnerOffline.player.msg"));
+                    playerRef.sendMessage(Message.translation("server.commands.marry.tp.partnerOffline.player.msg"));
                 }else {
                     String consoleRunCommand = "tp " + playerRef.getUsername() + " " + partnerPlayerRef.getUsername();
                     CommandManager.get().handleCommand(ConsoleSender.INSTANCE, consoleRunCommand);
 
-                    player.sendMessage(Message.translation("server.commands.marry.tp.player.msg"));
-
-                    Player partnerPlayer = store.getComponent(partnerPlayerRef.getReference(), Player.getComponentType());
-                    if(partnerPlayer == null){
-                        Marriage.LOGGER.atInfo().log("Failed to get partnerPlayerRef partnerPlayer Player Component : PartnerTPCmd");
-                    }else{
-                        partnerPlayer.sendMessage(Message.translation("server.commands.marry.tp.partner.msg"));
-                    }
+                    playerRef.sendMessage(Message.translation("server.commands.marry.tp.player.msg"));
+                    partnerPlayerRef.sendMessage(Message.translation("server.commands.marry.tp.partner.msg"));
                 }
             }else{
-                player.sendMessage(Message.translation("server.commands.marry.tp.unmarried"));
+                playerRef.sendMessage(Message.translation("server.commands.marry.tp.unmarried"));
             }
         }
 
         if(Marriage.ifDebug()) {
-            Marriage.LOGGER.atInfo().log(Message.translation("server.commands.marry.tp.success").param("username",player.getDisplayName()).getAnsiMessage());
+            Marriage.LOGGER.atInfo().log(Message.translation("server.commands.marry.tp.success").param("username",playerRef.getUsername()).getAnsiMessage());
         }
     }
 }

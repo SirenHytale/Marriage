@@ -18,15 +18,13 @@ import javax.annotation.Nonnull;
 
 public class PartnerCmd extends AbstractPlayerCommand {
     public PartnerCmd() {
-        super("partner", "View your marriage partner.");
+        super("partner", "server.commands.marry.partner.player.desc");
 
-        this.setPermissionGroup(GameMode.Adventure);
+        this.setPermissionGroups("hytale:None");
     }
 
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-        Player player = store.getComponent(ref, Player.getComponentType());
-
         MarriageSettingsComponent marriageSettings = store.getComponent(ref, MarriageSettingsComponent.getComponentType());
 
         if(marriageSettings == null){
@@ -36,17 +34,17 @@ public class PartnerCmd extends AbstractPlayerCommand {
                 PlayerRef partnerPlayerRef = Universe.get().getPlayer(marriageSettings.getPartnerUUID());
                 if(partnerPlayerRef == null){
                     Marriage.LOGGER.atInfo().log("Failed to get partnerPlayerRef : PartnerCmd, partner is probably offline");
-                    player.sendMessage(Message.translation("server.commands.marry.partner.player.msg.offline").param("partnerUsername", marriageSettings.getPartnerUsername()));
+                    playerRef.sendMessage(Message.translation("server.commands.marry.partner.player.msg.offline").param("partnerUsername", marriageSettings.getPartnerUsername()));
                 }else {
-                    player.sendMessage(Message.translation("server.commands.marry.partner.player.msg").param("partnerUsername", partnerPlayerRef.getUsername()));
+                    playerRef.sendMessage(Message.translation("server.commands.marry.partner.player.msg").param("partnerUsername", partnerPlayerRef.getUsername()));
                 }
             }else{
-                player.sendMessage(Message.translation("server.commands.marry.partner.unmarried"));
+                playerRef.sendMessage(Message.translation("server.commands.marry.partner.unmarried"));
             }
         }
 
         if(Marriage.ifDebug()) {
-            Marriage.LOGGER.atInfo().log(Message.translation("server.commands.marry.partner.success").param("username",player.getDisplayName()).getAnsiMessage());
+            Marriage.LOGGER.atInfo().log(Message.translation("server.commands.marry.partner.success").param("username",playerRef.getUsername()).getAnsiMessage());
         }
     }
 }

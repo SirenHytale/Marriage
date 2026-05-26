@@ -23,9 +23,8 @@ public class MessageCmd extends AbstractPlayerCommand {
 
         if(Marriage.getConfig().get().ifCmdPermission()){
             this.requirePermission("marriage.msg");
-            this.setPermissionGroup(GameMode.Creative);
         }else{
-            this.setPermissionGroup(GameMode.Adventure);
+            this.setPermissionGroups("hytale:None");
         }
 
         setAllowsExtraArguments(true);
@@ -33,8 +32,6 @@ public class MessageCmd extends AbstractPlayerCommand {
 
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-        Player player = store.getComponent(ref, Player.getComponentType());
-
         MarriageSettingsComponent marriageSettings = store.getComponent(ref, MarriageSettingsComponent.getComponentType());
 
         if(marriageSettings == null){
@@ -44,31 +41,26 @@ public class MessageCmd extends AbstractPlayerCommand {
                 PlayerRef partnerPlayerRef = Universe.get().getPlayer(marriageSettings.getPartnerUUID());
                 if(partnerPlayerRef == null){
                     Marriage.LOGGER.atInfo().log("Failed to get partnerPlayerRef : MessageCmd");
-                    player.sendMessage(Message.translation("server.commands.marry.message.partnerOffline.player.msg"));
+                    playerRef.sendMessage(Message.translation("server.commands.marry.message.partnerOffline.player.msg"));
                 }else {
                     String msg = commandContext.getInputString();
 
                     if(msg.length() < 10){
-                        player.sendMessage(Message.translation("server.commands.marry.message.missingMsg.player.msg"));
+                        playerRef.sendMessage(Message.translation("server.commands.marry.message.missingMsg.player.msg"));
                     }else{
                         msg = msg.substring(10);
 
-                        Player partnerPlayerComp = store.getComponent(partnerPlayerRef.getReference(), Player.getComponentType());
-                        if(partnerPlayerComp == null){
-                            Marriage.LOGGER.atInfo().log("Failed to get partnerPlayerRef Player Component : MessageCmd");
-                        }else{
-                            partnerPlayerComp.sendMessage(Message.raw(playerRef.getUsername() + ": " + msg).color(Color.PINK));
-                            player.sendMessage(Message.translation("server.commands.marry.message.sentMsg").param("partnerUsername",partnerPlayerRef.getUsername()).param("msg",msg));
-                        }
+                        partnerPlayerRef.sendMessage(Message.raw(playerRef.getUsername() + ": " + msg).color(Color.PINK));
+                        playerRef.sendMessage(Message.translation("server.commands.marry.message.sentMsg").param("partnerUsername",partnerPlayerRef.getUsername()).param("msg",msg));
                     }
                 }
             }else{
-                player.sendMessage(Message.translation("server.commands.marry.message.unmarried"));
+                playerRef.sendMessage(Message.translation("server.commands.marry.message.unmarried"));
             }
         }
 
         if(Marriage.ifDebug()) {
-            Marriage.LOGGER.atInfo().log(Message.translation("server.commands.marry.message.success").param("username",player.getDisplayName()).getAnsiMessage());
+            Marriage.LOGGER.atInfo().log(Message.translation("server.commands.marry.message.success").param("username",playerRef.getUsername()).getAnsiMessage());
         }
     }
 }

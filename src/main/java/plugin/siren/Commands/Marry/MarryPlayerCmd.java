@@ -21,6 +21,7 @@ import plugin.siren.Systems.MarriageSettingsComponent;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
+import java.util.Collection;
 import java.util.List;
 
 public class MarryPlayerCmd extends AbstractPlayerCommand {
@@ -29,9 +30,8 @@ public class MarryPlayerCmd extends AbstractPlayerCommand {
 
         if(Marriage.getConfig().get().ifCmdPermission()){
             this.requirePermission("marriage.marry");
-            this.setPermissionGroup(GameMode.Creative);
         }else{
-            this.setPermissionGroup(GameMode.Adventure);
+            this.setPermissionGroups("hytale:None");
         }
     }
 
@@ -39,8 +39,6 @@ public class MarryPlayerCmd extends AbstractPlayerCommand {
 
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-        Player player = store.getComponent(ref, Player.getComponentType());
-
         PlayerRef partnerPlayerRef = msgMarryPlayerArg.get(commandContext);
 
         MarriageSettingsComponent marriageSettings = store.getComponent(ref, MarriageSettingsComponent.getComponentType());
@@ -49,7 +47,7 @@ public class MarryPlayerCmd extends AbstractPlayerCommand {
             Marriage.LOGGER.atInfo().log("Failed to get Marriage Settings Component : MarryPlayerCmd");
         }else {
             if (marriageSettings.isMarried()) {
-                player.sendMessage(Message.translation("server.commands.marry.player.alreadyMarried"));
+                playerRef.sendMessage(Message.translation("server.commands.marry.player.alreadyMarried"));
             } else {
                 boolean marriageAllowed = false;
                 if(Marriage.getConfig().get().ifRequireRing()){
@@ -59,7 +57,7 @@ public class MarryPlayerCmd extends AbstractPlayerCommand {
                         if (itemInHand != null && itemInHand.getItemId().equalsIgnoreCase("marriage_ring")) {
                             marriageAllowed = true;
                         } else {
-                            player.sendMessage(Message.translation("server.commands.marry.player.missingRing"));
+                            playerRef.sendMessage(Message.translation("server.commands.marry.player.missingRing"));
                         }
                     }
                 }else{
@@ -80,7 +78,7 @@ public class MarryPlayerCmd extends AbstractPlayerCommand {
                             boolean aRequest = false;
 
                             if (requests.isEmpty()) {
-                                Marriage.LOGGER.atInfo().log(player.getDisplayName() + " has no current requests");
+                                Marriage.LOGGER.atInfo().log(playerRef.getUsername() + " has no current requests");
                             } else {
                                 for (PlayerRef plyRefs : requests) {
                                     if (plyRefs == playerRef) {
@@ -97,7 +95,6 @@ public class MarryPlayerCmd extends AbstractPlayerCommand {
                             } else {
                                 marriage.addRequestToList(partnerPlayerRef);
 
-                                Player playerMarryComp = store.getComponent(partnerPlayerRef.getReference(), Player.getComponentType());
                                 if (aRequest) {
                                     MarriageSettingsComponent partnerMarriageSettings = store.getComponent(partnerPlayerRef.getReference(), MarriageSettingsComponent.getComponentType());
 
@@ -111,31 +108,27 @@ public class MarryPlayerCmd extends AbstractPlayerCommand {
                                     partnerMarriageSettings.setMarried(true);
                                     partnerMarriage.clearRequestsList();
 
-                                    player.sendMessage(Message.translation("server.commands.marry.player.marry.player.msg").param("partnerUsername",partnerPlayerRef.getUsername()));
+                                    playerRef.sendMessage(Message.translation("server.commands.marry.player.marry.player.msg").param("partnerUsername",partnerPlayerRef.getUsername()));
 
-                                    playerMarryComp.sendMessage(Message.translation("server.commands.marry.player.marry.player.msg").param("partnerUsername",playerRef.getUsername()));
+                                    partnerPlayerRef.sendMessage(Message.translation("server.commands.marry.player.marry.player.msg").param("partnerUsername",playerRef.getUsername()));
 
 
                                     Message marriageMessage = Message.translation("server.commands.marry.player.console.alert").param("usernameOne", playerRef.getUsername()).param("usernameTwo", partnerPlayerRef.getUsername());
-                                    List<PlayerRef> onlinePlayers = Universe.get().getPlayers();
-                                    for(PlayerRef plyRef : onlinePlayers){
-                                        Player ply = store.getComponent(plyRef.getReference(), Player.getComponentType());
 
-                                        if(ply == null){
-                                            Marriage.LOGGER.atFine().log("Failed to get onlinePlayer plyRef Player Component : MarryPlayerCmd");
-                                        }else{
-                                            ply.sendMessage(marriageMessage.color(Color.PINK));
-                                        }
+                                    Collection<PlayerRef> onlinePlayersCollection = Universe.get().getPlayers();
+                                    List<PlayerRef> onlinePlayers = onlinePlayersCollection.stream().toList();
+                                    for(PlayerRef plyRef : onlinePlayers){
+                                        plyRef.sendMessage(marriageMessage.color(Color.PINK));
                                     }
 
                                     Marriage.LOGGER.atInfo().log(playerRef.getUsername() + " and " + partnerPlayerRef.getUsername() + " just got Married!");
                                 } else {
                                     if (!playerRef.getUsername().equalsIgnoreCase(partnerPlayerRef.getUsername())) {
-                                        player.sendMessage(Message.translation("server.commands.marry.player.request.player.msg").param("username",partnerPlayerRef.getUsername()));
+                                        playerRef.sendMessage(Message.translation("server.commands.marry.player.request.player.msg").param("username",partnerPlayerRef.getUsername()));
 
-                                        playerMarryComp.sendMessage(Message.translation("server.commands.marry.player.receiveRequest.player.msg").param("username",partnerPlayerRef.getUsername()));
+                                        partnerPlayerRef.sendMessage(Message.translation("server.commands.marry.player.receiveRequest.player.msg").param("username",partnerPlayerRef.getUsername()));
                                     } else {
-                                        player.sendMessage(Message.translation("server.commands.marry.player.self.player.msg"));
+                                        playerRef.sendMessage(Message.translation("server.commands.marry.player.self.player.msg"));
                                     }
                                 }
                             }
@@ -146,7 +139,7 @@ public class MarryPlayerCmd extends AbstractPlayerCommand {
         }
 
         if(Marriage.ifDebug()) {
-            Marriage.LOGGER.atInfo().log(Message.translation("server.commands.marry.player.success").param("username",player.getDisplayName()).getAnsiMessage());
+            Marriage.LOGGER.atInfo().log(Message.translation("server.commands.marry.player.success").param("username",playerRef.getUsername()).getAnsiMessage());
         }
     }
 }

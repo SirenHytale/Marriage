@@ -11,6 +11,5 @@ public class MarriageCmd extends AbstractCommandCollection {
         this.addSubCommand(new RequireRingCmd());
 
         this.requirePermission("marriage.admin");
-        this.setPermissionGroup(GameMode.Creative);
     }
 }

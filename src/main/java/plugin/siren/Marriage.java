@@ -8,10 +8,12 @@ import com.hypixel.hytale.server.core.command.system.CommandRegistration;
 import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
+import com.hypixel.hytale.server.core.universe.world.events.AllWorldsLoadedEvent;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.core.util.Config;
 import plugin.siren.Commands.MarriageCmd;
 import plugin.siren.Commands.MarryCmd;
+import plugin.siren.Events.AllWorldsLoadedEventM;
 import plugin.siren.Events.PlayerReadyEventM;
 import plugin.siren.Systems.MarriageComponent;
 import plugin.siren.Systems.MarriageSettingsComponent;
@@ -23,7 +25,7 @@ import javax.annotation.Nonnull;
 import java.util.concurrent.TimeUnit;
 
 public class Marriage extends JavaPlugin {
-    private static final String VERSION = "1.2.3";
+    private static final String VERSION = "1.2.4";
     private static final boolean DEBUG = false;
 
     private static Marriage plugin;
@@ -52,6 +54,13 @@ public class Marriage extends JavaPlugin {
             LOGGER.atInfo().log("Registered Player Ready Event.");
         }else{
             LOGGER.atSevere().log("Failed to register Player Ready Event.");
+        }
+
+        EventRegistration<Void, AllWorldsLoadedEvent> allWorldsLoadedEventRegistration = this.getEventRegistry().registerGlobal(AllWorldsLoadedEvent.class, AllWorldsLoadedEventM::onAllWorldsLoaded);
+        if(allWorldsLoadedEventRegistration != null && allWorldsLoadedEventRegistration.isRegistered()) {
+            LOGGER.atInfo().log("Registered All Worlds Loaded Event.");
+        }else{
+            LOGGER.atSevere().log("Failed to register All Worlds Loaded Event.");
         }
 
         CommandRegistration marriageCmdRegistration = this.getCommandRegistry().registerCommand(new MarriageCmd());

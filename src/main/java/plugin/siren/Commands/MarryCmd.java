@@ -15,6 +15,6 @@ public class MarryCmd extends AbstractCommandCollection {
         this.addSubCommand(new DivorceCmd());
         this.addSubCommand(new MarriedListCmd());
 
-        this.setPermissionGroup(GameMode.Adventure);
+        this.setPermissionGroups("hytale:None");
     }
 }

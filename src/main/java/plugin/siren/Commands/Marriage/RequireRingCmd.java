@@ -26,8 +26,6 @@ public class RequireRingCmd extends AbstractPlayerCommand {
 
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-        Player player = store.getComponent(ref, Player.getComponentType());
-
         boolean requireRing = msgRequireRingArg.get(commandContext);
 
         Marriage.getConfig().get().setRequireRing(requireRing);
@@ -42,8 +40,8 @@ public class RequireRingCmd extends AbstractPlayerCommand {
             playerTranslationId = "server.commands.marriage.requireRing.player.msg.disabled";
             consoleTranslationId = "server.commands.marriage.requireRing.console.msg.disabled";
         }
-        player.sendMessage(Message.translation(playerTranslationId));
+        playerRef.sendMessage(Message.translation(playerTranslationId));
 
-        Marriage.LOGGER.atInfo().log(Message.translation(consoleTranslationId).param("username",player.getDisplayName()).getAnsiMessage());
+        Marriage.LOGGER.atInfo().log(Message.translation(consoleTranslationId).param("username",playerRef.getUsername()).getAnsiMessage());
     }
 }
