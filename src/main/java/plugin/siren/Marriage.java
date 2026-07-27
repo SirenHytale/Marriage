@@ -3,9 +3,9 @@ package plugin.siren;
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.event.EventRegistration;
 import com.hypixel.hytale.logger.HytaleLogger;
-import com.hypixel.hytale.server.core.HytaleServer;
 import com.hypixel.hytale.server.core.command.system.CommandRegistration;
 import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
+import com.hypixel.hytale.server.core.permissions.PermissionsModule;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.universe.world.events.AllWorldsLoadedEvent;
@@ -16,21 +16,27 @@ import plugin.siren.Commands.MarryCmd;
 import plugin.siren.Events.AllWorldsLoadedEventM;
 import plugin.siren.Events.PlayerReadyEventM;
 import plugin.siren.Systems.MarriageComponent;
+import plugin.siren.Systems.MarriagePvPSystem;
+import plugin.siren.Systems.MarriageRegenSystem;
 import plugin.siren.Systems.MarriageSettingsComponent;
 import plugin.siren.Utils.HStats;
 import plugin.siren.Utils.MarriageConfig;
 import plugin.siren.Utils.MarriageUpdateChecker;
+import plugin.siren.Utils.Registry.MarriageManager;
+import plugin.siren.Utils.Registry.MarriagesData;
+import plugin.siren.Utils.UI.MarriageUIDefaults;
 
 import javax.annotation.Nonnull;
-import java.util.concurrent.TimeUnit;
+import java.util.Set;
 
 public class Marriage extends JavaPlugin {
-    private static final String VERSION = "1.2.4";
+    private static final String VERSION = "2.0.0";
     private static final boolean DEBUG = false;
 
     private static Marriage plugin;
     public static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
     private final Config<MarriageConfig> config;
+    private final Config<MarriagesData> marriagesData;
 
     private ComponentType<EntityStore, MarriageComponent> marriageComponent;
     private ComponentType<EntityStore, MarriageSettingsComponent> marriageSettingsComponent;
@@ -40,6 +46,7 @@ public class Marriage extends JavaPlugin {
 
         plugin = this;
         this.config = this.withConfig("Marriage", MarriageConfig.CODEC);
+        this.marriagesData = this.withConfig("Data/MarriagesData", MarriagesData.CODEC);
 
         new HStats("650607f7-6c8a-4d52-ab81-f8ca3a9e9db2", VERSION);
     }
@@ -48,6 +55,8 @@ public class Marriage extends JavaPlugin {
     protected void setup(){
         LOGGER.atInfo().log("===---==---==---== MARRIAGE ==---==---==---===");
         LOGGER.atInfo().log("Marriage has began to load.");
+
+        MarriageManager.init(this.marriagesData);
 
         EventRegistration<String, PlayerReadyEvent> playerReadyEventRegistration = this.getEventRegistry().registerGlobal(PlayerReadyEvent.class, PlayerReadyEventM::onPlayerReadyEvent);
         if(playerReadyEventRegistration != null && playerReadyEventRegistration.isRegistered()) {
@@ -81,15 +90,25 @@ public class Marriage extends JavaPlugin {
         if(this.marriageComponent != null) {
             LOGGER.atInfo().log("Registered Marriage Component.");
         }else{
-            LOGGER.atInfo().log("Failed to register Marriage Component.");
+            LOGGER.atSevere().log("Failed to register Marriage Component.");
         }
 
         this.marriageSettingsComponent = this.getEntityStoreRegistry().registerComponent(MarriageSettingsComponent.class, "MarriageSettings", MarriageSettingsComponent.CODEC);
         if(this.marriageSettingsComponent != null) {
             LOGGER.atInfo().log("Registered Marriage Settings Component.");
         }else{
-            LOGGER.atInfo().log("Failed to register Marriage Settings Component.");
+            LOGGER.atSevere().log("Failed to register Marriage Settings Component.");
         }
+
+        this.getEntityStoreRegistry().registerSystem(new MarriagePvPSystem());
+        LOGGER.atInfo().log("Registered Marriage PvP Protection System.");
+
+        this.getEntityStoreRegistry().registerSystem(new MarriageRegenSystem(
+                (float) this.config.get().getRegenIntervalSeconds(), this.marriageComponent));
+        LOGGER.atInfo().log("Registered Marriage Partner Regen System.");
+
+        MarriageUIDefaults.register();
+        LOGGER.atInfo().log("Registered Marriage Menu pages.");
 
         config.save();
         LOGGER.atInfo().log("Loaded config settings.");
@@ -97,6 +116,15 @@ public class Marriage extends JavaPlugin {
         if(configUpdated){
             config.save();
             LOGGER.atInfo().log("Updated config to latest version.");
+        }
+
+        if(config.get().ifGrantMenuPermission() && !config.get().ifGrantedMenuPermission()){
+            LOGGER.atInfo().log("Adding marriage permission to Adventure and default group.");
+            PermissionsModule.get().addGroupPermission("hytale:None", Set.of("marriage"));
+            PermissionsModule.get().addGroupPermission("hytale:Adventurer", Set.of("marriage"));
+
+            config.get().setGrantedMenuPermission(true);
+            config.save();
         }
 
         LOGGER.atInfo().log("Version " + VERSION + " of Marriage has successfully loaded.");
@@ -141,6 +169,6 @@ public class Marriage extends JavaPlugin {
     }
 
     public static boolean ifDebug(){
-        return plugin.DEBUG;
+        return DEBUG;
     }
 }

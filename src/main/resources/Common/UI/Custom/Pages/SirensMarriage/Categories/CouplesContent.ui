@@ -1,0 +1,41 @@
+$C = "../../../Common.ui";
+$T = "../MarriageTheme.ui";
+
+// Appended into "#CategoryDocument" by the Married Couples category - a static
+// scaffold Java fills in with the server-wide roster; see
+// MarriageUIDefaults.renderCouples.
+//
+//   #StatsRow          three StatRow.ui cells appended by Java (couples now,
+//                      marriages ever, divorces)
+//   #CoupleList        CoupleRow.ui fragments, one per marriage on the server
+//                      (offline couples included), oldest first
+//   #CouplesEmptyState shown instead when nobody is married yet
+Group {
+  LayoutMode: Top;
+
+  Group #StatsRow {
+    Anchor: (Height: 64, Bottom: 14);
+    Background: (Color: #330F26(0.9));
+    Padding: (Horizontal: 8);
+    LayoutMode: Left;
+  }
+
+  Group #CoupleList {
+    LayoutMode: Top;
+  }
+
+  Group #CouplesEmptyState {
+    LayoutMode: Top;
+    Visible: false;
+    Padding: (Top: 16);
+
+    Label {
+      Anchor: (Height: 20);
+      Style: (
+        ...$T.@MarriageBodyLabelStyle,
+        HorizontalAlignment: Center
+      );
+      Text: %server.customUI.marriage.marriageui.couples.empty;
+    }
+  }
+}

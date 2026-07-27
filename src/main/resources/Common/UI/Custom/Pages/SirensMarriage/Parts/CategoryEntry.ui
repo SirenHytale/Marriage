@@ -1,0 +1,32 @@
+$C = "../../../Common.ui";
+$T = "../MarriageTheme.ui";
+
+// One row in a left-hand rail. Appended into "#CategoryList" by MarriageUIPage
+// (and reused as-is for "#SectionList" by MarriageAdminUIPage - same visual
+// language, same #Button/#Spine contract, no reason to fork it). The owning page
+// sets "#Button.TextSpans" and marks the open entry by setting "#Button.Disabled" -
+// the theme renders a disabled plaque as a lit petal surface with ink text, so the
+// current page reads at a glance and cannot be re-clicked.
+//
+// #Spine is a petal edge shown only on the open entry. It lives inside a
+// permanently-visible gutter Group so toggling it never reflows the row - the
+// button keeps the same width and the list does not jitter as you click through.
+Group {
+  Anchor: (Height: 34, Bottom: 4);
+  LayoutMode: Left;
+
+  Group {
+    Anchor: (Width: 3, Right: 7);
+
+    Group #Spine {
+      Anchor: (Full: 0);
+      Background: (Color: #F5B8CE);
+      Visible: false;
+    }
+  }
+
+  $T.@MarriageNavTextButton #Button {
+    @Anchor = (Left: 0);
+    FlexWeight: 1;
+  }
+}

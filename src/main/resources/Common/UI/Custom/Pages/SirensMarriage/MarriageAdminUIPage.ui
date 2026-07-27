@@ -1,0 +1,149 @@
+$C = "../../Common.ui";
+$T = "MarriageTheme.ui";
+
+// The Marriage admin config page, reached from the /marriage menu's Admin
+// category and gated on marriage.admin.
+//
+// Regions the page writes into:
+//   #SectionList    the left rail; CategoryEntry.ui fragments appended
+//   #SectionTitle   heading of the open section
+//   #SectionHint    one-line description of it
+//   #ConfigList     the rows; CheckRow.ui / ConfigNumberRow.ui fragments
+//   #StatusLabel    result of the last save
+//   #SaveButton     writes every pending edit to disk
+//   #RevertButton   throws pending edits away
+//
+// Edits accumulate in the page rather than being applied as they are typed, so a
+// half-typed number never reaches the live config - nothing changes until Save.
+
+$T.@MarriagePageOverlay {}
+
+$T.@MarriageContainer {
+  Anchor: (Width: 960, Height: 680);
+
+  #Title {
+    Group {
+      LayoutMode: Center;
+      Anchor: (Full: 0);
+
+      $T.@MarriageTitle {
+        @Text = %server.customUI.marriage.adminui.title;
+      }
+    }
+  }
+
+  #Content {
+    LayoutMode: Top;
+
+    Group #Header {
+      Anchor: (Height: 40, Bottom: 8);
+      LayoutMode: Left;
+
+      Group {
+        FlexWeight: 1;
+        LayoutMode: Middle;
+
+        Label #HeaderTitle {
+          Anchor: (Height: 20);
+          Style: (
+            FontSize: 17,
+            RenderBold: true,
+            TextColor: #FFF3F7,
+            HorizontalAlignment: Start,
+            VerticalAlignment: Center
+          );
+          Text: %server.customUI.marriage.adminui.header;
+        }
+
+        Label #StatusLabel {
+          Anchor: (Height: 16);
+          Style: (
+            FontSize: 13,
+            TextColor: #8C6373,
+            HorizontalAlignment: Start,
+            VerticalAlignment: Center,
+            ShrinkTextToFit: true,
+            MinShrinkTextToFitFontSize: 10
+          );
+        }
+      }
+
+      Group {
+        Anchor: (Width: 300);
+        LayoutMode: Left;
+
+        Group {
+          FlexWeight: 1;
+          LayoutMode: Middle;
+
+          $T.@MarriageSmallTextButton #RevertButton {
+            @Text = %server.customUI.marriage.adminui.revert;
+            @Anchor = (Right: 8);
+          }
+        }
+
+        Group {
+          FlexWeight: 1;
+          LayoutMode: Middle;
+
+          $T.@MarriageSmallTextButton #SaveButton {
+            @Text = %server.customUI.marriage.adminui.save;
+          }
+        }
+      }
+    }
+
+    $T.@MarriageDivider {}
+
+    Group {
+      FlexWeight: 1;
+      LayoutMode: Left;
+
+      $T.@MarriagePanel #SectionListPanel {
+        Anchor: (Width: 230);
+        LayoutMode: TopScrolling;
+        ScrollbarStyle: $T.@MarriageScrollbarStyle;
+        Padding: (Top: 12, Bottom: 12, Left: 10, Right: 14);
+
+        Group #SectionList {
+          LayoutMode: Top;
+        }
+      }
+
+      Group {
+        Anchor: (Width: 12);
+      }
+
+      $T.@MarriagePanel #ContentArea {
+        FlexWeight: 1;
+        LayoutMode: TopScrolling;
+        ScrollbarStyle: $T.@MarriageScrollbarStyle;
+        Padding: (Top: 14, Bottom: 14, Left: 16, Right: 18);
+
+        Label #SectionTitle {
+          Anchor: (Height: 24, Bottom: 2);
+          Style: (
+            ...$T.@MarriageHeadingStyle,
+            HorizontalAlignment: Start
+          );
+        }
+
+        Label #SectionHint {
+          Anchor: (Height: 16, Bottom: 10);
+          Style: (
+            ...$T.@MarriageMetaLabelStyle,
+            HorizontalAlignment: Start
+          );
+        }
+
+        $T.@MarriageDivider {}
+
+        Group #ConfigList {
+          LayoutMode: Top;
+        }
+      }
+    }
+  }
+}
+
+$C.@BackButton {}

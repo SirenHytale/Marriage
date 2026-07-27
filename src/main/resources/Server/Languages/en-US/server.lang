@@ -1,6 +1,6 @@
 # === commands ===
 
-commands.marriage.desc = Marriage Mod admin command line
+commands.marriage.desc = Opens the Marriage menu. Admin subcommands live under it.
 commands.marriage.requireRing.desc = Toggles to require users to hold a ring to get married.
 commands.marriage.requireRing.arg.boolean.desc = Boolean to toggle user to hold ring to get married.
 commands.marriage.requireRing.player.msg.enabled = You have enabled requiring Ring to get married.
@@ -10,40 +10,67 @@ commands.marriage.requireRing.console.msg.disabled = {username} has disabled req
 commands.marry.desc = Marry command line
 commands.marry.divorce.desc = Divorce your partner.
 commands.marry.divorce.unmarried = You're currently not married.
-commands.marry.divorce.confirmation = Confirm divorce by retyping command within 10 seconds.
+commands.marry.divorce.confirmation = Confirm divorce by retyping the command within {seconds} seconds.
+commands.marry.divorce.cancelled = The divorce did not go through.
 commands.marry.divorce.player.msg = You have been divorced from {partnerUsername}.
 commands.marry.divorce.console.alert = {usernameOne} and {usernameTwo} have gotten a Divorce!
 commands.marry.divorce.success = {username} successfully ran divorce command.
-commands.marry.list.desc = View a list of all Online player married.
-commands.marry.list.married = {usernameOne} and {usernameTwo} are married.
+commands.marry.list.desc = View every married couple on the server.
+commands.marry.list.empty = No one on this server is married yet.
+commands.marry.list.header = Married couples ({count}):
+commands.marry.list.married = {usernameOne} and {usernameTwo} - married {duration} ({online} online)
 commands.marry.list.success = {username} successfully ran married list command.
 commands.marry.message.desc = Send a private message to your married partner.
+commands.marry.message.disabled = Partner messages are disabled on this server.
 commands.marry.message.partnerOffline.player.msg = Your partner is currently offline.
 commands.marry.message.missingMsg.player.msg = Don't forget to include what message you want to send to your partner.
 commands.marry.message.sentMsg = Sent message to {partnerUsername}: {msg}
 commands.marry.message.unmarried = You aren't married to anyone, so no one to send the message to.
 commands.marry.message.success = {username} successfully ran marry message partner command.
 commands.marry.partner.player.desc = View your marriage partner.
-commands.marry.partner.player.msg = You are married to {partnerUsername}.
-commands.marry.partner.player.msg.offline = You are married to {partnerUsername} and they are offline.
+commands.marry.partner.player.msg = You are married to {partnerUsername} - {duration} together.
+commands.marry.partner.player.msg.offline = You are married to {partnerUsername} ({duration} together) and they are offline.
 commands.marry.partner.unmarried = You aren't married to anyone.
 commands.marry.partner.success = {username} successfully ran marry partner command.
 commands.marry.player.desc = Allows the player to request to marry the user.
 commands.marry.player.arg.username.desc = Username of player you want to request to marry.
 commands.marry.player.alreadyMarried = You're already married.
-commands.marry.player.missingRing = You need to hold a ring in your hand.
+commands.marry.player.targetMarried = {username} is already married.
+commands.marry.player.notAccepting = {username} is not accepting marriage requests.
+commands.marry.player.alreadyRequested = You already sent {username} a marriage request. It refreshes each time you ask.
+commands.marry.player.cancelled = The marriage could not be completed.
+commands.marry.player.missingRing = You need to hold a Marriage Ring in your hand.
 commands.marry.player.request.player.msg = You sent a marriage request to {username}.
-commands.marry.player.receiveRequest.player.msg = {username} has sent you a marriage request.
+commands.marry.player.receiveRequest.player.msg = {username} has sent you a marriage request. Type /marry player {username} to accept, or open /marriage.
 commands.marry.player.self.player.msg = You can't marry yourself.
 commands.marry.player.marry.player.msg = You have gotten married to {partnerUsername}.
 commands.marry.player.console.alert = {usernameOne} and {usernameTwo} just got Married!
 commands.marry.player.success = {username} successfully ran marry player command.
 commands.marry.tp.player.desc = Teleports the player to their married partner.
+commands.marry.tp.disabled = Partner teleports are disabled on this server.
+commands.marry.tp.cooldown = You can teleport to your partner again in {seconds} seconds.
 commands.marry.tp.player.msg = You teleported to your beloved!
 commands.marry.tp.partner.msg = Your beloved teleported to you!
 commands.marry.tp.partnerOffline.player.msg = Your partner is currently offline.
 commands.marry.tp.unmarried = You aren't married to anyone, so no one to teleport to.
 commands.marry.tp.success = {username} successfully ran partner tp command.
+commands.marry.gift.desc = Give the item stack you are holding to your married partner.
+commands.marry.gift.success = {username} successfully ran marry gift command.
+
+# === marriage features ===
+
+marriage.menu.disabled = The Marriage menu is disabled on this server.
+marriage.divorcedWhileAway = While you were away, your marriage with {partnerUsername} ended.
+marriage.pvp.protected = Your vows protect your beloved - partner PvP protection is on.
+marriage.gift.disabled = Gifts are disabled on this server.
+marriage.gift.unmarried = You aren't married to anyone, so no one to gift to.
+marriage.gift.cooldown = You can send another gift in {seconds} seconds.
+marriage.gift.emptyHand = Hold the item you want to gift in your hand.
+marriage.gift.partnerOffline = {partnerUsername} is currently offline.
+marriage.gift.tooFar = {partnerUsername} is too far away to receive your gift.
+marriage.gift.sent = You gave {quantity}x {item} to {partnerUsername}.
+marriage.gift.received = {partnerUsername} gave you a gift: {quantity}x {item}!
+marriage.gift.refunded = Your gift could not be delivered and was returned to you.
 
 # === items ===
 
@@ -53,3 +80,106 @@ items.MarriageRing.description = A ring that may allow you to get married.
 # === updateChecker ===
 
 updateChecker.marriage.release.message = The Marriage Mod version is outdated, Marriage has released v{version}.
+
+# === menu ===
+
+customUI.marriage.marriageui.title = Marriage
+customUI.marriage.marriageui.emptyState = Nothing to show here.
+customUI.marriage.marriageui.emptyStateHint = Try a different tab.
+
+customUI.marriage.marriageui.category.overview = Our Marriage
+customUI.marriage.marriageui.category.overview.hint = Your relationship at a glance.
+customUI.marriage.marriageui.category.couples = Married Couples
+customUI.marriage.marriageui.category.couples.hint = Every couple on the server.
+customUI.marriage.marriageui.category.settings = Settings
+customUI.marriage.marriageui.category.settings.hint = Your personal marriage preferences.
+customUI.marriage.marriageui.category.admin = Admin
+
+customUI.marriage.marriageui.overview.info.partnerLabel = Partner
+customUI.marriage.marriageui.overview.info.partnerOnline = {partnerUsername} (online)
+customUI.marriage.marriageui.overview.info.partnerOffline = {partnerUsername} (offline)
+customUI.marriage.marriageui.overview.info.marriedForLabel = Married for
+customUI.marriage.marriageui.overview.info.giftsGivenLabel = Gifts given
+customUI.marriage.marriageui.overview.info.giftsReceivedLabel = Gifts received
+customUI.marriage.marriageui.overview.info.teleportsLabel = Teleports used
+customUI.marriage.marriageui.overview.info.messagesLabel = Love notes sent
+
+customUI.marriage.marriageui.overview.action.teleport.name = Teleport to Partner
+customUI.marriage.marriageui.overview.action.teleport.detail = Instantly travel to your partner's side.
+customUI.marriage.marriageui.overview.action.teleport.disabled = Partner teleports are disabled on this server.
+customUI.marriage.marriageui.overview.action.gift.name = Gift Held Item
+customUI.marriage.marriageui.overview.action.gift.detail = Give the item in your hand to your partner.
+customUI.marriage.marriageui.overview.action.gift.disabled = Gifts are disabled on this server.
+customUI.marriage.marriageui.overview.action.divorce.name = Divorce
+customUI.marriage.marriageui.overview.action.divorce.detail = End your marriage. This cannot be undone.
+customUI.marriage.marriageui.overview.action.divorce.confirm = Click again within {seconds}s to confirm.
+
+customUI.marriage.marriageui.overview.unmarried.tip = Propose with /marry player <name>, or accept a request below.
+customUI.marriage.marriageui.overview.request.header = Marriage Requests
+customUI.marriage.marriageui.overview.request.none = No pending marriage requests.
+customUI.marriage.marriageui.overview.request.expiresIn = Expires in {seconds}s
+customUI.marriage.marriageui.overview.request.accept = Accept
+customUI.marriage.marriageui.overview.request.decline = Decline
+customUI.marriage.marriageui.overview.request.requesterOffline = {username} is no longer online.
+
+customUI.marriage.marriageui.couples.stat.couples = Couples Now
+customUI.marriage.marriageui.couples.stat.marriages = Marriages Ever
+customUI.marriage.marriageui.couples.stat.divorces = Divorces
+customUI.marriage.marriageui.couples.empty = No one on this server is married yet.
+customUI.marriage.marriageui.couples.row.duration = Married for {duration}
+customUI.marriage.marriageui.couples.row.online = {online}/2 online
+
+customUI.marriage.marriageui.settings.acceptRequests.name = Accept marriage requests
+customUI.marriage.marriageui.settings.acceptRequests.detail = Let other players send you a marriage request.
+customUI.marriage.marriageui.settings.pvpProtection.name = PvP protection with partner
+customUI.marriage.marriageui.settings.pvpProtection.detail = You and your partner cannot hurt each other in combat.
+customUI.marriage.marriageui.settings.pvpProtection.disabled = PvP protection is turned off on this server.
+
+customUI.marriage.adminui.title = Marriage Admin
+customUI.marriage.adminui.header = Marriage Configuration
+customUI.marriage.adminui.save = Save
+customUI.marriage.adminui.revert = Revert
+customUI.marriage.adminui.denied = Access denied
+customUI.marriage.adminui.denied.hint = You do not have permission to edit the Marriage configuration.
+customUI.marriage.adminui.status.idle = No changes yet.
+customUI.marriage.adminui.status.pending = {count} pending change(s) - press Save to apply.
+customUI.marriage.adminui.status.noChanges = Nothing changed.
+customUI.marriage.adminui.status.saved = Changes saved.
+customUI.marriage.adminui.status.reverted = Pending changes discarded.
+customUI.marriage.adminui.status.nothingToRevert = Nothing to revert.
+
+customUI.marriage.adminui.section.general = General
+customUI.marriage.adminui.section.general.hint = Rings, permissions and server announcements.
+customUI.marriage.adminui.section.requests = Requests & Divorce
+customUI.marriage.adminui.section.requests.hint = Timing for proposals and the divorce confirmation.
+customUI.marriage.adminui.section.menu = Menu
+customUI.marriage.adminui.section.menu.hint = The in-game /marriage menu.
+customUI.marriage.adminui.section.pvp = PvP Protection
+customUI.marriage.adminui.section.pvp.hint = Whether married partners can hurt each other.
+customUI.marriage.adminui.section.regen = Partner Regeneration
+customUI.marriage.adminui.section.regen.hint = Slow healing while partners are near each other.
+customUI.marriage.adminui.section.gifts = Gifts
+customUI.marriage.adminui.section.gifts.hint = /marry gift and the menu's Gift Held Item action.
+customUI.marriage.adminui.section.tpMsg = Teleport & Messages
+customUI.marriage.adminui.section.tpMsg.hint = /marry tp, /marry msg and their cooldowns.
+
+customUI.marriage.adminui.field.requireRing = Require a ring to marry
+customUI.marriage.adminui.field.consumeRing = Consume the ring on marriage
+customUI.marriage.adminui.field.announceMarriages = Announce marriages
+customUI.marriage.adminui.field.announceDivorces = Announce divorces
+customUI.marriage.adminui.field.requestExpirySeconds = Request expiry (seconds)
+customUI.marriage.adminui.field.divorceConfirmSeconds = Divorce confirmation window (seconds)
+customUI.marriage.adminui.field.menuEnabled = Enable the /marriage menu
+customUI.marriage.adminui.field.partnerPvpProtection = Enable partner PvP protection
+customUI.marriage.adminui.field.defaultPvpProtection = Default PvP protection for new couples
+customUI.marriage.adminui.field.pvpProtectionMessage = Tell attackers why their hit did nothing
+customUI.marriage.adminui.field.partnerRegen = Enable partner regeneration
+customUI.marriage.adminui.field.regenRadiusBlocks = Regeneration radius (blocks)
+customUI.marriage.adminui.field.regenIntervalSeconds = Regeneration interval (seconds)
+customUI.marriage.adminui.field.regenAmountPerInterval = Regeneration amount per interval
+customUI.marriage.adminui.field.giftEnabled = Enable gifts
+customUI.marriage.adminui.field.giftRangeBlocks = Gift range (blocks, 0 = unlimited)
+customUI.marriage.adminui.field.giftCooldownSeconds = Gift cooldown (seconds)
+customUI.marriage.adminui.field.tpEnabled = Enable partner teleports
+customUI.marriage.adminui.field.tpCooldownSeconds = Teleport cooldown (seconds)
+customUI.marriage.adminui.field.msgEnabled = Enable partner messages

@@ -1,0 +1,80 @@
+$C = "../../../Common.ui";
+$T = "../MarriageTheme.ui";
+
+// One selectable option in a GRID category's grid. No built-in Marriage category
+// uses the GRID layout today - this exists so a third-party category registered
+// through MarriageUIRegistry can. Every visible part is driven from Java:
+//
+//   #Chip     .Background   flat color plate (PatchStyle pushed from Java - the
+//                           only cross-protocol-verified color format is a solid
+//                           "RRGGBB")
+//   #Label    .TextSpans    the option name
+//   #Detail   .TextSpans    optional second line (.Visible false when unused)
+//   #Ring     .Visible      bright-pink selection ring - the ONLY saturated
+//                           accent on the page, so the current choice is
+//                           findable at a glance
+//   #Button   .Disabled     true for the current choice
+//   #Button   .TooltipText  hover description
+//
+// The button is a bare surface with no Text of its own; content sits in a sibling
+// Group layered over it. Selected state is a Visible toggle rather than a runtime
+// .Style write, which would disconnect the client.
+Group {
+  Anchor: (Width: 144, Height: 134, Right: 10, Bottom: 10);
+
+  Group #Ring {
+    Anchor: (Full: -2);
+    Background: (Color: #FF5C9C);
+    Visible: false;
+  }
+
+  TextButton #Button {
+    Anchor: (Full: 0);
+    TextTooltipStyle: $T.@MarriageTooltipStyle;
+    Style: (
+      Default: (Background: (Color: #3D1530(0.96))),
+      Hovered: (Background: (Color: #5C2247(0.98))),
+      Pressed: (Background: (Color: #330F26(0.96))),
+      Disabled: (Background: (Color: #5A2A45(0.98))),
+      Sounds: $C.@ButtonSounds
+    );
+  }
+
+  Group {
+    Anchor: (Full: 0);
+    LayoutMode: Top;
+    Padding: (Full: 7);
+
+    Group #Chip {
+      Anchor: (Height: 50, Bottom: 7);
+      Background: (Color: #7A2247);
+    }
+
+    Label #Label {
+      FlexWeight: 1;
+      Style: (
+        FontSize: 13,
+        RenderBold: true,
+        TextColor: #FFF3F7,
+        HorizontalAlignment: Center,
+        VerticalAlignment: Center,
+        Wrap: true,
+        ShrinkTextToFit: true,
+        MinShrinkTextToFitFontSize: 10
+      );
+    }
+
+    Label #Detail {
+      Anchor: (Height: 28);
+      Visible: false;
+      Style: (
+        FontSize: 11,
+        TextColor: #8C6373,
+        HorizontalAlignment: Center,
+        VerticalAlignment: Center,
+        ShrinkTextToFit: true,
+        MinShrinkTextToFitFontSize: 9
+      );
+    }
+  }
+}

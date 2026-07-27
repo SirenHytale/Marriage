@@ -1,0 +1,71 @@
+$C = "../../../Common.ui";
+$T = "../MarriageTheme.ui";
+
+// A full-width action row - one themed button plus an optional blurb line below
+// it. Appended into "#RowList" (Settings' spare-capacity actions, if any are ever
+// added) and into the Overview category's own "#ActionList" (Teleport, Gift,
+// Divorce).
+//
+//   #Button/#Danger .TextSpans  the button's own caption IS the action's name
+//                                (e.g. "Divorce") - Marriage's few actions each
+//                                name a distinct verb, so the row does not also
+//                                need a separate description label the way a
+//                                generic "Apply" button would.
+//   #Button/#Danger .Disabled   greyed out when the action is not available
+//   #Danger .Visible            swap to the destructive (wine) button; the two
+//                                buttons are separate elements because rewriting
+//                                a TextButton's .Style at runtime disconnects the
+//                                client
+//   #Detail .TextSpans          a short blurb, replaced by the disabled reason
+//                                (or, for Divorce, the "click again to confirm"
+//                                state) - .Visible false when there is nothing
+//                                to say
+Group {
+  Anchor: (Height: 56, Bottom: 6);
+  Background: (Color: #3D1530(0.85));
+  Padding: (Horizontal: 12, Vertical: 6);
+  LayoutMode: Left;
+
+  Group {
+    FlexWeight: 1;
+    LayoutMode: Middle;
+
+    Label #Detail {
+      Anchor: (Height: 32);
+      Visible: false;
+      Style: (
+        FontSize: 12,
+        TextColor: #8C6373,
+        HorizontalAlignment: Start,
+        VerticalAlignment: Center,
+        Wrap: true
+      );
+    }
+  }
+
+  // The two buttons are stacked as absolutely-anchored layers rather than as
+  // siblings in a flow layout, so hiding one never shifts the other.
+  Group {
+    Anchor: (Width: 200, Left: 12);
+
+    Group {
+      Anchor: (Full: 0);
+      LayoutMode: Middle;
+
+      $T.@MarriageSmallTextButton #Button {
+        @Anchor = (Width: 200);
+      }
+    }
+
+    Group {
+      Anchor: (Full: 0);
+      LayoutMode: Middle;
+
+      $T.@MarriageSmallTextButton #Danger {
+        @Anchor = (Width: 200);
+        Style: $T.@MarriageDangerTextButtonStyle;
+        Visible: false;
+      }
+    }
+  }
+}

@@ -1,0 +1,184 @@
+$C = "../../Common.ui";
+$T = "MarriageTheme.ui";
+
+// The /marriage menu.
+//
+// Everything below the divider is filled in from Java against
+// plugin.siren.API.CustomUI.MarriageUIRegistry, so which categories exist and
+// what each one shows is not encoded here at all. The document only declares the
+// fixed regions the page writes into:
+//
+//   #CategoryList     the left-hand list; CategoryEntry.ui fragments appended
+//   #CategoryTitle    heading of the open category
+//   #CategoryHint     one-line description of the open category
+//   #Sec0..#Sec5      section slots for grid content (kept for a third-party
+//                     GRID category - no built-in Marriage category uses one),
+//                     each with its own #SecLabelN caption and #SecGridN grid
+//   #RowList          full-width rows - CheckRow.ui / ActionRow.ui fragments,
+//                     used by the Settings category
+//   #CategoryDocument an arbitrary .ui document appended by a DOCUMENT category
+//                     (Overview, Married Couples)
+//   #EmptyState       shown when the open category has nothing to offer
+//
+// Section grids carry unique flat ids on purpose: appending to a plain id and
+// setting through an indexed descendant selector are both verified engine
+// behaviours, whereas appending into an *indexed* descendant is not.
+
+$T.@MarriagePageOverlay {}
+
+$T.@MarriageContainer {
+  Anchor: (Width: 960, Height: 680);
+
+  #Title {
+    Group {
+      LayoutMode: Center;
+      Anchor: (Full: 0);
+
+      $T.@MarriageTitle {
+        @Text = %server.customUI.marriage.marriageui.title;
+      }
+    }
+  }
+
+  #Content {
+    LayoutMode: Top;
+
+    Group {
+      FlexWeight: 1;
+      LayoutMode: Left;
+
+      $T.@MarriagePanel #CategoryListPanel {
+        Anchor: (Width: 230);
+        LayoutMode: TopScrolling;
+        ScrollbarStyle: $T.@MarriageScrollbarStyle;
+        Padding: (Top: 12, Bottom: 12, Left: 10, Right: 14);
+
+        Group #CategoryList {
+          LayoutMode: Top;
+        }
+      }
+
+      // Hidden together with the sidebar, so the content well does not sit 12px
+      // off the left edge if only one category is ever registered.
+      Group #CategoryListGap {
+        Anchor: (Width: 12);
+      }
+
+      $T.@MarriagePanel #ContentArea {
+        FlexWeight: 1;
+        LayoutMode: TopScrolling;
+        ScrollbarStyle: $T.@MarriageScrollbarStyle;
+        Padding: (Top: 14, Bottom: 14, Left: 16, Right: 18);
+
+        Label #CategoryTitle {
+          Anchor: (Height: 24, Bottom: 2);
+          Style: (
+            ...$T.@MarriageHeadingStyle,
+            HorizontalAlignment: Start
+          );
+        }
+
+        Label #CategoryHint {
+          Anchor: (Height: 16, Bottom: 10);
+          Visible: false;
+          Style: (
+            ...$T.@MarriageMetaLabelStyle,
+            HorizontalAlignment: Start
+          );
+        }
+
+        $T.@MarriageDivider {}
+
+        Group #Sec0 {
+          LayoutMode: Top;
+          Visible: false;
+
+          Label #SecLabel0 { Style: (...$T.@MarriageSectionLabelStyle, HorizontalAlignment: Start); Anchor: (Height: 16, Bottom: 8); }
+          Group #SecGrid0 { LayoutMode: LeftCenterWrap; }
+          Group { Anchor: (Height: 8); }
+        }
+
+        Group #Sec1 {
+          LayoutMode: Top;
+          Visible: false;
+
+          Label #SecLabel1 { Style: (...$T.@MarriageSectionLabelStyle, HorizontalAlignment: Start); Anchor: (Height: 16, Bottom: 8); }
+          Group #SecGrid1 { LayoutMode: LeftCenterWrap; }
+          Group { Anchor: (Height: 8); }
+        }
+
+        Group #Sec2 {
+          LayoutMode: Top;
+          Visible: false;
+
+          Label #SecLabel2 { Style: (...$T.@MarriageSectionLabelStyle, HorizontalAlignment: Start); Anchor: (Height: 16, Bottom: 8); }
+          Group #SecGrid2 { LayoutMode: LeftCenterWrap; }
+          Group { Anchor: (Height: 8); }
+        }
+
+        Group #Sec3 {
+          LayoutMode: Top;
+          Visible: false;
+
+          Label #SecLabel3 { Style: (...$T.@MarriageSectionLabelStyle, HorizontalAlignment: Start); Anchor: (Height: 16, Bottom: 8); }
+          Group #SecGrid3 { LayoutMode: LeftCenterWrap; }
+          Group { Anchor: (Height: 8); }
+        }
+
+        Group #Sec4 {
+          LayoutMode: Top;
+          Visible: false;
+
+          Label #SecLabel4 { Style: (...$T.@MarriageSectionLabelStyle, HorizontalAlignment: Start); Anchor: (Height: 16, Bottom: 8); }
+          Group #SecGrid4 { LayoutMode: LeftCenterWrap; }
+          Group { Anchor: (Height: 8); }
+        }
+
+        Group #Sec5 {
+          LayoutMode: Top;
+          Visible: false;
+
+          Label #SecLabel5 { Style: (...$T.@MarriageSectionLabelStyle, HorizontalAlignment: Start); Anchor: (Height: 16, Bottom: 8); }
+          Group #SecGrid5 { LayoutMode: LeftCenterWrap; }
+          Group { Anchor: (Height: 8); }
+        }
+
+        Group #RowList {
+          LayoutMode: Top;
+          Visible: false;
+        }
+
+        Group #CategoryDocument {
+          LayoutMode: Top;
+          Visible: false;
+        }
+
+        Group #EmptyState {
+          LayoutMode: Top;
+          Visible: false;
+          Padding: (Top: 24);
+
+          Label #EmptyStateLabel {
+            Anchor: (Height: 20);
+            Style: (
+              ...$T.@MarriageBodyLabelStyle,
+              HorizontalAlignment: Center
+            );
+            Text: %server.customUI.marriage.marriageui.emptyState;
+          }
+
+          Label #EmptyStateHint {
+            Anchor: (Height: 18, Top: 6);
+            Style: (
+              ...$T.@MarriageMetaLabelStyle,
+              HorizontalAlignment: Center
+            );
+            Text: %server.customUI.marriage.marriageui.emptyStateHint;
+          }
+        }
+      }
+    }
+  }
+}
+
+$C.@BackButton {}

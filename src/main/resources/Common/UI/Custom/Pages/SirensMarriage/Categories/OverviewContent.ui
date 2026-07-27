@@ -1,0 +1,66 @@
+$C = "../../../Common.ui";
+$T = "../MarriageTheme.ui";
+
+// Appended into "#CategoryDocument" by the Overview category, which uses the
+// DOCUMENT layout: this menu's "home page" is a fixed scaffold that Java fills in
+// differently depending on whether the player is married, so it does not fit the
+// generic options/rows model - see MarriageUIDefaults.renderOverview.
+//
+//   #MarriedBlock    shown when married
+//     #InfoList        InfoRow.ui fragments - partner/status, married-for,
+//                      gifts given/received, teleports, love notes
+//     #ActionList      ActionRow.ui fragments - Teleport / Gift / Divorce,
+//                      dispatched through the ordinary option click mechanism
+//   #UnmarriedBlock  shown otherwise
+//     #UnmarriedHint   the "propose with /marry player <name>" tip (Java-set)
+//     #RequestList     RequestRow.ui fragments - pending proposals waiting on you
+//     #NoRequestsLabel shown instead when there are none
+Group {
+  LayoutMode: Top;
+
+  Group #MarriedBlock {
+    LayoutMode: Top;
+    Visible: false;
+
+    Group #InfoList {
+      LayoutMode: Top;
+    }
+
+    $T.@MarriageDivider {}
+
+    Group #ActionList {
+      LayoutMode: Top;
+    }
+  }
+
+  Group #UnmarriedBlock {
+    LayoutMode: Top;
+    Visible: false;
+
+    Label #UnmarriedHint {
+      Anchor: (Height: 20, Bottom: 14);
+      Style: (
+        ...$T.@MarriageBodyLabelStyle,
+        HorizontalAlignment: Start
+      );
+    }
+
+    $T.@MarriageSectionLabel {
+      @Text = %server.customUI.marriage.marriageui.overview.request.header;
+    }
+
+    Group #RequestList {
+      LayoutMode: Top;
+    }
+
+    Label #NoRequestsLabel {
+      Anchor: (Height: 18, Top: 4);
+      Visible: false;
+      Style: (
+        ...$T.@MarriageMetaLabelStyle,
+        HorizontalAlignment: Start
+      );
+      Text: %server.customUI.marriage.marriageui.overview.request.none;
+    }
+  }
+}

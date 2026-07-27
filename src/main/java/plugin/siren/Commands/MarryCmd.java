@@ -1,6 +1,5 @@
 package plugin.siren.Commands;
 
-import com.hypixel.hytale.protocol.GameMode;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractCommandCollection;
 import plugin.siren.Commands.Marry.*;
 
@@ -12,6 +11,7 @@ public class MarryCmd extends AbstractCommandCollection {
         this.addSubCommand(new PartnerCmd());
         this.addSubCommand(new TPCmd());
         this.addSubCommand(new MessageCmd());
+        this.addSubCommand(new GiftCmd());
         this.addSubCommand(new DivorceCmd());
         this.addSubCommand(new MarriedListCmd());
 

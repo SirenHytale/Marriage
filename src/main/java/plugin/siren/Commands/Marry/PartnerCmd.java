@@ -2,19 +2,20 @@ package plugin.siren.Commands.Marry;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
-import com.hypixel.hytale.protocol.GameMode;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
-import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import plugin.siren.API.MarriageInfo;
 import plugin.siren.Marriage;
-import plugin.siren.Systems.MarriageSettingsComponent;
+import plugin.siren.Utils.MarriageUtil;
+import plugin.siren.Utils.Registry.MarriageManager;
 
 import javax.annotation.Nonnull;
+import java.util.UUID;
 
 public class PartnerCmd extends AbstractPlayerCommand {
     public PartnerCmd() {
@@ -25,21 +26,24 @@ public class PartnerCmd extends AbstractPlayerCommand {
 
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-        MarriageSettingsComponent marriageSettings = store.getComponent(ref, MarriageSettingsComponent.getComponentType());
+        MarriageInfo marriage = MarriageInfo.of(MarriageManager.getRecord(playerRef.getUuid()));
 
-        if(marriageSettings == null){
-            Marriage.LOGGER.atInfo().log("Failed to get Marriage Settings Component : PartnerCmd");
+        if(marriage == null){
+            playerRef.sendMessage(Message.translation("server.commands.marry.partner.unmarried"));
         }else{
-            if(marriageSettings.isMarried()){
-                PlayerRef partnerPlayerRef = Universe.get().getPlayer(marriageSettings.getPartnerUUID());
-                if(partnerPlayerRef == null){
-                    Marriage.LOGGER.atInfo().log("Failed to get partnerPlayerRef : PartnerCmd, partner is probably offline");
-                    playerRef.sendMessage(Message.translation("server.commands.marry.partner.player.msg.offline").param("partnerUsername", marriageSettings.getPartnerUsername()));
-                }else {
-                    playerRef.sendMessage(Message.translation("server.commands.marry.partner.player.msg").param("partnerUsername", partnerPlayerRef.getUsername()));
-                }
+            UUID partnerUuid = marriage.getPartnerUuid(playerRef.getUuid());
+            String partnerName = marriage.getPartnerName(playerRef.getUuid());
+            String marriedFor = MarriageUtil.formatDuration(marriage.getMarriedForMillis());
+
+            PlayerRef partnerPlayerRef = partnerUuid == null ? null : Universe.get().getPlayer(partnerUuid);
+            if(partnerPlayerRef != null && partnerPlayerRef.isValid()){
+                playerRef.sendMessage(Message.translation("server.commands.marry.partner.player.msg")
+                        .param("partnerUsername", partnerPlayerRef.getUsername())
+                        .param("duration", marriedFor));
             }else{
-                playerRef.sendMessage(Message.translation("server.commands.marry.partner.unmarried"));
+                playerRef.sendMessage(Message.translation("server.commands.marry.partner.player.msg.offline")
+                        .param("partnerUsername", partnerName)
+                        .param("duration", marriedFor));
             }
         }
 

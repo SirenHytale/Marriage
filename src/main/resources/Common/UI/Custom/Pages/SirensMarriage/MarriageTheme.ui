@@ -1,0 +1,334 @@
+$C = "../../Common.ui";
+
+// Shared "candlelit rose" visual theme for the Marriage menu.
+//
+// The mod ships no custom UI textures, so - exactly like Mermaids' MermaidTheme
+// and Cultivation's XianxiaTheme - the whole look is built from flat Color fills.
+// PatchStyle has a real Color field independent of TexturePath, and vanilla's own
+// @DefaultCheckBoxStyle already uses flat color backgrounds. The vanilla container
+// and button art is cool navy, so tinting it with a TexturePath+Color multiply
+// muddies every warm hue (rose-over-navy renders muddy brown). Every large surface
+// is therefore replaced outright rather than tinted - do NOT reintroduce
+// TexturePath+Color tinting on the panels or buttons.
+//
+// The palette reads as candlelight: near-black plum for the page body, deep wine
+// for chrome and buttons, blush/petal for text and seams, and a single bright
+// pink accent reserved for "this is your current selection". Bright pink is the
+// only saturated hue in the file on purpose.
+
+// --- Palette ---------------------------------------------------------------
+
+// Luminance ramp, darkest first.
+@RAbyssDim = #180611;      // page backdrop outside the panel
+@RAbyss = #2B0A1F;         // panel body
+@RSlot = #330F26;          // inset surfaces (sidebar, lists)
+@RCard = #3D1530;          // row/tile face
+@RCardBright = #5C2247;    // row/tile hover
+@RTitleDeep = #260817;     // title bar
+
+// Chrome + interactive wine-rose.
+@RRim = #B8496F;           // container rim / frame
+@RRose = #7A2247;          // button default
+@RRoseBright = #9C3563;    // button hover
+@RRoseDark = #4A1530;      // button pressed
+
+// Light: blush and petal.
+@RBlush = #FFF3F7;         // titles, row labels
+@RPetal = #F5B8CE;         // section captions, seams, accents
+@RDusty = #E3A4BC;         // body copy
+@RMauve = #8C6373;         // meta / captions / disabled
+
+// The one bright accent - current selection only.
+@RPink = #FF5C9C;
+@RPinkDeep = #B23D6C;
+
+// Deep wine, for the one destructive action (Divorce).
+@RWine = #7A1130;
+@RWineBright = #9C1A40;
+@RWineDark = #4A0A20;
+
+// Ink, for text sitting on a bright plaque.
+@RInk = #2B0A1F;
+
+// Content starts this far down inside @MarriageContainer (title bar + rim).
+@RContentTop = $C.@TitleHeight + 2;
+
+// --- Page chrome -------------------------------------------------------------
+
+@MarriagePageOverlay = Group {
+  Background: (Color: #180611(0.72));
+};
+
+// Structural twin of $C.@DecoratedContainer (same #Title / #Content / #CloseButton
+// ids and the same @ContentPadding / @CloseButton params) themed from the ground
+// up: the root Group is a solid rim fill, and the title/content panels inset 2px
+// inside it to leave a thin rose frame all the way round. A petal seam sits under
+// the title bar.
+@MarriageContainer = Group {
+  @ContentPadding = Padding(Full: 9 + 8);
+  @CloseButton = false;
+
+  Background: (Color: #B8496F(0.92));
+
+  Group #Title {
+    Anchor: (Height: $C.@TitleHeight, Top: 2, Left: 2, Right: 2);
+    Background: (Color: #260817(0.98));
+    Padding: (Top: 7);
+
+    Group #MarriageHeaderSeam {
+      Anchor: (Height: 2, Bottom: 0);
+      Background: (Color: #F5B8CE(0.85));
+    }
+  }
+
+  Group #Content {
+    LayoutMode: Top;
+    Anchor: (Top: @RContentTop, Left: 2, Right: 2, Bottom: 2);
+    Padding: @ContentPadding;
+    Background: (Color: #2B0A1F(0.97));
+  }
+
+  Button #CloseButton {
+    Anchor: (Width: 32, Height: 32, Top: -8, Right: -8);
+    Style: (
+      Default: (Background: "../../Common/ContainerCloseButton.png"),
+      Hovered: (Background: "../../Common/ContainerCloseButtonHovered.png"),
+      Pressed: (Background: "../../Common/ContainerCloseButtonPressed.png"),
+      Sounds: $C.@ButtonsCancel
+    );
+    Visible: @CloseButton;
+  }
+};
+
+// An inset surface - the sidebar and the content well sit on these so the panel
+// body reads as two recessed pools rather than one flat sheet.
+@MarriagePanel = Group {
+  LayoutMode: Top;
+  Background: (Color: #330F26(0.96));
+};
+
+// --- Type --------------------------------------------------------------------
+
+@MarriageTitleStyle = LabelStyle(
+  ...$C.@TitleStyle,
+  TextColor: @RBlush
+);
+
+@MarriageTitle = Label {
+  @Alignment = Center;
+  @Text = "";
+
+  Style: (
+    ...@MarriageTitleStyle,
+    HorizontalAlignment: @Alignment
+  );
+  Padding: (Horizontal: 19);
+  Text: @Text;
+};
+
+// Category heading above the content.
+@MarriageHeadingStyle = LabelStyle(
+  FontSize: 20,
+  RenderBold: true,
+  RenderUppercase: true,
+  LetterSpacing: 1,
+  TextColor: @RBlush
+);
+
+// Section caption inside a category.
+@MarriageSectionLabelStyle = LabelStyle(
+  FontSize: 13,
+  RenderBold: true,
+  RenderUppercase: true,
+  LetterSpacing: 1,
+  TextColor: @RPetal
+);
+
+@MarriageSectionLabel = Label {
+  @Text = "";
+
+  Style: (...@MarriageSectionLabelStyle, HorizontalAlignment: Start);
+  Anchor: (Bottom: 8);
+  Text: @Text;
+};
+
+@MarriageBodyLabelStyle = LabelStyle(FontSize: 16, TextColor: @RDusty);
+
+@MarriageBodyLabel = Label {
+  @Text = "";
+  @Alignment = Start;
+
+  Style: (...@MarriageBodyLabelStyle, HorizontalAlignment: @Alignment);
+  Anchor: (Bottom: 10);
+  Text: @Text;
+};
+
+@MarriageMetaLabelStyle = LabelStyle(FontSize: 13, TextColor: @RMauve, ShrinkTextToFit: true, MinShrinkTextToFitFontSize: 10);
+
+@MarriageMetaLabel = Label {
+  @Text = "";
+  @Alignment = Start;
+
+  Style: (...@MarriageMetaLabelStyle, HorizontalAlignment: @Alignment);
+  Anchor: (Bottom: 8);
+  Text: @Text;
+};
+
+// A thin petal rule, used under the category heading and between sections.
+@MarriageDivider = Group {
+  @Anchor = Anchor();
+
+  Anchor: (...@Anchor, Height: 1, Bottom: 12);
+  Background: (Color: #F5B8CE(0.28));
+};
+
+// --- Buttons -------------------------------------------------------------
+
+// Deep wine-rose glass plaques with blush text. The Disabled state doubles as the
+// "you are here" marker (the sidebar disables the open category), so it is styled
+// as a lit petal plaque with ink text rather than vanilla grey.
+@MarriageButtonLabelStyle = LabelStyle(
+  ...$C.@DefaultButtonLabelStyle,
+  TextColor: @RBlush
+);
+
+@MarriageButtonDisabledLabelStyle = LabelStyle(
+  ...@MarriageButtonLabelStyle,
+  TextColor: @RInk
+);
+
+@MarriageTextButtonStyle = TextButtonStyle(
+  Default: (Background: (Color: #7A2247(0.96)), LabelStyle: @MarriageButtonLabelStyle),
+  Hovered: (Background: (Color: #9C3563(0.98)), LabelStyle: @MarriageButtonLabelStyle),
+  Pressed: (Background: (Color: #4A1530(0.96)), LabelStyle: @MarriageButtonLabelStyle),
+  Disabled: (Background: (Color: #F5B8CE(0.62)), LabelStyle: @MarriageButtonDisabledLabelStyle),
+  Sounds: $C.@ButtonSounds
+);
+
+@MarriageTextButton = TextButton {
+  @Anchor = Anchor();
+  @Sounds = ();
+  @Text = "";
+
+  Style: (
+    ...@MarriageTextButtonStyle,
+    Sounds: (
+      ...$C.@ButtonSounds,
+      ...@Sounds
+    )
+  );
+  Anchor: (...@Anchor, Height: $C.@PrimaryButtonHeight);
+  Padding: (Horizontal: $C.@ButtonPadding);
+  Text: @Text;
+};
+
+@MarriageSmallTextButtonStyle = TextButtonStyle(
+  Default: (Background: (Color: #7A2247(0.96)), LabelStyle: (...@MarriageButtonLabelStyle, FontSize: 14)),
+  Hovered: (Background: (Color: #9C3563(0.98)), LabelStyle: (...@MarriageButtonLabelStyle, FontSize: 14)),
+  Pressed: (Background: (Color: #4A1530(0.96)), LabelStyle: (...@MarriageButtonLabelStyle, FontSize: 14)),
+  Disabled: (Background: (Color: #F5B8CE(0.62)), LabelStyle: (...@MarriageButtonDisabledLabelStyle, FontSize: 14)),
+  Sounds: $C.@ButtonSounds
+);
+
+@MarriageSmallTextButton = TextButton {
+  @Anchor = Anchor();
+  @Sounds = ();
+  @Text = "";
+
+  Style: (
+    ...@MarriageSmallTextButtonStyle,
+    Sounds: (
+      ...$C.@ButtonSounds,
+      ...@Sounds
+    )
+  );
+  Anchor: (...@Anchor, Height: $C.@SmallButtonHeight);
+  Padding: (Horizontal: 16);
+  Text: @Text;
+};
+
+// The category list. Resting state is the pressed-dark fill and only hover and
+// selection light up, so the sidebar reads as a list rather than a wall of
+// identical blocks. ShrinkTextToFit keeps a longer category name (or a translation
+// of one) from silently ellipsising, mirroring vanilla's own CategoryButton.ui.
+@MarriageNavLabelStyle = LabelStyle(
+  ...@MarriageButtonLabelStyle,
+  FontSize: 14,
+  TextColor: @RDusty,
+  ShrinkTextToFit: true,
+  MinShrinkTextToFitFontSize: 11
+);
+
+@MarriageNavLabelStyleActive = LabelStyle(
+  ...@MarriageNavLabelStyle,
+  TextColor: @RBlush
+);
+
+@MarriageNavTextButtonStyle = TextButtonStyle(
+  Default: (Background: (Color: #4A1530(0.96)), LabelStyle: @MarriageNavLabelStyle),
+  Hovered: (Background: (Color: #9C3563(0.98)), LabelStyle: @MarriageNavLabelStyleActive),
+  Pressed: (Background: (Color: #4A1530(0.96)), LabelStyle: @MarriageNavLabelStyleActive),
+  Disabled: (Background: (Color: #F5B8CE(0.62)), LabelStyle: (...@MarriageNavLabelStyle, TextColor: @RInk)),
+  Sounds: $C.@ButtonSounds
+);
+
+@MarriageNavTextButton = TextButton {
+  @Anchor = Anchor();
+  @Text = "";
+
+  Style: @MarriageNavTextButtonStyle;
+  Anchor: (...@Anchor, Height: $C.@SmallButtonHeight);
+  Padding: (Horizontal: 14);
+  Text: @Text;
+};
+
+// Destructive actions only (Divorce). Deep wine, so it is unmistakably not one of
+// the ordinary rose plaques.
+@MarriageDangerTextButtonStyle = TextButtonStyle(
+  Default: (Background: (Color: #7A1130(0.94)), LabelStyle: @MarriageButtonLabelStyle),
+  Hovered: (Background: (Color: #9C1A40(0.98)), LabelStyle: @MarriageButtonLabelStyle),
+  Pressed: (Background: (Color: #4A0A20(0.96)), LabelStyle: @MarriageButtonLabelStyle),
+  Disabled: (Background: (Color: #3A1A24(0.9)), LabelStyle: (...@MarriageButtonLabelStyle, TextColor: #8C6373)),
+  // NOT $C.@ButtonDestructiveSounds. That token exists in Common.ui but is defined
+  // as $Sounds.@ButtonsDestructive, which does not exist in Sounds.ui in either the
+  // source snapshot or the shipped client - it is a dangling reference in vanilla
+  // that only errors once something forces it to resolve, and resolving it fails
+  // the ENTIRE CustomUI document load, taking every mod's UI down with it.
+  // @ButtonsCancel is the real destructive sound set.
+  Sounds: $C.@ButtonsCancel
+);
+
+@MarriageDangerTextButton = TextButton {
+  @Anchor = Anchor();
+  @Text = "";
+
+  Style: @MarriageDangerTextButtonStyle;
+  Anchor: (...@Anchor, Height: $C.@PrimaryButtonHeight);
+  Padding: (Horizontal: $C.@ButtonPadding);
+  Text: @Text;
+};
+
+// --- Controls --------------------------------------------------------------
+
+@MarriageCheckBoxStyle = $C.@DefaultCheckBoxStyle;
+
+@MarriageCheckBox = CheckBox {
+  Anchor: (Width: 22, Height: 22);
+  Background: (Color: #4A1530(0.98));
+  Padding: (Full: 4);
+  Style: @MarriageCheckBoxStyle;
+};
+
+// Keeps vanilla's handle artwork rather than flat fills - the one piece of chrome
+// where matching the engine matters more than matching the theme.
+@MarriageScrollbarStyle = ScrollbarStyle(
+  ...$C.@DefaultScrollbarStyle,
+  Spacing: 8
+);
+
+@MarriageTooltipStyle = TextTooltipStyle(
+  Background: (Color: #2B0A1F(0.97)),
+  MaxWidth: 320,
+  LabelStyle: (Wrap: true, FontSize: 14, TextColor: @RDusty),
+  Padding: 16
+);

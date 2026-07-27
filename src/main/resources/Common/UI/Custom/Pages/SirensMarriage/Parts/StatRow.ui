@@ -1,0 +1,36 @@
+$C = "../../../Common.ui";
+$T = "../MarriageTheme.ui";
+
+// One cell of the Married Couples stats bar. Appended three times into
+// "#StatsRow" (couples now, marriages ever, divorces) - each cell is a big
+// number over a small caption, both pushed from Java.
+//
+//   #Value   .Text        the number, as a plain string
+//   #Caption .TextSpans    the translated caption under it
+Group {
+  FlexWeight: 1;
+  LayoutMode: Middle;
+
+  Label #Value {
+    Anchor: (Height: 26);
+    Style: (
+      FontSize: 22,
+      RenderBold: true,
+      TextColor: #FF5C9C,
+      HorizontalAlignment: Center,
+      VerticalAlignment: Center
+    );
+  }
+
+  Label #Caption {
+    Anchor: (Height: 16, Top: 2);
+    Style: (
+      FontSize: 12,
+      RenderUppercase: true,
+      LetterSpacing: 1,
+      TextColor: #8C6373,
+      HorizontalAlignment: Center,
+      VerticalAlignment: Center
+    );
+  }
+}

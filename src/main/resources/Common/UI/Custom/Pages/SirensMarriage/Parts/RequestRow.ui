@@ -1,0 +1,65 @@
+$C = "../../../Common.ui";
+$T = "../MarriageTheme.ui";
+
+// One pending marriage request waiting on you. Appended into "#RequestList" (the
+// Overview category's unmarried state) - the only row in the menu with two
+// buttons, since accepting and declining are both one click away and neither is
+// "the" default action the way Divorce is.
+//
+//   #Name    .Text        the requester's display name (plain string)
+//   #Expiry  .TextSpans   "Expires in {seconds}s"
+//   #Accept  .TextSpans   accept button caption
+//   #Decline .TextSpans   decline button caption
+Group {
+  Anchor: (Height: 56, Bottom: 6);
+  Background: (Color: #3D1530(0.85));
+  Padding: (Horizontal: 12, Vertical: 6);
+  LayoutMode: Left;
+
+  Group {
+    FlexWeight: 1;
+    LayoutMode: Middle;
+
+    Label #Name {
+      Anchor: (Height: 18);
+      Style: (
+        FontSize: 15,
+        RenderBold: true,
+        TextColor: #FFF3F7,
+        HorizontalAlignment: Start,
+        VerticalAlignment: Center,
+        ShrinkTextToFit: true,
+        MinShrinkTextToFitFontSize: 12
+      );
+    }
+
+    Label #Expiry {
+      Anchor: (Height: 14);
+      Style: (
+        FontSize: 12,
+        TextColor: #8C6373,
+        HorizontalAlignment: Start,
+        VerticalAlignment: Center
+      );
+    }
+  }
+
+  Group {
+    Anchor: (Width: 100, Left: 8);
+    LayoutMode: Middle;
+
+    $T.@MarriageSmallTextButton #Accept {
+      @Anchor = (Width: 100);
+    }
+  }
+
+  Group {
+    Anchor: (Width: 100, Left: 8);
+    LayoutMode: Middle;
+
+    $T.@MarriageSmallTextButton #Decline {
+      @Anchor = (Width: 100);
+      Style: $T.@MarriageDangerTextButtonStyle;
+    }
+  }
+}

@@ -6,7 +6,7 @@
 
     <groupId>plugin.siren</groupId>
     <artifactId>Marriage</artifactId>
-    <version>1.2.4</version>
+    <version>2.0.0</version>
 
     <properties>
         <maven.compiler.source>25</maven.compiler.source>
@@ -28,18 +28,32 @@
                         </goals>
                         <configuration>
                             <target>
-                                <copy file="${project.build.directory}\${project.build.finalName}.jar"
-                                      todir="B:\.HytaleMods\.HytaleServer\Server\mods"
-                                      overwrite="true"/>
-                                <copy file="${project.build.directory}\${project.build.finalName}.jar"
-                                      todir="C:\Users\Brice\AppData\Roaming\Hytale\UserData\Mods"
-                                      overwrite="true"/>
-                                <copy file="${project.build.directory}\${project.build.finalName}.jar"
-                                      todir="C:\Users\Brice\AppData\Roaming\Hytale\data\pre-release\Mods"
-                                      overwrite="true"/>
-                                <copy file="${project.build.directory}\${project.build.finalName}.jar"
-                                      todir="D:\.Downloads\hytale-downloader\0.5.0-pre.9.1\Server\mods"
-                                      overwrite="true"/>
+                                <property name="marriage.serverMods"
+                                          value="C:\Users\Froggy\Documents\.HytaleMods\.hytale-server\Server\mods"/>
+                                <property name="marriage.userMods"
+                                          value="C:\Users\Froggy\AppData\Roaming\Hytale\UserData\Mods"/>
+
+                                <!-- Delete-then-copy: overwriting a jar the live JVM has open
+                                     leaves it with stale zip offsets and NoClassDefFoundError on
+                                     not-yet-loaded classes. Each destination is finished before
+                                     the next is touched. -->
+                                <delete file="${marriage.serverMods}\${project.build.finalName}.jar"
+                                        failonerror="false"/>
+                                <available file="${marriage.serverMods}\${project.build.finalName}.jar"
+                                           property="marriage.serverJarLocked"/>
+                                <fail message="Could not replace ${project.build.finalName}.jar - it is locked. Stop the Hytale server, then build again."
+                                      if="marriage.serverJarLocked"/>
+                                <copy file="${project.build.directory}/${project.build.finalName}.jar"
+                                      todir="${marriage.serverMods}"/>
+
+                                <delete file="${marriage.userMods}\${project.build.finalName}.jar"
+                                        failonerror="false"/>
+                                <available file="${marriage.userMods}\${project.build.finalName}.jar"
+                                           property="marriage.userJarLocked"/>
+                                <fail message="Could not replace ${project.build.finalName}.jar in UserData - it is locked. Close the Hytale client, then build again."
+                                      if="marriage.userJarLocked"/>
+                                <copy file="${project.build.directory}/${project.build.finalName}.jar"
+                                      todir="${marriage.userMods}"/>
                             </target>
                         </configuration>
                     </execution>
@@ -63,8 +77,7 @@
         <dependency>
             <groupId>com.hypixel.hytale</groupId>
             <artifactId>Server</artifactId>
-            <version>0.5.0-pre.9.2</version>
-            <scope>provided</scope>
+            <version>0.5.7</version>
         </dependency>
     </dependencies>
 

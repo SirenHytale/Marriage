@@ -11,6 +11,13 @@ import plugin.siren.Marriage;
 import javax.annotation.Nullable;
 import java.util.UUID;
 
+/**
+ * Persisted per-player marriage data. Since 2.0.0 the global registry
+ * (MarriageManager) is the source of truth for who is married; the married/partner
+ * fields here are kept as a synced cache AND as the migration source for
+ * marriages saved by 1.x. Codec keys "Married?", "PartnerUUID" and
+ * "PartnerUsername" must never change spelling — they exist in player saves.
+ */
 public class MarriageSettingsComponent implements Component<EntityStore> {
 
     public static final BuilderCodec<MarriageSettingsComponent> CODEC = BuilderCodec.builder(MarriageSettingsComponent.class, MarriageSettingsComponent::new)
@@ -26,11 +33,26 @@ public class MarriageSettingsComponent implements Component<EntityStore> {
                     (marSettings, puStr) -> marSettings.partnerUsername = puStr, // Setter
                     (marSettings) -> marSettings.partnerUsername)                    // Getter
             .add()
+            .append(new KeyedCodec<Boolean>("AcceptRequests", Codec.BOOLEAN),
+                    (marSettings, arBool) -> marSettings.acceptRequests = arBool, // Setter
+                    (marSettings) -> marSettings.acceptRequests)                    // Getter
+            .add()
+            .append(new KeyedCodec<Integer>("TimesMarried", Codec.INTEGER),
+                    (marSettings, tmInt) -> marSettings.timesMarried = tmInt, // Setter
+                    (marSettings) -> marSettings.timesMarried)                    // Getter
+            .add()
+            .append(new KeyedCodec<Integer>("Divorces", Codec.INTEGER),
+                    (marSettings, dInt) -> marSettings.divorces = dInt, // Setter
+                    (marSettings) -> marSettings.divorces)                    // Getter
+            .add()
             .build();
 
     private boolean married;
     private UUID partnerUUID;
     private String partnerUsername;
+    private boolean acceptRequests = true;
+    private int timesMarried;
+    private int divorces;
 
     public static ComponentType<EntityStore, MarriageSettingsComponent> getComponentType(){
         return Marriage.get().getMarriageSettingsComponentType();
@@ -46,6 +68,9 @@ public class MarriageSettingsComponent implements Component<EntityStore> {
         this.married = other.married;
         this.partnerUUID = other.partnerUUID;
         this.partnerUsername = other.partnerUsername;
+        this.acceptRequests = other.acceptRequests;
+        this.timesMarried = other.timesMarried;
+        this.divorces = other.divorces;
     }
 
     @Nullable
@@ -80,5 +105,29 @@ public class MarriageSettingsComponent implements Component<EntityStore> {
 
     public void setPartnerUsername(String partnerUsername) {
         this.partnerUsername = partnerUsername;
+    }
+
+    public boolean isAcceptRequests(){
+        return this.acceptRequests;
+    }
+
+    public void setAcceptRequests(boolean acceptRequests){
+        this.acceptRequests = acceptRequests;
+    }
+
+    public int getTimesMarried(){
+        return this.timesMarried;
+    }
+
+    public void incrementTimesMarried(){
+        this.timesMarried++;
+    }
+
+    public int getDivorces(){
+        return this.divorces;
+    }
+
+    public void incrementDivorces(){
+        this.divorces++;
     }
 }

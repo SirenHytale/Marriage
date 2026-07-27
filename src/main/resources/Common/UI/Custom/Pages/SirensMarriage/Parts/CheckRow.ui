@@ -1,0 +1,57 @@
+$C = "../../../Common.ui";
+$T = "../MarriageTheme.ui";
+
+// A full-width toggle row - one boolean setting. Appended into "#RowList" by the
+// Settings category, and reused verbatim by MarriageAdminUIPage's "#ConfigList"
+// for its own boolean fields (same #Label/#Detail/#CheckBox contract either way).
+//
+//   #CheckBox .Value       current state (bound ValueChanged from Java)
+//   #Label    .TextSpans   setting name
+//   #Detail   .TextSpans   why it is unavailable, or a short blurb (.Visible is
+//                          always explicitly set by both callers, so this
+//                          fragment's own default below never matters)
+//
+// Checkbox reads and writes use .Value - a TextField's content property is also
+// .Value while Labels and TextButtons use .Text; mixing them up disconnects the
+// client, so the two are kept deliberately separate here.
+Group {
+  Anchor: (Height: 46, Bottom: 6);
+  Background: (Color: #3D1530(0.85));
+  Padding: (Horizontal: 12);
+  LayoutMode: Left;
+
+  Group {
+    Anchor: (Width: 22, Right: 12);
+    LayoutMode: Middle;
+
+    $T.@MarriageCheckBox #CheckBox {
+      Value: false;
+    }
+  }
+
+  Group {
+    FlexWeight: 1;
+    LayoutMode: Middle;
+
+    Label #Label {
+      Anchor: (Height: 18);
+      Style: (
+        FontSize: 15,
+        TextColor: #E3A4BC,
+        HorizontalAlignment: Start,
+        VerticalAlignment: Center
+      );
+    }
+
+    Label #Detail {
+      Anchor: (Height: 14);
+      Visible: false;
+      Style: (
+        FontSize: 12,
+        TextColor: #8C6373,
+        HorizontalAlignment: Start,
+        VerticalAlignment: Center
+      );
+    }
+  }
+}

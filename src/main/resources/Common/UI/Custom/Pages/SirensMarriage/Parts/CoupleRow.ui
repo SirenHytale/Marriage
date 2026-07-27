@@ -1,0 +1,58 @@
+$C = "../../../Common.ui";
+$T = "../MarriageTheme.ui";
+
+// One entry in the server-wide Married Couples list. Appended into "#CoupleList" -
+// display only, no buttons; this is a public roster, not something you act on
+// from someone else's row.
+//
+//   #Names    .Text        "Name1 & Name2" (plain string, pushed as-is)
+//   #Duration .TextSpans   "Married for {duration}"
+//   #Status   .TextSpans   "{online}/2 online"
+Group {
+  Anchor: (Height: 48, Bottom: 6);
+  Background: (Color: #3D1530(0.85));
+  Padding: (Horizontal: 14);
+  LayoutMode: Left;
+
+  Group {
+    FlexWeight: 1;
+    LayoutMode: Middle;
+
+    Label #Names {
+      Anchor: (Height: 18);
+      Style: (
+        FontSize: 15,
+        RenderBold: true,
+        TextColor: #FFF3F7,
+        HorizontalAlignment: Start,
+        VerticalAlignment: Center,
+        ShrinkTextToFit: true,
+        MinShrinkTextToFitFontSize: 12
+      );
+    }
+
+    Label #Duration {
+      Anchor: (Height: 14);
+      Style: (
+        FontSize: 12,
+        TextColor: #8C6373,
+        HorizontalAlignment: Start,
+        VerticalAlignment: Center
+      );
+    }
+  }
+
+  Group {
+    Anchor: (Width: 110);
+    LayoutMode: Middle;
+
+    Label #Status {
+      Style: (
+        FontSize: 13,
+        TextColor: #E3A4BC,
+        HorizontalAlignment: End,
+        VerticalAlignment: Center
+      );
+    }
+  }
+}

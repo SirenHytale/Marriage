@@ -1,0 +1,185 @@
+# === commands ===
+
+commands.marriage.desc = 打开结婚菜单。管理子命令也在其下。
+commands.marriage.requireRing.desc = 切换结婚时是否需要手持婚戒。
+commands.marriage.requireRing.arg.boolean.desc = 切换结婚是否需要手持婚戒的布尔值。
+commands.marriage.requireRing.player.msg.enabled = 你已开启结婚需要婚戒。
+commands.marriage.requireRing.player.msg.disabled = 你已关闭结婚需要婚戒。
+commands.marriage.requireRing.console.msg.enabled = {username} 开启了结婚需要婚戒。
+commands.marriage.requireRing.console.msg.disabled = {username} 关闭了结婚需要婚戒。
+commands.marry.desc = 结婚命令
+commands.marry.divorce.desc = 与你的伴侣离婚。
+commands.marry.divorce.unmarried = 你目前没有结婚。
+commands.marry.divorce.confirmation = 在 {seconds} 秒内再次输入该命令以确认离婚。
+commands.marry.divorce.cancelled = 离婚没有完成。
+commands.marry.divorce.player.msg = 你已与 {partnerUsername} 离婚。
+commands.marry.divorce.console.alert = {usernameOne} 和 {usernameTwo} 离婚了！
+commands.marry.divorce.success = {username} 成功执行了离婚命令。
+commands.marry.list.desc = 查看服务器上所有已婚情侣。
+commands.marry.list.empty = 这个服务器上还没有人结婚。
+commands.marry.list.header = 已婚情侣（{count} 对）：
+commands.marry.list.married = {usernameOne} 和 {usernameTwo} - 已结婚 {duration}（{online} 人在线）
+commands.marry.list.success = {username} 成功执行了已婚列表命令。
+commands.marry.message.desc = 向你的伴侣发送私聊消息。
+commands.marry.message.disabled = 本服务器已关闭伴侣私聊。
+commands.marry.message.partnerOffline.player.msg = 你的伴侣当前不在线。
+commands.marry.message.missingMsg.player.msg = 别忘了写上你想发给伴侣的消息。
+commands.marry.message.sentMsg = 已发送消息给 {partnerUsername}：{msg}
+commands.marry.message.unmarried = 你还没有结婚，没有可以发消息的人。
+commands.marry.message.success = {username} 成功执行了伴侣私聊命令。
+commands.marry.partner.player.desc = 查看你的结婚伴侣。
+commands.marry.partner.player.msg = 你与 {partnerUsername} 结为夫妻 - 已相伴 {duration}。
+commands.marry.partner.player.msg.offline = 你与 {partnerUsername} 结为夫妻（已相伴 {duration}），对方当前不在线。
+commands.marry.partner.unmarried = 你还没有结婚。
+commands.marry.partner.success = {username} 成功执行了查看伴侣命令。
+commands.marry.player.desc = 向另一位玩家求婚。
+commands.marry.player.arg.username.desc = 你想求婚的玩家用户名。
+commands.marry.player.alreadyMarried = 你已经结婚了。
+commands.marry.player.targetMarried = {username} 已经结婚了。
+commands.marry.player.notAccepting = {username} 目前不接受求婚。
+commands.marry.player.alreadyRequested = 你已经向 {username} 求过婚了。每次求婚都会刷新有效期。
+commands.marry.player.cancelled = 这场婚礼未能完成。
+commands.marry.player.missingRing = 你需要手持一枚婚戒。
+commands.marry.player.request.player.msg = 你向 {username} 发出了求婚。
+commands.marry.player.receiveRequest.player.msg = {username} 向你求婚了。输入 /marry player {username} 接受，或打开 /marriage 菜单。
+commands.marry.player.self.player.msg = 你不能和自己结婚。
+commands.marry.player.marry.player.msg = 你与 {partnerUsername} 喜结连理。
+commands.marry.player.console.alert = {usernameOne} 和 {usernameTwo} 刚刚结婚了！
+commands.marry.player.success = {username} 成功执行了求婚命令。
+commands.marry.tp.player.desc = 传送到你的结婚伴侣身边。
+commands.marry.tp.disabled = 本服务器已关闭伴侣传送。
+commands.marry.tp.cooldown = 你需要再等 {seconds} 秒才能传送到伴侣身边。
+commands.marry.tp.player.msg = 你传送到了挚爱身边！
+commands.marry.tp.partner.msg = 你的挚爱传送到了你身边！
+commands.marry.tp.partnerOffline.player.msg = 你的伴侣当前不在线。
+commands.marry.tp.unmarried = 你还没有结婚，没有可以传送的人。
+commands.marry.tp.success = {username} 成功执行了伴侣传送命令。
+commands.marry.gift.desc = 把你手中的物品送给你的伴侣。
+commands.marry.gift.success = {username} 成功执行了赠礼命令。
+
+# === marriage features ===
+
+marriage.menu.disabled = 本服务器已关闭结婚菜单。
+marriage.divorcedWhileAway = 你不在的时候，你与 {partnerUsername} 的婚姻结束了。
+marriage.pvp.protected = 你的誓言守护着你的挚爱 - 伴侣PvP保护已开启。
+marriage.gift.disabled = 本服务器已关闭赠礼功能。
+marriage.gift.unmarried = 你还没有结婚，没有可以赠礼的人。
+marriage.gift.cooldown = 你需要再等 {seconds} 秒才能送出下一份礼物。
+marriage.gift.emptyHand = 请把想送的物品拿在手中。
+marriage.gift.partnerOffline = {partnerUsername} 当前不在线。
+marriage.gift.tooFar = {partnerUsername} 离你太远，无法收到礼物。
+marriage.gift.sent = 你送给了 {partnerUsername} {quantity} 个 {item}。
+marriage.gift.received = {partnerUsername} 送给你一份礼物：{quantity} 个 {item}！
+marriage.gift.refunded = 礼物未能送达，已退还给你。
+
+# === items ===
+
+items.MarriageRing.name = 婚戒
+items.MarriageRing.description = 一枚也许能让你结婚的戒指。
+
+# === updateChecker ===
+
+updateChecker.marriage.release.message = 当前 Marriage 模组版本已过时，最新版本为 v{version}。
+
+# === menu ===
+
+customUI.marriage.marriageui.title = 结婚
+customUI.marriage.marriageui.emptyState = 这里暂时没有内容。
+customUI.marriage.marriageui.emptyStateHint = 试试其他页面吧。
+
+customUI.marriage.marriageui.category.overview = 我们的婚姻
+customUI.marriage.marriageui.category.overview.hint = 一览你们的感情。
+customUI.marriage.marriageui.category.couples = 已婚情侣
+customUI.marriage.marriageui.category.couples.hint = 服务器上的每一对情侣。
+customUI.marriage.marriageui.category.settings = 设置
+customUI.marriage.marriageui.category.settings.hint = 你的个人婚姻偏好。
+customUI.marriage.marriageui.category.admin = 管理
+
+customUI.marriage.marriageui.overview.info.partnerLabel = 伴侣
+customUI.marriage.marriageui.overview.info.partnerOnline = {partnerUsername}（在线）
+customUI.marriage.marriageui.overview.info.partnerOffline = {partnerUsername}（离线）
+customUI.marriage.marriageui.overview.info.marriedForLabel = 结婚时长
+customUI.marriage.marriageui.overview.info.giftsGivenLabel = 送出的礼物
+customUI.marriage.marriageui.overview.info.giftsReceivedLabel = 收到的礼物
+customUI.marriage.marriageui.overview.info.teleportsLabel = 使用的传送
+customUI.marriage.marriageui.overview.info.messagesLabel = 寄出的情书
+
+customUI.marriage.marriageui.overview.action.teleport.name = 传送到伴侣身边
+customUI.marriage.marriageui.overview.action.teleport.detail = 立刻来到你伴侣的身旁。
+customUI.marriage.marriageui.overview.action.teleport.disabled = 本服务器已关闭伴侣传送。
+customUI.marriage.marriageui.overview.action.gift.name = 赠送手中物品
+customUI.marriage.marriageui.overview.action.gift.detail = 把你手中的物品送给你的伴侣。
+customUI.marriage.marriageui.overview.action.gift.disabled = 本服务器已关闭赠礼功能。
+customUI.marriage.marriageui.overview.action.divorce.name = 离婚
+customUI.marriage.marriageui.overview.action.divorce.detail = 结束你的婚姻。此操作无法撤销。
+customUI.marriage.marriageui.overview.action.divorce.confirm = 在 {seconds} 秒内再次点击以确认。
+
+customUI.marriage.marriageui.overview.unmarried.tip = 使用 /marry player <名字> 求婚，或在下方接受求婚。
+customUI.marriage.marriageui.overview.request.header = 求婚请求
+customUI.marriage.marriageui.overview.request.none = 暂无待处理的求婚。
+customUI.marriage.marriageui.overview.request.expiresIn = {seconds} 秒后过期
+customUI.marriage.marriageui.overview.request.accept = 接受
+customUI.marriage.marriageui.overview.request.decline = 拒绝
+customUI.marriage.marriageui.overview.request.requesterOffline = {username} 已不在线。
+
+customUI.marriage.marriageui.couples.stat.couples = 现有情侣
+customUI.marriage.marriageui.couples.stat.marriages = 历史婚姻
+customUI.marriage.marriageui.couples.stat.divorces = 离婚次数
+customUI.marriage.marriageui.couples.empty = 这个服务器上还没有人结婚。
+customUI.marriage.marriageui.couples.row.duration = 已结婚 {duration}
+customUI.marriage.marriageui.couples.row.online = {online}/2 在线
+
+customUI.marriage.marriageui.settings.acceptRequests.name = 接受求婚请求
+customUI.marriage.marriageui.settings.acceptRequests.detail = 允许其他玩家向你求婚。
+customUI.marriage.marriageui.settings.pvpProtection.name = 与伴侣的PvP保护
+customUI.marriage.marriageui.settings.pvpProtection.detail = 你和你的伴侣在战斗中无法伤害彼此。
+customUI.marriage.marriageui.settings.pvpProtection.disabled = 本服务器已关闭PvP保护。
+
+customUI.marriage.adminui.title = 结婚管理
+customUI.marriage.adminui.header = Marriage 配置
+customUI.marriage.adminui.save = 保存
+customUI.marriage.adminui.revert = 还原
+customUI.marriage.adminui.denied = 拒绝访问
+customUI.marriage.adminui.denied.hint = 你没有编辑 Marriage 配置的权限。
+customUI.marriage.adminui.status.idle = 暂无改动。
+customUI.marriage.adminui.status.pending = {count} 项待保存的改动 - 点击保存以应用。
+customUI.marriage.adminui.status.noChanges = 没有任何改动。
+customUI.marriage.adminui.status.saved = 改动已保存。
+customUI.marriage.adminui.status.reverted = 已丢弃待保存的改动。
+customUI.marriage.adminui.status.nothingToRevert = 没有可还原的改动。
+
+customUI.marriage.adminui.section.general = 常规
+customUI.marriage.adminui.section.general.hint = 婚戒、权限与全服公告。
+customUI.marriage.adminui.section.requests = 求婚与离婚
+customUI.marriage.adminui.section.requests.hint = 求婚与离婚确认的时间设置。
+customUI.marriage.adminui.section.menu = 菜单
+customUI.marriage.adminui.section.menu.hint = 游戏内的 /marriage 菜单。
+customUI.marriage.adminui.section.pvp = PvP保护
+customUI.marriage.adminui.section.pvp.hint = 已婚伴侣之间能否互相伤害。
+customUI.marriage.adminui.section.regen = 伴侣回复
+customUI.marriage.adminui.section.regen.hint = 伴侣相伴左右时的缓慢治疗。
+customUI.marriage.adminui.section.gifts = 礼物
+customUI.marriage.adminui.section.gifts.hint = /marry gift 与菜单中的赠礼操作。
+customUI.marriage.adminui.section.tpMsg = 传送与私聊
+customUI.marriage.adminui.section.tpMsg.hint = /marry tp、/marry msg 及其冷却时间。
+
+customUI.marriage.adminui.field.requireRing = 结婚需要婚戒
+customUI.marriage.adminui.field.consumeRing = 结婚时消耗婚戒
+customUI.marriage.adminui.field.announceMarriages = 公告新婚
+customUI.marriage.adminui.field.announceDivorces = 公告离婚
+customUI.marriage.adminui.field.requestExpirySeconds = 求婚有效期（秒）
+customUI.marriage.adminui.field.divorceConfirmSeconds = 离婚确认窗口（秒）
+customUI.marriage.adminui.field.menuEnabled = 启用 /marriage 菜单
+customUI.marriage.adminui.field.partnerPvpProtection = 启用伴侣PvP保护
+customUI.marriage.adminui.field.defaultPvpProtection = 新婚情侣的默认PvP保护
+customUI.marriage.adminui.field.pvpProtectionMessage = 告知攻击者攻击为何无效
+customUI.marriage.adminui.field.partnerRegen = 启用伴侣回复
+customUI.marriage.adminui.field.regenRadiusBlocks = 回复范围（格）
+customUI.marriage.adminui.field.regenIntervalSeconds = 回复间隔（秒）
+customUI.marriage.adminui.field.regenAmountPerInterval = 每次回复量
+customUI.marriage.adminui.field.giftEnabled = 启用赠礼
+customUI.marriage.adminui.field.giftRangeBlocks = 赠礼范围（格，0 = 无限制）
+customUI.marriage.adminui.field.giftCooldownSeconds = 赠礼冷却（秒）
+customUI.marriage.adminui.field.tpEnabled = 启用伴侣传送
+customUI.marriage.adminui.field.tpCooldownSeconds = 传送冷却（秒）
+customUI.marriage.adminui.field.msgEnabled = 启用伴侣私聊
