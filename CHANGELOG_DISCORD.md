@@ -1,4 +1,4 @@
-# Marriage Discord Changelog - v2.0.0
+# Marriage Discord Changelog - v2.1.0
 
 Discord chat markdown doesn't support inline colors (that's a CurseForge-only HTML trick), so this uses Discord's native bold/heading/bullet formatting instead. Copy-paste the block below directly into Discord.
 
@@ -6,32 +6,30 @@ Note: a plain user message caps out at 2000 characters. The block below fits ins
 
 ---
 
-## 💍 Marriage v2.0.0 - Vows, Reworked
+## 💍 Marriage v2.1.0 - Somewhere To Go
 
-Everything the mod did before is still here -- rings, proposals, teleports, whispers -- but the machinery underneath is new, and a lot arrived on top of it.
+2.0 made being married *do* something. 2.1 makes it do more the longer it lasts.
 
-**Your existing marriages carry over.** Each one imports itself the first time a partner logs in. Nothing to reset.
+**Existing marriages carry over untouched** -- the bond just starts counting at your next login, and the config upgrades itself.
 
-**💗 The Marriage Menu**
-- `/marriage` opens a rose-themed menu: your partner, how long you've lasted, gifts, teleports and love notes -- with **Teleport, Gift and Divorce** one click away.
-- Proposals show up right there with **Accept** and **Decline** buttons.
-- **Married Couples** lists every couple on the server, online or not, plus totals: couples now, marriages ever, divorces.
+**💞 The Bond**
+- Deepens with every hour married, every minute spent within reach, every gift, and every kill together. New **Our Bond** page, or `/marry bond`.
+- Levels pay on their own: regen reaches further, teleports cool down faster.
+- **Anniversaries** at 1, 7, 30 and 365 days, paid in gifts you can hold, plus a **honeymoon** doubling XP on day one.
 
-**⚔️ Being Married Now Does Something**
-- **PvP protection** -- partners can't hurt each other, melee or arrows. Per-couple toggle, in case your love language is combat.
-- **Partner regeneration** -- stay near your beloved and your health slowly returns.
-- **Gifts** -- `/marry gift` hands your held stack to your partner. Full inventory? It lands at their feet, never lost.
+**✨ Seven Perks Worth Staying Married For**
+Death alerts pinned to your map · your **partner on the map** · a **shared home** · **Bond of Pain**, moving harm between you · **Last Stand** · a **Hope Chest** you both reach from anywhere · **respawn beside your partner**. Each has its own level and switch.
 
-**📖 A Registry Instead Of A Guess**
-- Marriages live in a **server-wide file** now, so `/marry list` finally shows every couple, not just who's online.
-- **Divorce while your partner is offline** -- they're told at their next login.
-- Proposals **expire on their own**, and you can refuse requests entirely.
+**💍 Vows & Rings**
+- Swear a **vow** -- Hearth, Blade or Wandering -- deciding which perks reach you first. Chosen once; **renewing your vows** lets you choose again.
+- **Ring tiers**: the old ring is now the Copper Band, craftable up into **Gold** and **Diamond**. A finer band grows the bond faster and opens perks sooner -- but the *lower* of the two counts, so bring one each.
+- **Love Letters** you write, seal and gift -- the words live on the item.
 
-**⚙️ For Owners And Modders**
-- The config went from 3 real options to **over 20**, all editable **in-game** on the Admin page.
-- A public **MarriageAPI**: lookups, stats, marry/divorce, cancellable events -- and your mod can add its own pages to the menu.
-- Running **Cultivation**? Partnered Cultivation reads marriages through it.
-- Fully translated into **Simplified Chinese**.
+**💔 Divorce Finally Costs Something**
+Mutual is instant. One-sided is **filed** -- your partner may agree or contest, and contesting only makes it wait the full period. Then a remarry cooldown, and the Hope Chest splits stack by stack.
+
+**🌹 And The Rest**
+A **Propose** page · a couple channel · **hug, kiss, dance** · a partner plate · a **Records** page · admin **force marry / divorce / info** on offline players · 50+ config values, editable in game · a **Dual Cultivation** page when Cultivation is installed.
 
 @Marriage Changelog
 <https://www.curseforge.com/hytale/mods/marriage/files/???????>

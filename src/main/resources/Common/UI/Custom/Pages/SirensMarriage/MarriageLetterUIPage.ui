@@ -1,0 +1,141 @@
+$C = "../../Common.ui";
+$T = "MarriageTheme.ui";
+
+// Writing a Love Letter, and reading one.
+//
+// One document serves both, because the two are the same panel with different
+// halves shown - a letter you are writing and a letter you are reading differ
+// only in whether the words are yours yet.
+//
+// Regions MarriageLetterUIPage.java writes into:
+//   #LetterTitle    heading - "Write a Letter" or who it is from
+//   #WriteBlock     the composing half
+//   #Input          the TextField; content is read and written via .Value
+//   #ReadBlock      the reading half
+//   #ReadText       the letter's words (plain .Text - the player's own prose)
+//   #ReadMeta       who wrote it and when
+//   #SealButton     writes the words onto the item; hidden while reading
+//   #CloseButton    dismisses
+//
+// Two rules this document exists to obey:
+//   * TextField content is .Value, never .Text - .Text silently fails to set on
+//     a TextField and the binding lint rejects it.
+//   * Placeholder text is "" rather than sample English. Every label is pushed
+//     on build, and a pre-push flash would show untranslated text on a zh-CN
+//     client. Empty is also the safe value: a '#' inside a Text literal kills
+//     the entire CustomUI parse.
+//
+// Styles are composed from the theme's *Style tokens on plain elements rather
+// than by overriding Style: on a @Marriage* template instance - those templates
+// set their own Style, and restating it on the instance fights them.
+$T.@MarriagePageOverlay {}
+
+$T.@MarriageContainer {
+  Anchor: (Width: 640, Height: 470);
+
+  #Title {
+    Group {
+      LayoutMode: Center;
+      Anchor: (Full: 0);
+
+      $T.@MarriageTitle #LetterTitle {
+        @Text = "";
+      }
+    }
+  }
+
+  #Content {
+    LayoutMode: Top;
+
+    // --- Writing ------------------------------------------------------------
+
+    Group #WriteBlock {
+      LayoutMode: Top;
+      Visible: false;
+
+      Label #WriteHint {
+        Anchor: (Height: 18);
+        Style: (...$T.@MarriageMetaLabelStyle, HorizontalAlignment: Start);
+        Text: "";
+      }
+
+      Group {
+        Anchor: (Height: 10);
+      }
+
+      // FlexWeight, exactly as Cultivation's SectPage does it: without it the
+      // template carries only a height and the field collapses to no width, so
+      // the text inside has nowhere to render.
+      // MaxLength is restated from Java on build to match Love-Letter-Max-Length,
+      // so an over-long letter is stopped at the keyboard rather than typed in
+      // full and then trimmed on submit.
+      Group #WriteRow {
+        LayoutMode: Left;
+        Anchor: (Height: 230);
+
+        $C.@TextField #Input {
+          @Anchor = (Left: 0, Right: 0);
+          FlexWeight: 1;
+          MaxLength: 500;
+        }
+      }
+    }
+
+    // --- Reading ------------------------------------------------------------
+
+    Group #ReadBlock {
+      LayoutMode: Top;
+      Visible: false;
+
+      $T.@MarriagePanel {
+        Anchor: (Height: 258);
+        Padding: (Horizontal: 18, Vertical: 16);
+        LayoutMode: Top;
+
+        // Wrap is what makes a letter a letter rather than one clipped line.
+        Label #ReadText {
+          FlexWeight: 1;
+          Style: (...$T.@MarriageBodyLabelStyle, Wrap: true, HorizontalAlignment: Start);
+          Text: "";
+        }
+
+        $T.@MarriageDivider {
+          @Anchor = (Bottom: 10);
+        }
+
+        Label #ReadMeta {
+          Anchor: (Height: 16);
+          Style: (...$T.@MarriageMetaLabelStyle, HorizontalAlignment: Start);
+          Text: "";
+        }
+      }
+    }
+
+    Group {
+      Anchor: (Height: 14);
+    }
+
+    // One action row for both halves. Seal sits first because it is the primary
+    // action while writing; it is hidden outright when reading, leaving Close
+    // alone rather than a disabled button that never does anything.
+    Group #Footer {
+      LayoutMode: Left;
+      Anchor: (Height: 42);
+
+      $T.@MarriageTextButton #SealButton {
+        @Anchor = (Width: 150);
+        @Text = "";
+        Visible: false;
+      }
+
+      Group {
+        Anchor: (Width: 10);
+      }
+
+      $T.@MarriageSmallTextButton #CloseButton {
+        @Anchor = (Width: 120);
+        @Text = "";
+      }
+    }
+  }
+}

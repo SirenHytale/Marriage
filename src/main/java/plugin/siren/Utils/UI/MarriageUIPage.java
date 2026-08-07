@@ -127,6 +127,8 @@ public class MarriageUIPage extends InteractiveCustomUIPage<MarriageUIPage.Marri
             applyOption(context, data.optionCategory, data.option);
         } else if (data.requestAction != null && data.requestUuid != null) {
             MarriageUIDefaults.handleRequestAction(context, data.requestAction, data.requestUuid);
+        } else if (data.coupleAction != null && data.coupleUuid != null) {
+            MarriageUIDefaults.handleCoupleAction(context, data.coupleAction, data.coupleUuid);
         }
 
         // The page is redrawn wholesale after every click rather than patched - an
@@ -553,6 +555,8 @@ public class MarriageUIPage extends InteractiveCustomUIPage<MarriageUIPage.Marri
         static final String KEY_OPTION = "Option";
         static final String KEY_REQUEST_ACTION = "RequestAction";
         static final String KEY_REQUEST_UUID = "RequestUuid";
+        public static final String KEY_COUPLE_ACTION = "CoupleAction";
+        public static final String KEY_COUPLE_UUID = "CoupleUuid";
 
         public static final BuilderCodec<MarriageUIEventData> CODEC =
                 BuilderCodec.builder(MarriageUIEventData.class, MarriageUIEventData::new)
@@ -568,6 +572,10 @@ public class MarriageUIPage extends InteractiveCustomUIPage<MarriageUIPage.Marri
                                 (entry, value) -> entry.requestAction = value, entry -> entry.requestAction)
                         .addField(new KeyedCodec<>(KEY_REQUEST_UUID, Codec.STRING),
                                 (entry, value) -> entry.requestUuid = value, entry -> entry.requestUuid)
+                        .addField(new KeyedCodec<>(KEY_COUPLE_ACTION, Codec.STRING),
+                                (entry, value) -> entry.coupleAction = value, entry -> entry.coupleAction)
+                        .addField(new KeyedCodec<>(KEY_COUPLE_UUID, Codec.STRING),
+                                (entry, value) -> entry.coupleUuid = value, entry -> entry.coupleUuid)
                         .build();
 
         private String category;
@@ -576,6 +584,8 @@ public class MarriageUIPage extends InteractiveCustomUIPage<MarriageUIPage.Marri
         private String option;
         private String requestAction;
         private String requestUuid;
+        private String coupleAction;
+        private String coupleUuid;
 
         public MarriageUIEventData() {
         }

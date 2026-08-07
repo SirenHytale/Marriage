@@ -1,8 +1,8 @@
 {
   "Group": "Siren",
   "Name": "Marriage",
-  "Version": "2.0.0",
-  "Description": "Marry another player - with a menu, partner perks, gifts, and a public API",
+  "Version": "2.1.0",
+  "Description": "Marry another player - with a bond that deepens, unlockable perks, a menu, gifts, and a public API",
   "Authors": [
     {
       "Name": "Siren",

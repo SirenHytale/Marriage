@@ -45,6 +45,16 @@ public class MarriageSettingsComponent implements Component<EntityStore> {
                     (marSettings, dInt) -> marSettings.divorces = dInt, // Setter
                     (marSettings) -> marSettings.divorces)                    // Getter
             .add()
+            // 2.1.0 - additive keys, so a save written by 2.0.x decodes with the
+            // Java initializers below rather than needing a migration.
+            .append(new KeyedCodec<Boolean>("CoupleChannel", Codec.BOOLEAN),
+                    (marSettings, ccBool) -> marSettings.coupleChannel = ccBool,
+                    (marSettings) -> marSettings.coupleChannel)
+            .add()
+            .append(new KeyedCodec<Boolean>("PartnerHud", Codec.BOOLEAN),
+                    (marSettings, phBool) -> marSettings.partnerHud = phBool,
+                    (marSettings) -> marSettings.partnerHud)
+            .add()
             .build();
 
     private boolean married;
@@ -53,6 +63,11 @@ public class MarriageSettingsComponent implements Component<EntityStore> {
     private boolean acceptRequests = true;
     private int timesMarried;
     private int divorces;
+
+    /** When on, ordinary chat goes to the partner instead of the whole server. Off by default - a chat mode nobody asked for is a way to say something private out loud. */
+    private boolean coupleChannel;
+    /** When on, a small plate shows the partner's health and distance while they are near. */
+    private boolean partnerHud = true;
 
     public static ComponentType<EntityStore, MarriageSettingsComponent> getComponentType(){
         return Marriage.get().getMarriageSettingsComponentType();
@@ -71,6 +86,8 @@ public class MarriageSettingsComponent implements Component<EntityStore> {
         this.acceptRequests = other.acceptRequests;
         this.timesMarried = other.timesMarried;
         this.divorces = other.divorces;
+        this.coupleChannel = other.coupleChannel;
+        this.partnerHud = other.partnerHud;
     }
 
     @Nullable
@@ -129,5 +146,21 @@ public class MarriageSettingsComponent implements Component<EntityStore> {
 
     public void incrementDivorces(){
         this.divorces++;
+    }
+
+    public boolean isCoupleChannel(){
+        return this.coupleChannel;
+    }
+
+    public void setCoupleChannel(boolean coupleChannel){
+        this.coupleChannel = coupleChannel;
+    }
+
+    public boolean isPartnerHud(){
+        return this.partnerHud;
+    }
+
+    public void setPartnerHud(boolean partnerHud){
+        this.partnerHud = partnerHud;
     }
 }

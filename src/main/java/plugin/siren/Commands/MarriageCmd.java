@@ -9,6 +9,7 @@ import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import plugin.siren.Commands.Marriage.ForceCmd;
 import plugin.siren.Commands.Marriage.RequireRingCmd;
 import plugin.siren.Marriage;
 import plugin.siren.Utils.UI.MarriageUIPage;
@@ -24,6 +25,7 @@ public class MarriageCmd extends AbstractCommand {
         super("marriage","server.commands.marriage.desc");
 
         this.addSubCommand(new RequireRingCmd());
+        this.addSubCommand(new ForceCmd());
 
         this.requirePermission("marriage");
         this.setPermissionGroups("hytale:None");

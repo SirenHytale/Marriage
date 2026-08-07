@@ -23,7 +23,13 @@ import java.util.Map;
 public final class MarriageUIRegistry {
     /** Built-in category ids, so a mod can position relative to them or override one. */
     public static final String CATEGORY_OVERVIEW = "overview";
+    /** Only ever visible to an unmarried player. */
+    public static final String CATEGORY_PROPOSE = "propose";
+    public static final String CATEGORY_BOND = "bond";
     public static final String CATEGORY_COUPLES = "couples";
+    public static final String CATEGORY_RECORDS = "records";
+    /** Only ever visible on a server that also runs Cultivation. */
+    public static final String CATEGORY_DUAL_CULTIVATION = "dual_cultivation";
     public static final String CATEGORY_SETTINGS = "settings";
     public static final String CATEGORY_ADMIN = "admin";
 

@@ -10,6 +10,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import plugin.siren.Marriage;
 import plugin.siren.Systems.MarriageComponent;
 import plugin.siren.Systems.MarriageSettingsComponent;
+import plugin.siren.Utils.HopeChestManager;
 import plugin.siren.Utils.MarriageUpdateChecker;
 import plugin.siren.Utils.Registry.MarriageManager;
 import plugin.siren.Utils.Registry.MarriageRecord;
@@ -39,6 +40,11 @@ public class PlayerReadyEventM {
 
             if (validPlayerRef) {
                 reconcileWithRegistry(playerRef, settings);
+
+                // Anything a divorce owed them while they were away - their half of
+                // the Hope Chest. Must run after the reconcile, which is what may
+                // have just told them the marriage ended.
+                HopeChestManager.deliverPending(store, ref, playerRef);
             }
 
             if (validPlayerRef) {
@@ -70,6 +76,10 @@ public class PlayerReadyEventM {
         String username = playerRef.getUsername();
 
         MarriageManager.cacheAcceptsRequests(uuid, settings.isAcceptRequests());
+        // The asynchronous chat event cannot read this component, so its
+        // preference is mirrored into the registry's cache on every join.
+        MarriageManager.setCoupleChannelOn(uuid, settings.isCoupleChannel());
+        MarriageManager.touchTally(uuid, username);
 
         if (MarriageManager.consumePendingDivorceSync(uuid)) {
             if (settings.isMarried()) {

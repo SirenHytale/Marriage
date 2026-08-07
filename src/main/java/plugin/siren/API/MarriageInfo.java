@@ -21,10 +21,17 @@ public final class MarriageInfo {
     private final int teleportsUsed;
     private final int messagesSent;
     private final boolean pvpProtection;
+    private final double bondXp;
+    private final int bondLevel;
+    private final long togetherMinutes;
+    private final int anniversariesReached;
+    private final boolean hasHome;
 
     private MarriageInfo(UUID player1Uuid, String player1Name, UUID player2Uuid, String player2Name,
                          long marriedAtMillis, int giftsByPlayer1, int giftsByPlayer2,
-                         int teleportsUsed, int messagesSent, boolean pvpProtection){
+                         int teleportsUsed, int messagesSent, boolean pvpProtection,
+                         double bondXp, int bondLevel, long togetherMinutes,
+                         int anniversariesReached, boolean hasHome){
         this.player1Uuid = player1Uuid;
         this.player1Name = player1Name;
         this.player2Uuid = player2Uuid;
@@ -35,6 +42,11 @@ public final class MarriageInfo {
         this.teleportsUsed = teleportsUsed;
         this.messagesSent = messagesSent;
         this.pvpProtection = pvpProtection;
+        this.bondXp = bondXp;
+        this.bondLevel = bondLevel;
+        this.togetherMinutes = togetherMinutes;
+        this.anniversariesReached = anniversariesReached;
+        this.hasHome = hasHome;
     }
 
     @Nullable
@@ -52,7 +64,9 @@ public final class MarriageInfo {
         }
         return new MarriageInfo(uuid1, record.getPlayer1Name(), uuid2, record.getPlayer2Name(),
                 record.getMarriedAtMillis(), record.getGiftsByPlayer1(), record.getGiftsByPlayer2(),
-                record.getTeleportsUsed(), record.getMessagesSent(), record.isPvpProtection());
+                record.getTeleportsUsed(), record.getMessagesSent(), record.isPvpProtection(),
+                record.getBondXp(), record.getBondLevel(), record.getTogetherMinutes(),
+                record.getAnniversariesAwarded(), record.hasHome());
     }
 
     public UUID getPlayer1Uuid(){
@@ -129,5 +143,32 @@ public final class MarriageInfo {
 
     public boolean isPvpProtection(){
         return this.pvpProtection;
+    }
+
+    // === bond (2.1.0) ===
+
+    /** Total bond XP the couple has banked. */
+    public double getBondXp(){
+        return this.bondXp;
+    }
+
+    /** The couple's bond level. 0 for a marriage that has not begun to deepen. */
+    public int getBondLevel(){
+        return this.bondLevel;
+    }
+
+    /** Minutes the partners have spent within bond range of each other. */
+    public long getTogetherMinutes(){
+        return this.togetherMinutes;
+    }
+
+    /** How many anniversary milestones the couple has passed (0-4). */
+    public int getAnniversariesReached(){
+        return this.anniversariesReached;
+    }
+
+    /** Whether the couple has a shared home set. Its coordinates are deliberately not exposed. */
+    public boolean hasHome(){
+        return this.hasHome;
     }
 }

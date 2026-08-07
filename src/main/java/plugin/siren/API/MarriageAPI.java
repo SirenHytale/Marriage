@@ -1,7 +1,11 @@
 package plugin.siren.API;
 
 import plugin.siren.Marriage;
+import plugin.siren.Utils.Bond.BondManager;
+import plugin.siren.Utils.Bond.BondPerk;
+import plugin.siren.Utils.Bond.BondXpReason;
 import plugin.siren.Utils.Registry.MarriageManager;
+import plugin.siren.Utils.Registry.MarriageRecord;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -118,6 +122,45 @@ public final class MarriageAPI {
     /** Toggles the couple's PvP protection. Returns false when unmarried. */
     public static boolean setPvpProtection(@Nonnull UUID player, boolean enabled){
         return MarriageManager.setPvpProtection(player, enabled);
+    }
+
+    // === bond (2.1.0) ===
+
+    /** The couple's bond level, or -1 when the player is unmarried. */
+    public static int getBondLevel(@Nonnull UUID player){
+        MarriageRecord record = MarriageManager.getRecord(player);
+        return record == null ? -1 : record.getBondLevel();
+    }
+
+    /** 0..1 progress through the current bond level, or 0 when unmarried. */
+    public static float getBondProgress(@Nonnull UUID player){
+        MarriageRecord record = MarriageManager.getRecord(player);
+        return record == null ? 0f : BondManager.progress(record);
+    }
+
+    /**
+     * Grants (or, for a negative amount, removes) bond XP, announcing any level it
+     * crosses exactly as an in-game source would.
+     *
+     * @return the couple's new bond level, or -1 when the player is unmarried.
+     */
+    public static int addBondXp(@Nonnull UUID player, double amount){
+        return MarriageManager.addBondXp(player, amount, BondXpReason.EXTERNAL);
+    }
+
+    /** Whether this couple has unlocked a given perk — feature on and bond deep enough. */
+    public static boolean hasPerk(@Nonnull UUID player, @Nonnull BondPerk perk){
+        return BondManager.hasPerk(player, perk);
+    }
+
+    /** Total XP needed to reach a bond level from nothing. */
+    public static double getXpForLevel(int level){
+        return BondManager.xpForLevel(level);
+    }
+
+    /** The highest bond level this server allows. */
+    public static int getMaxBondLevel(){
+        return Marriage.getConfig().get().getBondMaxLevel();
     }
 
     // === listeners ===

@@ -1,6 +1,7 @@
 package plugin.siren.API;
 
 import plugin.siren.Marriage;
+import plugin.siren.Utils.Bond.BondXpReason;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -41,6 +42,15 @@ public final class MarriageEvents {
 
         /** Fired when a couple's PvP protection setting changes. */
         default void onPvpProtectionToggle(@Nonnull MarriageInfo marriage){}
+
+        /** Fired when a couple's bond level changes, up or down. */
+        default void onBondLevelChange(@Nonnull BondLevelChangeEvent event){}
+
+        /** Fired when a couple reaches an anniversary milestone. */
+        default void onAnniversary(@Nonnull AnniversaryEvent event){}
+
+        /** Fired when a couple sets or moves their shared home. */
+        default void onHomeSet(@Nonnull HomeSetEvent event){}
     }
 
     public static void registerListener(@Nonnull MarriageListener listener){
@@ -241,6 +251,146 @@ public final class MarriageEvents {
             }catch(Exception e){
                 Marriage.LOGGER.atSevere().log("MarriageListener threw in onPvpProtectionToggle: " + e);
             }
+        }
+    }
+
+    public static void fireBondLevelChange(@Nonnull BondLevelChangeEvent event){
+        for(MarriageListener listener : LISTENERS){
+            try{
+                listener.onBondLevelChange(event);
+            }catch(Exception e){
+                Marriage.LOGGER.atSevere().log("MarriageListener threw in onBondLevelChange: " + e);
+            }
+        }
+    }
+
+    public static void fireAnniversary(@Nonnull AnniversaryEvent event){
+        for(MarriageListener listener : LISTENERS){
+            try{
+                listener.onAnniversary(event);
+            }catch(Exception e){
+                Marriage.LOGGER.atSevere().log("MarriageListener threw in onAnniversary: " + e);
+            }
+        }
+    }
+
+    public static void fireHomeSet(@Nonnull HomeSetEvent event){
+        for(MarriageListener listener : LISTENERS){
+            try{
+                listener.onHomeSet(event);
+            }catch(Exception e){
+                Marriage.LOGGER.atSevere().log("MarriageListener threw in onHomeSet: " + e);
+            }
+        }
+    }
+
+    // === 2.1.0 event payloads ===
+
+    /**
+     * A couple's bond level moved. Fired for drops as well as gains, so
+     * {@code newLevel < oldLevel} means decay (or an admin) took it down.
+     */
+    public static final class BondLevelChangeEvent {
+        private final MarriageInfo marriage;
+        private final int oldLevel;
+        private final int newLevel;
+        private final BondXpReason reason;
+
+        public BondLevelChangeEvent(MarriageInfo marriage, int oldLevel, int newLevel, BondXpReason reason){
+            this.marriage = marriage;
+            this.oldLevel = oldLevel;
+            this.newLevel = newLevel;
+            this.reason = reason;
+        }
+
+        @Nonnull
+        public MarriageInfo getMarriage(){
+            return this.marriage;
+        }
+
+        public int getOldLevel(){
+            return this.oldLevel;
+        }
+
+        public int getNewLevel(){
+            return this.newLevel;
+        }
+
+        public boolean isDeepened(){
+            return this.newLevel > this.oldLevel;
+        }
+
+        /** What earned (or cost) the XP that crossed the level. */
+        @Nonnull
+        public BondXpReason getReason(){
+            return this.reason;
+        }
+    }
+
+    /** A couple reached an anniversary milestone. {@code days} is 1, 7, 30 or 365. */
+    public static final class AnniversaryEvent {
+        private final MarriageInfo marriage;
+        private final int days;
+
+        public AnniversaryEvent(MarriageInfo marriage, int days){
+            this.marriage = marriage;
+            this.days = days;
+        }
+
+        @Nonnull
+        public MarriageInfo getMarriage(){
+            return this.marriage;
+        }
+
+        public int getDays(){
+            return this.days;
+        }
+    }
+
+    /** A couple set (or moved) their shared home. */
+    public static final class HomeSetEvent {
+        private final MarriageInfo marriage;
+        private final UUID setBy;
+        private final String world;
+        private final double x;
+        private final double y;
+        private final double z;
+
+        public HomeSetEvent(MarriageInfo marriage, UUID setBy, String world, double x, double y, double z){
+            this.marriage = marriage;
+            this.setBy = setBy;
+            this.world = world;
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+
+        @Nonnull
+        public MarriageInfo getMarriage(){
+            return this.marriage;
+        }
+
+        /** Which half of the couple moved it. */
+        @Nonnull
+        public UUID getSetBy(){
+            return this.setBy;
+        }
+
+        @Nonnull
+        public String getWorld(){
+            return this.world;
+        }
+
+        public double getX(){
+            return this.x;
+        }
+
+        public double getY(){
+            return this.y;
+        }
+
+        public double getZ(){
+            return this.z;
         }
     }
 }

@@ -1,0 +1,48 @@
+{
+  "TranslationProperties": {
+    "Name": "server.items.MarriageLoveLetter.name",
+    "Description": "server.items.MarriageLoveLetter.description"
+  },
+  "Icon": "Icons/ItemsGenerated/Deco_Scroll.png",
+  "IconProperties": {
+    "Scale": 0.735,
+    "Translation": [
+      0,
+      -7.495
+    ],
+    "Rotation": [
+      22.5,
+      45,
+      22.5
+    ]
+  },
+  "PlayerAnimationsId": "Item",
+  "Model": "Blocks/Miscellaneous/Scrolls.blockymodel",
+  "Texture": "Blocks/Miscellaneous/Scrolls_Texture.png",
+  "ItemSoundSetId": "ISS_Blocks_Wood",
+  "Recipe": {
+    "TimeSeconds": 1,
+    "Input": [
+      {
+        "ItemId": "Ingredient_Fibre",
+        "Quantity": 3
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Id": "Workbench",
+        "Type": "Crafting",
+        "Categories": [
+          "Workbench_Tinkering"
+        ]
+      }
+    ]
+  },
+  "Quality": "Common",
+  "Tags": {
+    "Family": [
+      "Marriage"
+    ]
+  },
+  "MaxStack": 1
+}

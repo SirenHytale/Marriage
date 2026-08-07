@@ -15,7 +15,9 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import plugin.siren.Marriage;
+import plugin.siren.Utils.Bond.BondManager;
 import plugin.siren.Utils.Registry.MarriageManager;
+import plugin.siren.Utils.Registry.MarriageRecord;
 
 import javax.annotation.Nonnull;
 import java.util.UUID;
@@ -59,7 +61,11 @@ public class MarriageRegenSystem extends DelayedEntitySystem<EntityStore> {
             return;
         }
 
-        UUID partnerUuid = MarriageManager.getPartnerUuid(playerRef.getUuid());
+        MarriageRecord record = MarriageManager.getRecord(playerRef.getUuid());
+        if(record == null){
+            return;
+        }
+        UUID partnerUuid = record.getPartnerUuid(playerRef.getUuid());
         if(partnerUuid == null){
             return;
         }
@@ -82,7 +88,9 @@ public class MarriageRegenSystem extends DelayedEntitySystem<EntityStore> {
         if(selfTransform == null || partnerTransform == null){
             return;
         }
-        double radius = Marriage.getConfig().get().getRegenRadiusBlocks();
+        // Bond-scaled, not the flat config radius: a deepened bond reaches further
+        // (see BondManager.regenRadiusFor).
+        double radius = BondManager.regenRadiusFor(record);
         if(selfTransform.getPosition().distanceSquared(partnerTransform.getPosition()) > radius * radius){
             return;
         }

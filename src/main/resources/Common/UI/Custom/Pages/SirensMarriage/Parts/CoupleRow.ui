@@ -1,13 +1,17 @@
 $C = "../../../Common.ui";
 $T = "../MarriageTheme.ui";
 
-// One entry in the server-wide Married Couples list. Appended into "#CoupleList" -
-// display only, no buttons; this is a public roster, not something you act on
-// from someone else's row.
+// One entry in the server-wide Married Couples list. Appended into "#CoupleList".
+//
+// Display only for an ordinary player - this is a public roster, not something
+// you act on from someone else's row. #Action is the one exception: it is hidden
+// unless the viewer holds marriage.admin, and is the menu counterpart of
+// /marriage force divorce.
 //
 //   #Names    .Text        "Name1 & Name2" (plain string, pushed as-is)
 //   #Duration .TextSpans   "Married for {duration}"
-//   #Status   .TextSpans   "{online}/2 online"
+//   #Status   .TextSpans   "{online}/2 online - bond {bond}"
+//   #Action   .TextSpans   admin-only Divorce control; .Visible false by default
 Group {
   Anchor: (Height: 48, Bottom: 6);
   Background: (Color: #3D1530(0.85));
@@ -43,7 +47,7 @@ Group {
   }
 
   Group {
-    Anchor: (Width: 110);
+    Anchor: (Width: 130);
     LayoutMode: Middle;
 
     Label #Status {
@@ -53,6 +57,23 @@ Group {
         HorizontalAlignment: End,
         VerticalAlignment: Center
       );
+    }
+  }
+
+  // Admin-only. Hidden by default so an ordinary player's roster stays a roster;
+  // MarriageUIDefaults sets .Visible true only for a viewer holding
+  // marriage.admin, and re-checks that on every redraw.
+  //
+  // The danger style, not the ordinary small one: this ends somebody else's
+  // marriage, and it should not look like the buttons that do not.
+  Group {
+    Anchor: (Width: 96, Left: 10);
+    LayoutMode: Middle;
+
+    $T.@MarriageDangerTextButton #Action {
+      @Anchor = (Width: 96);
+      @Text = "";
+      Visible: false;
     }
   }
 }

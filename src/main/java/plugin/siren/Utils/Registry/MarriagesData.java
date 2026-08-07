@@ -28,6 +28,14 @@ public class MarriagesData {
                     (data, value) -> data.PendingDivorceSync = value,
                     (data) -> data.PendingDivorceSync)
             .add()
+            .append(new KeyedCodec<PendingDelivery[]>("PendingDeliveries", ArrayCodec.ofBuilderCodec(PendingDelivery.CODEC, PendingDelivery[]::new)),
+                    (data, value) -> data.PendingDeliveries = value,
+                    (data) -> data.PendingDeliveries)
+            .add()
+            .append(new KeyedCodec<PlayerTally[]>("PlayerTallies", ArrayCodec.ofBuilderCodec(PlayerTally.CODEC, PlayerTally[]::new)),
+                    (data, value) -> data.PlayerTallies = value,
+                    (data) -> data.PlayerTallies)
+            .add()
             .build();
 
     private MarriageRecord[] Marriages = new MarriageRecord[0];
@@ -41,6 +49,18 @@ public class MarriagesData {
      * marriage.
      */
     private String[] PendingDivorceSync = new String[0];
+
+    /**
+     * Items owed to players who were offline when a divorce split their Hope Chest,
+     * handed over on their next join. See {@link PendingDelivery}.
+     */
+    private PendingDelivery[] PendingDeliveries = new PendingDelivery[0];
+
+    /**
+     * Lifetime per-player counters that outlive any single marriage - what the
+     * Records page is built from. See {@link PlayerTally}.
+     */
+    private PlayerTally[] PlayerTallies = new PlayerTally[0];
 
     public MarriagesData(){}
 
@@ -74,5 +94,21 @@ public class MarriagesData {
 
     public void setPendingDivorceSync(String[] pendingDivorceSync){
         this.PendingDivorceSync = pendingDivorceSync;
+    }
+
+    public PendingDelivery[] getPendingDeliveries(){
+        return this.PendingDeliveries == null ? new PendingDelivery[0] : this.PendingDeliveries;
+    }
+
+    public void setPendingDeliveries(PendingDelivery[] pendingDeliveries){
+        this.PendingDeliveries = pendingDeliveries;
+    }
+
+    public PlayerTally[] getPlayerTallies(){
+        return this.PlayerTallies == null ? new PlayerTally[0] : this.PlayerTallies;
+    }
+
+    public void setPlayerTallies(PlayerTally[] playerTallies){
+        this.PlayerTallies = playerTallies;
     }
 }

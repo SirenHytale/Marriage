@@ -17,6 +17,14 @@ public class MarriageComponent implements Component<EntityStore> {
 
     private boolean updateChecker;
 
+    /**
+     * When this player last ran the couple's bond bookkeeping. Purely a throttle so
+     * {@code MarriagePresenceSystem}'s two-second tick only reaches the registry
+     * once a minute — the authoritative clock is on the marriage record, which is
+     * what makes the throttle safe to lose on a restart.
+     */
+    private long lastBondTickMillis;
+
     public static ComponentType<EntityStore, MarriageComponent> getComponentType(){
         return Marriage.get().getMarriageComponentType();
     }
@@ -27,6 +35,7 @@ public class MarriageComponent implements Component<EntityStore> {
 
     public MarriageComponent(MarriageComponent other){
         this.updateChecker = other.updateChecker;
+        this.lastBondTickMillis = other.lastBondTickMillis;
     }
 
     @Nullable
@@ -41,5 +50,13 @@ public class MarriageComponent implements Component<EntityStore> {
 
     public void setCheckOnUpdateChecker(boolean checked){
         this.updateChecker = checked;
+    }
+
+    public long getLastBondTickMillis(){
+        return this.lastBondTickMillis;
+    }
+
+    public void setLastBondTickMillis(long millis){
+        this.lastBondTickMillis = millis;
     }
 }

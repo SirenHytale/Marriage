@@ -138,6 +138,176 @@ public class MarriageAdminUIPage extends InteractiveCustomUIPage<MarriageAdminUI
                 Field.toggle("msgEnabled", LANG + "field.msgEnabled", "Enable-Partner-Msg",
                         config::ifMsgEnabled, config::setMsgEnabled))));
 
+        sections.add(new Section("bond", LANG + "section.bond", LANG + "section.bond.hint", List.of(
+                Field.toggle("bondEnabled", LANG + "field.bondEnabled", "Enable-Bond",
+                        config::ifBondEnabled, config::setBondEnabled),
+                Field.number("bondMaxLevel", LANG + "field.bondMaxLevel", "Bond-Max-Level",
+                        config::getBondMaxLevel, value -> config.setBondMaxLevel((int) value)),
+                Field.number("bondXpPerLevel", LANG + "field.bondXpPerLevel", "Bond-Xp-Per-Level",
+                        config::getBondXpPerLevel, config::setBondXpPerLevel),
+                Field.number("bondXpPerHour", LANG + "field.bondXpPerHour", "Bond-Xp-Per-Hour-Married",
+                        config::getBondXpPerHourMarried, config::setBondXpPerHourMarried),
+                Field.number("bondXpPerMinuteTogether", LANG + "field.bondXpPerMinuteTogether", "Bond-Xp-Per-Minute-Together",
+                        config::getBondXpPerMinuteTogether, config::setBondXpPerMinuteTogether),
+                Field.number("bondRangeBlocks", LANG + "field.bondRangeBlocks", "Bond-Range-Blocks",
+                        config::getBondRangeBlocks, config::setBondRangeBlocks),
+                Field.number("bondXpPerGift", LANG + "field.bondXpPerGift", "Bond-Xp-Per-Gift",
+                        config::getBondXpPerGift, config::setBondXpPerGift),
+                Field.number("bondXpPerCoopKill", LANG + "field.bondXpPerCoopKill", "Bond-Xp-Per-Coop-Kill",
+                        config::getBondXpPerCoopKill, config::setBondXpPerCoopKill),
+                Field.number("bondRegenRadiusPerLevel", LANG + "field.bondRegenRadiusPerLevel", "Bond-Regen-Radius-Percent-Per-Level",
+                        config::getBondRegenRadiusPercentPerLevel, config::setBondRegenRadiusPercentPerLevel),
+                Field.number("bondTpCooldownPerLevel", LANG + "field.bondTpCooldownPerLevel", "Bond-Tp-Cooldown-Percent-Per-Level",
+                        config::getBondTpCooldownPercentPerLevel, config::setBondTpCooldownPercentPerLevel))));
+
+        sections.add(new Section("anniversaries", LANG + "section.anniversaries", LANG + "section.anniversaries.hint", List.of(
+                Field.toggle("anniversariesEnabled", LANG + "field.anniversariesEnabled", "Enable-Anniversaries",
+                        config::ifAnniversariesEnabled, config::setAnniversariesEnabled),
+                Field.toggle("announceAnniversaries", LANG + "field.announceAnniversaries", "Announce-Anniversaries",
+                        config::ifAnnounceAnniversaries, config::setAnnounceAnniversaries),
+                Field.number("anniversaryBondXp", LANG + "field.anniversaryBondXp", "Anniversary-Bond-Xp",
+                        config::getAnniversaryBondXp, config::setAnniversaryBondXp))));
+
+        sections.add(new Section("bondDecay", LANG + "section.bondDecay", LANG + "section.bondDecay.hint", List.of(
+                Field.toggle("bondDecayEnabled", LANG + "field.bondDecayEnabled", "Enable-Bond-Decay",
+                        config::ifBondDecayEnabled, config::setBondDecayEnabled),
+                Field.number("bondDecayGraceDays", LANG + "field.bondDecayGraceDays", "Bond-Decay-Grace-Days",
+                        config::getBondDecayGraceDays, config::setBondDecayGraceDays),
+                Field.number("bondDecayXpPerDay", LANG + "field.bondDecayXpPerDay", "Bond-Decay-Xp-Per-Day",
+                        config::getBondDecayXpPerDay, config::setBondDecayXpPerDay),
+                Field.number("bondDecayMinLevel", LANG + "field.bondDecayMinLevel", "Bond-Decay-Min-Level",
+                        config::getBondDecayMinLevel, value -> config.setBondDecayMinLevel((int) value)))));
+
+        sections.add(new Section("home", LANG + "section.home", LANG + "section.home.hint", List.of(
+                Field.toggle("sharedHomeEnabled", LANG + "field.sharedHomeEnabled", "Enable-Shared-Home",
+                        config::ifSharedHomeEnabled, config::setSharedHomeEnabled),
+                Field.number("sharedHomeBondLevel", LANG + "field.sharedHomeBondLevel", "Shared-Home-Bond-Level",
+                        config::getSharedHomeBondLevel, value -> config.setSharedHomeBondLevel((int) value)),
+                Field.number("homeCooldownSeconds", LANG + "field.homeCooldownSeconds", "Home-Cooldown-Seconds",
+                        config::getHomeCooldownSeconds, value -> config.setHomeCooldownSeconds((int) value)),
+                Field.toggle("showHomeOnMap", LANG + "field.showHomeOnMap", "Show-Home-On-Map",
+                        config::ifShowHomeOnMap, config::setShowHomeOnMap))));
+
+        sections.add(new Section("markers", LANG + "section.markers", LANG + "section.markers.hint", List.of(
+                Field.toggle("partnerMarkerEnabled", LANG + "field.partnerMarkerEnabled", "Enable-Partner-Marker",
+                        config::ifPartnerMarkerEnabled, config::setPartnerMarkerEnabled),
+                Field.number("partnerMarkerBondLevel", LANG + "field.partnerMarkerBondLevel", "Partner-Marker-Bond-Level",
+                        config::getPartnerMarkerBondLevel, value -> config.setPartnerMarkerBondLevel((int) value)),
+                Field.toggle("deathAlertEnabled", LANG + "field.deathAlertEnabled", "Enable-Death-Alert",
+                        config::ifDeathAlertEnabled, config::setDeathAlertEnabled),
+                Field.number("deathAlertBondLevel", LANG + "field.deathAlertBondLevel", "Death-Alert-Bond-Level",
+                        config::getDeathAlertBondLevel, value -> config.setDeathAlertBondLevel((int) value)),
+                Field.number("deathMarkerMinutes", LANG + "field.deathMarkerMinutes", "Death-Marker-Minutes",
+                        config::getDeathMarkerMinutes, config::setDeathMarkerMinutes))));
+
+        sections.add(new Section("chest", LANG + "section.chest", LANG + "section.chest.hint", List.of(
+                Field.toggle("hopeChestEnabled", LANG + "field.hopeChestEnabled", "Enable-Hope-Chest",
+                        config::ifHopeChestEnabled, config::setHopeChestEnabled),
+                Field.number("hopeChestBondLevel", LANG + "field.hopeChestBondLevel", "Hope-Chest-Bond-Level",
+                        config::getHopeChestBondLevel, value -> config.setHopeChestBondLevel((int) value)),
+                Field.number("hopeChestSlots", LANG + "field.hopeChestSlots", "Hope-Chest-Slots",
+                        config::getHopeChestSlots, value -> config.setHopeChestSlots((int) value)))));
+
+        sections.add(new Section("combatPerks", LANG + "section.combatPerks", LANG + "section.combatPerks.hint", List.of(
+                Field.toggle("bondOfPainEnabled", LANG + "field.bondOfPainEnabled", "Enable-Bond-Of-Pain",
+                        config::ifBondOfPainEnabled, config::setBondOfPainEnabled),
+                Field.number("bondOfPainBondLevel", LANG + "field.bondOfPainBondLevel", "Bond-Of-Pain-Bond-Level",
+                        config::getBondOfPainBondLevel, value -> config.setBondOfPainBondLevel((int) value)),
+                Field.number("bondOfPainSharePercent", LANG + "field.bondOfPainSharePercent", "Bond-Of-Pain-Share-Percent",
+                        config::getBondOfPainSharePercent, config::setBondOfPainSharePercent),
+                Field.number("bondOfPainRangeBlocks", LANG + "field.bondOfPainRangeBlocks", "Bond-Of-Pain-Range-Blocks",
+                        config::getBondOfPainRangeBlocks, config::setBondOfPainRangeBlocks),
+                Field.toggle("lastStandEnabled", LANG + "field.lastStandEnabled", "Enable-Last-Stand",
+                        config::ifLastStandEnabled, config::setLastStandEnabled),
+                Field.number("lastStandBondLevel", LANG + "field.lastStandBondLevel", "Last-Stand-Bond-Level",
+                        config::getLastStandBondLevel, value -> config.setLastStandBondLevel((int) value)),
+                Field.number("lastStandDurationSeconds", LANG + "field.lastStandDurationSeconds", "Last-Stand-Duration-Seconds",
+                        config::getLastStandDurationSeconds, config::setLastStandDurationSeconds))));
+
+        sections.add(new Section("social", LANG + "section.social", LANG + "section.social.hint", List.of(
+                Field.toggle("coupleChannelEnabled", LANG + "field.coupleChannelEnabled", "Enable-Couple-Channel",
+                        config::ifCoupleChannelEnabled, config::setCoupleChannelEnabled),
+                Field.toggle("loveLettersEnabled", LANG + "field.loveLettersEnabled", "Enable-Love-Letters",
+                        config::ifLoveLettersEnabled, config::setLoveLettersEnabled),
+                Field.number("loveLetterMaxLength", LANG + "field.loveLetterMaxLength", "Love-Letter-Max-Length",
+                        config::getLoveLetterMaxLength, value -> config.setLoveLetterMaxLength((int) value)),
+                Field.toggle("partnerHudEnabled", LANG + "field.partnerHudEnabled", "Enable-Partner-Hud",
+                        config::ifPartnerHudEnabled, config::setPartnerHudEnabled),
+                Field.number("partnerHudRangeBlocks", LANG + "field.partnerHudRangeBlocks", "Partner-Hud-Range-Blocks",
+                        config::getPartnerHudRangeBlocks, config::setPartnerHudRangeBlocks),
+                Field.toggle("recordsEnabled", LANG + "field.recordsEnabled", "Enable-Records",
+                        config::ifRecordsEnabled, config::setRecordsEnabled))));
+
+        sections.add(new Section("rings", LANG + "section.rings", LANG + "section.rings.hint", List.of(
+                Field.toggle("ringTiersEnabled", LANG + "field.ringTiersEnabled", "Enable-Ring-Tiers",
+                        config::ifRingTiersEnabled, config::setRingTiersEnabled),
+                Field.toggle("engraveRings", LANG + "field.engraveRings", "Engrave-Rings",
+                        config::ifEngraveRings, config::setEngraveRings),
+                Field.number("goldRingXpMultiplier", LANG + "field.goldRingXpMultiplier", "Gold-Ring-Xp-Multiplier",
+                        config::getGoldRingXpMultiplier, config::setGoldRingXpMultiplier),
+                Field.number("goldRingPerkDiscount", LANG + "field.goldRingPerkDiscount", "Gold-Ring-Perk-Discount",
+                        config::getGoldRingPerkDiscount, value -> config.setGoldRingPerkDiscount((int) value)),
+                Field.number("diamondRingXpMultiplier", LANG + "field.diamondRingXpMultiplier", "Diamond-Ring-Xp-Multiplier",
+                        config::getDiamondRingXpMultiplier, config::setDiamondRingXpMultiplier),
+                Field.number("diamondRingPerkDiscount", LANG + "field.diamondRingPerkDiscount", "Diamond-Ring-Perk-Discount",
+                        config::getDiamondRingPerkDiscount, value -> config.setDiamondRingPerkDiscount((int) value)))));
+
+        sections.add(new Section("vows", LANG + "section.vows", LANG + "section.vows.hint", List.of(
+                Field.toggle("vowsEnabled", LANG + "field.vowsEnabled", "Enable-Vows",
+                        config::ifVowsEnabled, config::setVowsEnabled),
+                Field.number("vowPerkDiscount", LANG + "field.vowPerkDiscount", "Vow-Perk-Discount",
+                        config::getVowPerkDiscount, value -> config.setVowPerkDiscount((int) value)),
+                Field.number("vowHearthSlots", LANG + "field.vowHearthSlots", "Vow-Hearth-Chest-Bonus-Slots",
+                        config::getVowHearthChestBonusSlots, value -> config.setVowHearthChestBonusSlots((int) value)),
+                Field.number("vowBladeShare", LANG + "field.vowBladeShare", "Vow-Blade-Share-Bonus-Percent",
+                        config::getVowBladeShareBonusPercent, config::setVowBladeShareBonusPercent),
+                Field.number("vowWanderCut", LANG + "field.vowWanderCut", "Vow-Wander-Cooldown-Cut-Percent",
+                        config::getVowWanderCooldownCutPercent, config::setVowWanderCooldownCutPercent),
+                Field.toggle("renewEnabled", LANG + "field.renewEnabled", "Enable-Renew-Vows",
+                        config::ifRenewEnabled, config::setRenewEnabled),
+                Field.number("renewMinDays", LANG + "field.renewMinDays", "Renew-Min-Days",
+                        config::getRenewMinDays, config::setRenewMinDays),
+                Field.number("renewBondXp", LANG + "field.renewBondXp", "Renew-Bond-Xp",
+                        config::getRenewBondXp, config::setRenewBondXp))));
+
+        sections.add(new Section("honeymoon", LANG + "section.honeymoon", LANG + "section.honeymoon.hint", List.of(
+                Field.toggle("honeymoonEnabled", LANG + "field.honeymoonEnabled", "Enable-Honeymoon",
+                        config::ifHoneymoonEnabled, config::setHoneymoonEnabled),
+                Field.number("honeymoonHours", LANG + "field.honeymoonHours", "Honeymoon-Hours",
+                        config::getHoneymoonHours, config::setHoneymoonHours),
+                Field.number("honeymoonMultiplier", LANG + "field.honeymoonMultiplier", "Honeymoon-Xp-Multiplier",
+                        config::getHoneymoonXpMultiplier, config::setHoneymoonXpMultiplier),
+                Field.number("anniversaryRewardQuantity", LANG + "field.anniversaryRewardQuantity", "Anniversary-Reward-Quantity",
+                        config::getAnniversaryRewardQuantity, value -> config.setAnniversaryRewardQuantity((int) value)))));
+
+        sections.add(new Section("divorceWeight", LANG + "section.divorceWeight", LANG + "section.divorceWeight.hint", List.of(
+                Field.toggle("divorceWaitEnabled", LANG + "field.divorceWaitEnabled", "Enable-Divorce-Waiting-Period",
+                        config::ifDivorceWaitingPeriod, config::setDivorceWaitingPeriod),
+                Field.number("divorceWaitingHours", LANG + "field.divorceWaitingHours", "Divorce-Waiting-Hours",
+                        config::getDivorceWaitingHours, config::setDivorceWaitingHours),
+                Field.number("divorceUncontestedFactor", LANG + "field.divorceUncontestedFactor", "Divorce-Uncontested-Factor",
+                        config::getDivorceUncontestedFactor, config::setDivorceUncontestedFactor),
+                Field.number("remarryCooldownSeconds", LANG + "field.remarryCooldownSeconds", "Remarry-Cooldown-Seconds",
+                        config::getRemarryCooldownSeconds, value -> config.setRemarryCooldownSeconds((int) value)))));
+
+        sections.add(new Section("emotes", LANG + "section.emotes", LANG + "section.emotes.hint", List.of(
+                Field.toggle("emotesEnabled", LANG + "field.emotesEnabled", "Enable-Emotes",
+                        config::ifEmotesEnabled, config::setEmotesEnabled),
+                Field.number("emoteRangeBlocks", LANG + "field.emoteRangeBlocks", "Emote-Range-Blocks",
+                        config::getEmoteRangeBlocks, config::setEmoteRangeBlocks),
+                Field.number("emoteBroadcastRadius", LANG + "field.emoteBroadcastRadius", "Emote-Broadcast-Radius-Blocks",
+                        config::getEmoteBroadcastRadiusBlocks, config::setEmoteBroadcastRadiusBlocks),
+                Field.number("emoteCooldownSeconds", LANG + "field.emoteCooldownSeconds", "Emote-Cooldown-Seconds",
+                        config::getEmoteCooldownSeconds, value -> config.setEmoteCooldownSeconds((int) value)))));
+
+        sections.add(new Section("respawn", LANG + "section.respawn", LANG + "section.respawn.hint", List.of(
+                Field.toggle("respawnAtPartnerEnabled", LANG + "field.respawnAtPartnerEnabled", "Enable-Respawn-At-Partner",
+                        config::ifRespawnAtPartnerEnabled, config::setRespawnAtPartnerEnabled),
+                Field.number("respawnAtPartnerBondLevel", LANG + "field.respawnAtPartnerBondLevel", "Respawn-At-Partner-Bond-Level",
+                        config::getRespawnAtPartnerBondLevel, value -> config.setRespawnAtPartnerBondLevel((int) value)),
+                Field.number("respawnAtPartnerCooldownSeconds", LANG + "field.respawnAtPartnerCooldownSeconds", "Respawn-At-Partner-Cooldown-Seconds",
+                        config::getRespawnAtPartnerCooldownSeconds, value -> config.setRespawnAtPartnerCooldownSeconds((int) value)))));
+
         return sections;
     }
 

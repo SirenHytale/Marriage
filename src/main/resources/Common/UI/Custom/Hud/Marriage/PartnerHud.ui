@@ -1,0 +1,112 @@
+$T = "../../Pages/SirensMarriage/MarriageTheme.ui";
+
+// The small plate that appears while your partner is near, showing their health
+// and how far away they are.
+//
+// Colors come from MarriageTheme's tokens rather than repeated hex literals, so
+// the plate stays in step with the menu if the palette is ever retuned - the
+// same reason every page in this mod imports the theme instead of restating it.
+//
+// The health meter is the VANILLA ProgressBar element and its textures rather
+// than this mod's usual flat-color fills: a bar needs a runtime-driven fill
+// width, and ProgressBar takes a plain 0..1 .Value from Java. The textures live
+// in the CLIENT's asset tree, so the paths below resolve without this mod
+// shipping any PNG of its own. (Same shape Cultivation's ritual meter uses, and
+// Mermaids' drying-out meter before it.)
+//
+// Regions PartnerHud.java writes into:
+//   #PartnerName      the partner's username
+//   #PartnerHealthBar 0..1 health fraction
+//   #PartnerDistance  "12 blocks away"
+//
+// Placeholder text is empty rather than sample English: every label is pushed on
+// show, and a pre-push flash would otherwise show untranslated text on a zh-CN
+// client. (Empty is also the safe value - a '#' inside a Text literal kills the
+// whole CustomUI parse, so these are never seeded with sample copy.)
+Group #PartnerHudRoot {
+  LayoutMode: Left;
+  // Top-left, clear of the vanilla hotbar and of Cultivation's top-right plate -
+  // the two mods are frequently installed together and must not stack on the
+  // same corner.
+  Anchor: (Top: 20, Left: 20, Width: 232, Height: 74);
+
+  Group #PartnerHud {
+    // The menu's panel wine at HUD weight - lighter than a page so it sits over
+    // the world without blocking it.
+    //
+    // Raw hex, NOT $T.@RAbyss, because this one needs an alpha suffix: the
+    // "(0.72)" form parses only after a hex LITERAL. Writing it after a token
+    // reference is a markup error ("Expected ,, found ("), which fails the whole
+    // document and shows the player a Custom UI error instead of the game. A
+    // token with no alpha - see TextColor below - is fine. Value is @RAbyss.
+    Background: (Color: #2B0A1F(0.72));
+    LayoutMode: Left;
+
+    // A 3px rose spine, the same accent the menu uses for "this is yours". It is
+    // what makes the plate read as part of this mod at a glance rather than as an
+    // anonymous dark box.
+    Group #PartnerSpine {
+      Anchor: (Width: 3);
+      Background: (Color: $T.@RPink);
+    }
+
+    Group {
+      FlexWeight: 1;
+      Padding: (Horizontal: 12, Vertical: 9);
+      LayoutMode: Top;
+
+      Label #PartnerName {
+        Anchor: (Height: 18);
+        Style: (
+          FontSize: 15,
+          TextColor: $T.@RBlush,
+          RenderBold: true,
+          HorizontalAlignment: Start,
+          ShrinkTextToFit: true,
+          MinShrinkTextToFitFontSize: 11
+        );
+        Text: "";
+      }
+
+      // Explicit spacer rather than a Top offset: there is no gap system, and a
+      // cramped stack is the single thing that makes a plate look bolted on.
+      Group {
+        Anchor: (Height: 5);
+      }
+
+      Group #PartnerHealthRow {
+        Anchor: (Height: 14);
+        LayoutMode: Left;
+
+        Group {
+          FlexWeight: 1;
+          Anchor: (Height: 14);
+          // The groove behind the bar, in the darkest step of the ramp so the
+          // vanilla fill reads as part of this plate rather than a borrowed
+          // widget. Raw hex for the same alpha reason as the plate above; this
+          // is @RAbyssDim.
+          Background: (Color: #180611(0.85));
+
+          ProgressBar #PartnerHealthBar {
+            BarTexturePath: "../../Common/ProgressBarFill.png";
+            EffectTexturePath: "../../Common/ProgressBarEffect.png";
+            EffectWidth: 102;
+            EffectHeight: 58;
+            EffectOffset: 74;
+            Value: 0.0;
+          }
+        }
+      }
+
+      Group {
+        Anchor: (Height: 4);
+      }
+
+      Label #PartnerDistance {
+        Anchor: (Height: 14);
+        Style: (FontSize: 12, TextColor: $T.@RMauve, HorizontalAlignment: Start);
+        Text: "";
+      }
+    }
+  }
+}

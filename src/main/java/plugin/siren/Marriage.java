@@ -4,23 +4,33 @@ import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.event.EventRegistration;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.command.system.CommandRegistration;
+import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
+import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.hypixel.hytale.server.core.permissions.PermissionsModule;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
+import com.hypixel.hytale.server.core.universe.world.events.AddWorldEvent;
 import com.hypixel.hytale.server.core.universe.world.events.AllWorldsLoadedEvent;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.core.util.Config;
 import plugin.siren.Commands.MarriageCmd;
 import plugin.siren.Commands.MarryCmd;
 import plugin.siren.Events.AllWorldsLoadedEventM;
+import plugin.siren.Events.PlayerChatEventM;
+import plugin.siren.Events.PlayerDisconnectEventM;
 import plugin.siren.Events.PlayerReadyEventM;
+import plugin.siren.Systems.MarriageBondOfPainSystem;
 import plugin.siren.Systems.MarriageComponent;
+import plugin.siren.Systems.MarriageDeathSystem;
+import plugin.siren.Systems.MarriagePresenceSystem;
 import plugin.siren.Systems.MarriagePvPSystem;
 import plugin.siren.Systems.MarriageRegenSystem;
+import plugin.siren.Systems.MarriageRespawnSystem;
 import plugin.siren.Systems.MarriageSettingsComponent;
 import plugin.siren.Utils.HStats;
 import plugin.siren.Utils.MarriageConfig;
+import plugin.siren.Utils.MarriageMarkers;
 import plugin.siren.Utils.MarriageUpdateChecker;
 import plugin.siren.Utils.Registry.MarriageManager;
 import plugin.siren.Utils.Registry.MarriagesData;
@@ -30,7 +40,7 @@ import javax.annotation.Nonnull;
 import java.util.Set;
 
 public class Marriage extends JavaPlugin {
-    private static final String VERSION = "2.0.0";
+    private static final String VERSION = "2.1.0";
     private static final boolean DEBUG = false;
 
     private static Marriage plugin;
@@ -103,9 +113,50 @@ public class Marriage extends JavaPlugin {
         this.getEntityStoreRegistry().registerSystem(new MarriagePvPSystem());
         LOGGER.atInfo().log("Registered Marriage PvP Protection System.");
 
+        // After the PvP system, which it declares a dependency on - a blow already
+        // cancelled by partner protection must never be split (see the class note).
+        this.getEntityStoreRegistry().registerSystem(new MarriageBondOfPainSystem());
+        LOGGER.atInfo().log("Registered Marriage Bond of Pain System.");
+
         this.getEntityStoreRegistry().registerSystem(new MarriageRegenSystem(
                 (float) this.config.get().getRegenIntervalSeconds(), this.marriageComponent));
         LOGGER.atInfo().log("Registered Marriage Partner Regen System.");
+
+        this.getEntityStoreRegistry().registerSystem(new MarriagePresenceSystem(this.marriageComponent));
+        LOGGER.atInfo().log("Registered Marriage Presence and Bond System.");
+
+        this.getEntityStoreRegistry().registerSystem(new MarriageDeathSystem());
+        LOGGER.atInfo().log("Registered Marriage Death System.");
+
+        this.getEntityStoreRegistry().registerSystem(new MarriageRespawnSystem());
+        LOGGER.atInfo().log("Registered Marriage Respawn System.");
+
+        // Per WORLD rather than once globally: the marker provider registry lives on
+        // each world's own WorldMapManager, so a world added later would otherwise
+        // never get it. Same reason every vanilla marker provider registers here.
+        this.getEventRegistry().registerGlobal(AddWorldEvent.class, event ->
+                event.getWorld().getWorldMapManager().addMarkerProvider(
+                        MarriageMarkers.PROVIDER_KEY, MarriageMarkers.INSTANCE));
+        LOGGER.atInfo().log("Registered Marriage world-map markers.");
+
+        // registerGlobal, not register: PlayerChatEvent is IAsyncEvent<String> like
+        // PlayerReadyEvent (keyed by chat channel), so it takes the "any key"
+        // overload rather than PlayerDisconnectEvent's unkeyed one.
+        EventRegistration<String, PlayerChatEvent> chatRegistration =
+                this.getEventRegistry().registerGlobal(PlayerChatEvent.class, PlayerChatEventM::onPlayerChatEvent);
+        if(chatRegistration != null && chatRegistration.isRegistered()) {
+            LOGGER.atInfo().log("Registered Player Chat Event.");
+        }else{
+            LOGGER.atSevere().log("Failed to register Player Chat Event.");
+        }
+
+        EventRegistration<Void, PlayerDisconnectEvent> disconnectRegistration =
+                this.getEventRegistry().register(PlayerDisconnectEvent.class, PlayerDisconnectEventM::onPlayerDisconnect);
+        if(disconnectRegistration != null && disconnectRegistration.isRegistered()) {
+            LOGGER.atInfo().log("Registered Player Disconnect Event.");
+        }else{
+            LOGGER.atSevere().log("Failed to register Player Disconnect Event.");
+        }
 
         MarriageUIDefaults.register();
         LOGGER.atInfo().log("Registered Marriage Menu pages.");
