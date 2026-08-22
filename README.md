@@ -32,68 +32,68 @@ Version 2.1.0
 
 ### <span style="color: #eccafa;">Commands Extra Info:</span>
 
-| <span style="color: #b96ad9;">Command:</span> |<span style="color: #b96ad9;">Description:</span> |<span style="color: #b96ad9;">Permission:</span> |
-| ------------------------ |------------------------------------------------------------------- |----------------------------------- |
+| command:"&gt;<span style="color: #b96ad9;">Command:</span> |description:"&gt;<span style="color: #b96ad9;">Description:</span>                    |permission:"&gt;<span style="color: #b96ad9;">Permission:</span> |
+| ------------------------------------------- |------------------------------------------------------------------------------------- |----------------------------------- |
 | <span style="color: #eccafa;">/marriage</span> |<span style="color: #eccafa;">Opens the Marriage menu - everything below has a button in it.</span> |<span style="color: #eccafa;">marriage (granted automatically)</span> |
-| <span style="color: #eccafa;">/marry</span> |<span style="color: #eccafa;">The marry command line.</span> |&nbsp; |
+| <span style="color: #eccafa;">/marry</span> |<span style="color: #eccafa;">The marry command line.</span>                          |&nbsp;                              |
 | <span style="color: #eccafa;">/marry player {Username}</span> |<span style="color: #eccafa;">Send a marry request, or accept one they already sent you.</span> |<span style="color: #eccafa;">May require: marriage.marry</span> |
-| <span style="color: #eccafa;">/marry partner</span> |<span style="color: #eccafa;">See who you're married to and for how long.</span> |&nbsp; |
-| <span style="color: #eccafa;">/marry bond</span> |<span style="color: #eccafa;">See how deep your bond runs and which perks it has unlocked.</span> |&nbsp; |
-| <span style="color: #eccafa;">/marry list</span> |<span style="color: #eccafa;">Every married couple on the server, online or not.</span> |&nbsp; |
-| <span style="color: #eccafa;">/marry tp</span> |<span style="color: #eccafa;">Teleport to your partner.</span> |<span style="color: #eccafa;">May require: marriage.tp</span> |
-| <span style="color: #eccafa;">/marry msg {msg}</span> |<span style="color: #eccafa;">Send a private message to your partner.</span> |<span style="color: #eccafa;">May require: marriage.msg</span> |
+| <span style="color: #eccafa;">/marry partner</span> |<span style="color: #eccafa;">See who you're married to and for how long.</span>      |&nbsp;                              |
+| <span style="color: #eccafa;">/marry bond</span> |<span style="color: #eccafa;">See how deep your bond runs and which perks it has unlocked.</span> |&nbsp;                              |
+| <span style="color: #eccafa;">/marry list</span> |<span style="color: #eccafa;">Every married couple on the server, online or not.</span> |&nbsp;                              |
+| <span style="color: #eccafa;">/marry tp</span> |<span style="color: #eccafa;">Teleport to your partner.</span>                        |<span style="color: #eccafa;">May require: marriage.tp</span> |
+| <span style="color: #eccafa;">/marry msg {msg}</span> |<span style="color: #eccafa;">Send a private message to your partner.</span>          |<span style="color: #eccafa;">May require: marriage.msg</span> |
 | <span style="color: #eccafa;">/marry channel</span> |<span style="color: #eccafa;">Toggle the couple channel - everything you type goes to your partner.</span> |<span style="color: #eccafa;">May require: marriage.msg</span> |
 | <span style="color: #eccafa;">/marry gift</span> |<span style="color: #eccafa;">Give the item stack you are holding to your partner.</span> |<span style="color: #eccafa;">May require: marriage.gift</span> |
-| <span style="color: #eccafa;">/marry letter</span> |<span style="color: #eccafa;">Open the Love Letter in your hand, to write it or to read it.</span> |&nbsp; |
-| <span style="color: #eccafa;">/marry home</span> |<span style="color: #eccafa;">Travel to the home you and your partner share.</span> |<span style="color: #eccafa;">May require: marriage.home</span> |
-| <span style="color: #eccafa;">/marry sethome</span> |<span style="color: #eccafa;">Make where you stand your shared home.</span> |<span style="color: #eccafa;">May require: marriage.home</span> |
-| <span style="color: #eccafa;">/marry clearhome</span> |<span style="color: #eccafa;">Forget your shared home.</span> |<span style="color: #eccafa;">May require: marriage.home</span> |
+| <span style="color: #eccafa;">/marry letter</span> |<span style="color: #eccafa;">Open the Love Letter in your hand, to write it or to read it.</span> |&nbsp;                              |
+| <span style="color: #eccafa;">/marry home</span> |<span style="color: #eccafa;">Travel to the home you and your partner share.</span>   |<span style="color: #eccafa;">May require: marriage.home</span> |
+| <span style="color: #eccafa;">/marry sethome</span> |<span style="color: #eccafa;">Make where you stand your shared home.</span>           |<span style="color: #eccafa;">May require: marriage.home</span> |
+| <span style="color: #eccafa;">/marry clearhome</span> |<span style="color: #eccafa;">Forget your shared home.</span>                         |<span style="color: #eccafa;">May require: marriage.home</span> |
 | <span style="color: #eccafa;">/marry chest</span> |<span style="color: #eccafa;">Open the Hope Chest you share - from anywhere, both at once.</span> |<span style="color: #eccafa;">May require: marriage.chest</span> |
-| <span style="color: #eccafa;">/marry renew</span> |<span style="color: #eccafa;">Renew your vows. Both of you must ask.</span> |&nbsp; |
-| <span style="color: #eccafa;">/marry hug, kiss, dance</span> |<span style="color: #eccafa;">Emotes, with hearts and a sound for anyone close enough to see.</span> |&nbsp; |
+| <span style="color: #eccafa;">/marry renew</span> |<span style="color: #eccafa;">Renew your vows. Both of you must ask.</span>           |&nbsp;                              |
+| <span style="color: #eccafa;">/marry hug, kiss, dance</span> |<span style="color: #eccafa;">Emotes, with hearts and a sound for anyone close enough to see.</span> |&nbsp;                              |
 | <span style="color: #eccafa;">/marry divorce</span> |<span style="color: #eccafa;">File for divorce, or agree to one already filed. Works while your partner is offline.</span> |<span style="color: #eccafa;">May require: marriage.divorce</span> |
-| <span style="color: #eccafa;">/marriage requirering {true/false}</span> |<span style="color: #eccafa;">Toggle whether a ring is required to marry.</span> |<span style="color: #eccafa;">Require: marriage.admin.requirering</span> |
+| <span style="color: #eccafa;">/marriage requirering {true/false}</span> |<span style="color: #eccafa;">Toggle whether a ring is required to marry.</span>      |<span style="color: #eccafa;">Require: marriage.admin.requirering</span> |
 | <span style="color: #eccafa;">/marriage force marry {Username} {Username}</span> |<span style="color: #eccafa;">Marry two online players outright - no proposal, no ring.</span> |<span style="color: #eccafa;">Require: marriage.admin.force</span> |
-| <span style="color: #eccafa;">/marriage force divorce {Username}</span> |<span style="color: #eccafa;">End a player's marriage, online or not.</span> |<span style="color: #eccafa;">Require: marriage.admin.force</span> |
+| <span style="color: #eccafa;">/marriage force divorce {Username}</span> |<span style="color: #eccafa;">End a player's marriage, online or not.</span>          |<span style="color: #eccafa;">Require: marriage.admin.force</span> |
 | <span style="color: #eccafa;">/marriage force info {Username}</span> |<span style="color: #eccafa;">Everything the server knows about that player's marriage. Works offline.</span> |<span style="color: #eccafa;">Require: marriage.admin.force</span> |
 
 ### <span style="color: #eccafa;">Permissions Extra Info:</span>
 
-| <span style="color: #b96ad9;">Permission:</span> |<span style="color: #b96ad9;">Description:</span> |
-| -------------------------- |-------------------------------------------------------------------------------------------------------------------- |
+| permission:"&gt;<span style="color: #b96ad9;">Permission:</span> |description:"&gt;<span style="color: #b96ad9;">Description:</span>                                                             |
+| -------------------------- |------------------------------------------------------------------------------------------------------------------------------ |
 | <span style="color: #eccafa;">marriage</span> |<span style="color: #eccafa;">Allows the player to open the Marriage menu. Granted to the default groups automatically once (config: Grant-Menu-Permission).</span> |
-| <span style="color: #eccafa;">marriage.marry</span> |<span style="color: #eccafa;">Allows /marry player, when config option Use-Permissions-For-Commands is set as true.</span> |
-| <span style="color: #eccafa;">marriage.divorce</span> |<span style="color: #eccafa;">Allows /marry divorce, when config option Use-Permissions-For-Commands is set as true.</span> |
-| <span style="color: #eccafa;">marriage.tp</span> |<span style="color: #eccafa;">Allows /marry tp, when config option Use-Permissions-For-Commands is set as true.</span> |
+| <span style="color: #eccafa;">marriage.marry</span> |<span style="color: #eccafa;">Allows /marry player, when config option Use-Permissions-For-Commands is set as true.</span>     |
+| <span style="color: #eccafa;">marriage.divorce</span> |<span style="color: #eccafa;">Allows /marry divorce, when config option Use-Permissions-For-Commands is set as true.</span>    |
+| <span style="color: #eccafa;">marriage.tp</span> |<span style="color: #eccafa;">Allows /marry tp, when config option Use-Permissions-For-Commands is set as true.</span>         |
 | <span style="color: #eccafa;">marriage.msg</span> |<span style="color: #eccafa;">Allows /marry msg and /marry channel, when config option Use-Permissions-For-Commands is set as true.</span> |
-| <span style="color: #eccafa;">marriage.gift</span> |<span style="color: #eccafa;">Allows /marry gift, when config option Use-Permissions-For-Commands is set as true.</span> |
+| <span style="color: #eccafa;">marriage.gift</span> |<span style="color: #eccafa;">Allows /marry gift, when config option Use-Permissions-For-Commands is set as true.</span>       |
 | <span style="color: #eccafa;">marriage.home</span> |<span style="color: #eccafa;">Allows /marry home, sethome and clearhome, when config option Use-Permissions-For-Commands is set as true.</span> |
-| <span style="color: #eccafa;">marriage.chest</span> |<span style="color: #eccafa;">Allows /marry chest, when config option Use-Permissions-For-Commands is set as true.</span> |
+| <span style="color: #eccafa;">marriage.chest</span> |<span style="color: #eccafa;">Allows /marry chest, when config option Use-Permissions-For-Commands is set as true.</span>      |
 | <span style="color: #eccafa;">marriage.admin</span> |<span style="color: #eccafa;">Shows the Admin page inside the Marriage menu (in-game config editor), and a Divorce control on the Married Couples list.</span> |
-| <span style="color: #eccafa;">marriage.admin.requirering</span> |<span style="color: #eccafa;">Allows /marriage requirering.</span> |
-| <span style="color: #eccafa;">marriage.admin.force</span> |<span style="color: #eccafa;">Allows /marriage force marry, force divorce and force info.</span> |
+| <span style="color: #eccafa;">marriage.admin.requirering</span> |<span style="color: #eccafa;">Allows /marriage requirering.</span>                                                             |
+| <span style="color: #eccafa;">marriage.admin.force</span> |<span style="color: #eccafa;">Allows /marriage force marry, force divorce and force info.</span>                               |
 
 ### <span style="color: #eccafa;">Config Extra Info:</span>
 
 <span style="color: #eccafa;">Config version 5. There are over 100 values now, so rather than list them all: <span style="color: #b96ad9;"><strong>every value has its Description sitting right next to it in the config file</strong></span>, and <span style="color: #b96ad9;"><strong>every one is editable in game</strong></span> on the menu's Admin page (edits are pending until you press Save). Your existing config is upgraded in place.</span>
 
-| <span style="color: #b96ad9;">Section:</span> |<span style="color: #b96ad9;">What it controls:</span> |
-| ------------------------------ |------------------------------------------------------------------------------------------- |
-| <span style="color: #eccafa;">General</span> |<span style="color: #eccafa;">"Require-Ring-To-Marry", "Consume-Ring-On-Marry", "Announce-Marriages", "Announce-Divorces", "Use-Permissions-For-Commands".</span> |
-| <span style="color: #eccafa;">Requests &amp; Divorce</span> |<span style="color: #eccafa;">"Request-Expiry-Seconds", "Divorce-Confirm-Seconds".</span> |
-| <span style="color: #eccafa;">Divorce Weight</span> |<span style="color: #eccafa;">"Enable-Divorce-Waiting-Period", "Divorce-Waiting-Hours", "Divorce-Uncontested-Factor", "Remarry-Cooldown-Seconds".</span> |
-| <span style="color: #eccafa;">Menu</span> |<span style="color: #eccafa;">"Enable-Menu", "Grant-Menu-Permission".</span> |
-| <span style="color: #eccafa;">PvP Protection</span> |<span style="color: #eccafa;">"Enable-Partner-Pvp-Protection", "Default-Pvp-Protection", "Pvp-Protection-Message".</span> |
-| <span style="color: #eccafa;">Partner Regeneration</span> |<span style="color: #eccafa;">"Enable-Partner-Regen", "Regen-Radius-Blocks", "Regen-Interval-Seconds", "Regen-Amount-Per-Interval".</span> |
-| <span style="color: #eccafa;">Gifts, Teleport &amp; Messages</span> |<span style="color: #eccafa;">"Enable-Gift", "Gift-Range-Blocks", "Gift-Cooldown-Seconds", "Enable-Partner-Tp", "Tp-Cooldown-Seconds", "Enable-Partner-Msg".</span> |
+| section:"&gt;<span style="color: #b96ad9;">Section:</span> |what_it_controls:"&gt;<span style="color: #b96ad9;">What it controls:</span>                                                                                                                                         |
+| --------------------------------- |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <span style="color: #eccafa;">General</span> |<span style="color: #eccafa;">"Require-Ring-To-Marry", "Consume-Ring-On-Marry", "Announce-Marriages", "Announce-Divorces", "Use-Permissions-For-Commands".</span>                                                    |
+| <span style="color: #eccafa;">Requests &amp; Divorce</span> |<span style="color: #eccafa;">"Request-Expiry-Seconds", "Divorce-Confirm-Seconds".</span>                                                                                                                            |
+| <span style="color: #eccafa;">Divorce Weight</span> |<span style="color: #eccafa;">"Enable-Divorce-Waiting-Period", "Divorce-Waiting-Hours", "Divorce-Uncontested-Factor", "Remarry-Cooldown-Seconds".</span>                                                             |
+| <span style="color: #eccafa;">Menu</span> |<span style="color: #eccafa;">"Enable-Menu", "Grant-Menu-Permission".</span>                                                                                                                                         |
+| <span style="color: #eccafa;">PvP Protection</span> |<span style="color: #eccafa;">"Enable-Partner-Pvp-Protection", "Default-Pvp-Protection", "Pvp-Protection-Message".</span>                                                                                            |
+| <span style="color: #eccafa;">Partner Regeneration</span> |<span style="color: #eccafa;">"Enable-Partner-Regen", "Regen-Radius-Blocks", "Regen-Interval-Seconds", "Regen-Amount-Per-Interval".</span>                                                                           |
+| <span style="color: #eccafa;">Gifts, Teleport &amp; Messages</span> |<span style="color: #eccafa;">"Enable-Gift", "Gift-Range-Blocks", "Gift-Cooldown-Seconds", "Enable-Partner-Tp", "Tp-Cooldown-Seconds", "Enable-Partner-Msg".</span>                                                  |
 | <span style="color: #eccafa;">The Bond</span> |<span style="color: #eccafa;">"Enable-Bond", "Bond-Max-Level", "Bond-Xp-Per-Level", and the XP rates for time married, time together, gifts and co-op kills. Turn Enable-Bond off and every enabled perk is simply available from the wedding day.</span> |
-| <span style="color: #eccafa;">Anniversaries &amp; Honeymoon</span> |<span style="color: #eccafa;">"Enable-Anniversaries", "Announce-Anniversaries", the four "Anniversary-Reward-Item-*" values, "Enable-Honeymoon", "Honeymoon-Hours", "Honeymoon-Xp-Multiplier".</span> |
-| <span style="color: #eccafa;">Bond Decay</span> |<span style="color: #eccafa;">"Enable-Bond-Decay" (off by default), its grace period, drain rate and floor.</span> |
-| <span style="color: #eccafa;">Vows</span> |<span style="color: #eccafa;">"Enable-Vows", "Vow-Perk-Discount", and each vow's bonus. Plus "Enable-Renew-Vows", "Renew-Min-Days", "Renew-Bond-Xp".</span> |
-| <span style="color: #eccafa;">Ring Tiers</span> |<span style="color: #eccafa;">"Enable-Ring-Tiers", "Engrave-Rings", and the XP multiplier and perk discount for the Gold and Diamond bands.</span> |
-| <span style="color: #eccafa;">The Perks</span> |<span style="color: #eccafa;">Each of the seven has its own "Enable-*" switch and a "*-Bond-Level" - set a level to 0 to hand that perk out on the wedding day.</span> |
-| <span style="color: #eccafa;">Channel, Letters, Plate &amp; Records</span> |<span style="color: #eccafa;">"Enable-Couple-Channel", "Enable-Love-Letters", "Love-Letter-Max-Length", "Enable-Partner-Hud", "Partner-Hud-Range-Blocks", "Enable-Records".</span> |
-| <span style="color: #eccafa;">Emotes</span> |<span style="color: #eccafa;">"Enable-Emotes", range, broadcast radius, cooldown, and the particle and sound for each emote.</span> |
+| <span style="color: #eccafa;">Anniversaries &amp; Honeymoon</span> |<span style="color: #eccafa;">"Enable-Anniversaries", "Announce-Anniversaries", the four "Anniversary-Reward-Item-*" values, "Enable-Honeymoon", "Honeymoon-Hours", "Honeymoon-Xp-Multiplier".</span>                |
+| <span style="color: #eccafa;">Bond Decay</span> |<span style="color: #eccafa;">"Enable-Bond-Decay" (off by default), its grace period, drain rate and floor.</span>                                                                                                   |
+| <span style="color: #eccafa;">Vows</span> |<span style="color: #eccafa;">"Enable-Vows", "Vow-Perk-Discount", and each vow's bonus. Plus "Enable-Renew-Vows", "Renew-Min-Days", "Renew-Bond-Xp".</span>                                                          |
+| <span style="color: #eccafa;">Ring Tiers</span> |<span style="color: #eccafa;">"Enable-Ring-Tiers", "Engrave-Rings", and the XP multiplier and perk discount for the Gold and Diamond bands.</span>                                                                   |
+| <span style="color: #eccafa;">The Perks</span> |<span style="color: #eccafa;">Each of the seven has its own "Enable-<em>" switch and a "</em>-Bond-Level" - set a level to 0 to hand that perk out on the wedding day.</span>                                        |
+| <span style="color: #eccafa;">Channel, Letters, Plate &amp; Records</span> |<span style="color: #eccafa;">"Enable-Couple-Channel", "Enable-Love-Letters", "Love-Letter-Max-Length", "Enable-Partner-Hud", "Partner-Hud-Range-Blocks", "Enable-Records".</span>                                   |
+| <span style="color: #eccafa;">Emotes</span> |<span style="color: #eccafa;">"Enable-Emotes", range, broadcast radius, cooldown, and the particle and sound for each emote.</span>                                                                                  |
 
 <span style="color: #843fa1;">===--===--===--===--===--===--===--===--===--===--===--===--===--===--===--===--===</span>
 
@@ -113,6 +113,14 @@ Version 2.1.0
 
 <span style="color: #eccafa;">You can support me by using my creator code <span style="color: #b96ad9;"><strong>SIREN</strong></span> at checkout.</span>
 
-<span style="color: #eccafa;">Marriage is free and will always stay free. If you would like to support its development, my store -- <span style="color: #b96ad9;"><strong>The Treasure Pavilion</strong></span> -- is at <strong><a href="https://xianxia.dev/store/">https://xianxia.dev/store/</a></strong>.</span>
+<span style="color: #eccafa;">Marriage is free and will always stay free. If you would like to support its development, my store -- <span style="color: #b96ad9;"><strong>The Treasure Pavilion</strong></span> -- is at <strong><a href="https://xianxia.dev/store/" rel="nofollow">https://xianxia.dev/store/</a></strong>.</span>
 
 <span style="color: #843fa1;">===--===--===--===--===--===--===--===--===--===--===--===--===--===--===--===--===</span>
+
+<span style="color: #843fa1;"><span style="color: #169179;"><span style="color: #b33a3a;"><a href="https://bisecthosting.com/SIREN" target="_blank" rel="noopener"><span style="color: #236fa1;"><img src="https://www.bisecthosting.com/partners/custom-banners/c1ff388e-17c8-4a42-99ca-6020d2056186.webp" width="615" height="102"></span></a></span></span></span>
+
+<span style="color: #843fa1;"><span style="color: #169179;"><span style="color: #b33a3a;"><span style="color: #236fa1;"><span style="color: #843fa1;">===--===--===--===--===--===--===--===--===--===--===--===--===--===--===--===--===</span></span></span></span></span>
+
+<span style="color: #843fa1;"><span style="color: #169179;"><span style="color: #b33a3a;"><span style="color: #236fa1;"><span style="color: #843fa1;"><span style="color: #169179;"><a href="https://hstats.dev/mods/919ae0ff-8e16-4ed1-9f1a-986acad4ae11" target="_blank" rel="noopener"><span style="color: #e4d6b0;"><img src="https://api.hstats.dev/api/embed/919ae0ff-8e16-4ed1-9f1a-986acad4ae11/card.svg?theme=dark&amp;layout=history&amp;size=lg&amp;show_id=true&amp;dark=false" alt="HStats Cultivation Mod with History" width="693" height="256"></span></a></span></span></span></span></span></span>
+
+<span style="color: #843fa1;"><span style="color: #169179;"><span style="color: #b33a3a;"><span style="color: #236fa1;"><span style="color: #843fa1;"><span style="color: #169179;"><span style="color: #e4d6b0;"><span style="color: #843fa1;"><span style="color: #169179;"><span style="color: #b33a3a;"><span style="color: #236fa1;"><span style="color: #843fa1;">===--===--===--===--===--===--===--===--===--===--===--===--===--===--===--===--===</span></span></span></span></span></span></span></span></span></span></span></span>
