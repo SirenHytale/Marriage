@@ -40,7 +40,7 @@ import javax.annotation.Nonnull;
 import java.util.Set;
 
 public class Marriage extends JavaPlugin {
-    private static final String VERSION = "2.1.0";
+    private static final String VERSION = "2.2.0";
     private static final boolean DEBUG = false;
 
     private static Marriage plugin;
