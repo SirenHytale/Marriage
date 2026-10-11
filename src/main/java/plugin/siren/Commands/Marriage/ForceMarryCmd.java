@@ -40,6 +40,8 @@ public class ForceMarryCmd extends CommandBase {
     public ForceMarryCmd(){
         super("marry", "server.commands.marriage.force.marry.desc");
         this.requirePermission(ForceCmd.PERMISSION);
+        // empty (not null): never inherit a parent's group, which would grant this node to everyone
+        this.setPermissionGroups();
     }
 
     @Override

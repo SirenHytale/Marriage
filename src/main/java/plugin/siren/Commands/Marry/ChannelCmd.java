@@ -27,6 +27,8 @@ public class ChannelCmd extends AbstractPlayerCommand {
 
         if(Marriage.getConfig().get().ifCmdPermission()){
             this.requirePermission("marriage.msg");
+            // empty (not null): do not inherit MarryCmd's hytale:None group, which would grant the node to everyone
+            this.setPermissionGroups();
         }else{
             this.setPermissionGroups("hytale:None");
         }

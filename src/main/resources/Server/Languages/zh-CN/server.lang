@@ -263,6 +263,8 @@ items.MarriageLoveLetter.name = 情书
 items.MarriageLoveLetter.description = 尚是空白。手持它并使用 /marry letter 书写。
 items.MarriageLoveLetter.sealed.name = 来自 {username} 的信
 items.MarriageLoveLetter.sealed.description = 已封缄。手持它并使用 /marry letter 阅读。
+items.MarriageWeddingDress.name = 婚纱
+items.MarriageWeddingDress.description = 一袭白缎长裙，蕾丝长袖，珍珠镶边的心形领口，系着淡粉色腰带。为成婚而裁。
 
 # === updateChecker ===
 

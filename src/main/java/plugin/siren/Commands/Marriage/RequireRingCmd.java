@@ -20,6 +20,8 @@ public class RequireRingCmd extends AbstractPlayerCommand {
         super("requirering", "server.commands.marriage.requireRing.desc");
 
         this.requirePermission("marriage.admin.requirering");
+        // empty (not null): do not inherit MarriageCmd's hytale:None group, which would grant this node to everyone
+        this.setPermissionGroups();
     }
 
     RequiredArg<Boolean> msgRequireRingArg = this.withRequiredArg("Require Ring", "server.commands.marriage.requireRing.arg.boolean.desc", ArgTypes.BOOLEAN);

@@ -32,6 +32,8 @@ public class ForceInfoCmd extends CommandBase {
     public ForceInfoCmd(){
         super("info", "server.commands.marriage.force.info.desc");
         this.requirePermission(ForceCmd.PERMISSION);
+        // empty (not null): never inherit a parent's group, which would grant this node to everyone
+        this.setPermissionGroups();
     }
 
     @Override

@@ -152,7 +152,9 @@ public final class HomeManager {
             if(!ref.isValid() || ref.getStore() != store){
                 return;
             }
-            store.addComponent(ref, Teleport.getComponentType(), Teleport.createForPlayer(target, position, rotation));
+            // put, not add: another Teleport can have been queued since the guard above
+            // ran a tick ago, and add throws if one is already there.
+            store.putComponent(ref, Teleport.getComponentType(), Teleport.createForPlayer(target, position, rotation));
         });
     }
 

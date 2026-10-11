@@ -47,24 +47,61 @@ public final class MarriageUtil {
         ComponentSync.syncMarried(accepter, requester.getUuid(), requester.getUsername());
         ComponentSync.syncMarried(requester, accepter.getUuid(), accepter.getUsername());
 
-        MarriageConfig config = Marriage.getConfig().get();
-
         // The band is read once, here, and recorded on the marriage - see RingTier
         // for why it cannot be re-checked later. The LOWER of the two rings counts:
         // a Diamond band is not worth anything unless your partner brought one too,
         // which is the only reading under which the tier belongs to the couple
         // rather than to whichever of them happened to be richer.
-        RingTier tier = lowerTierOf(heldRingTier(store, ref), heldRingTier(requester));
+        RingTier ownTier = heldRingTier(store, ref);
+        Ref<EntityStore> requesterEntity = requester.getReference();
+        if(requesterEntity != null && requesterEntity.isValid() && requesterEntity.getStore() != store){
+            // The requester is in another world: their hotbar may only be touched on
+            // that world's thread (Store.getComponent asserts the thread), so the read
+            // hops there and the rest of the wedding continues from it.
+            // A failed read counts as "no ring" (Copper) rather than leaving the wedding
+            // half-told; with onAccepterThread false the rest is safe from any thread.
+            heldRingTierRemote(requester).exceptionally(failure -> null).thenAccept(theirTier ->
+                    finishMarriage(store, ref, accepter, requester, lowerTierOf(ownTier, theirTier), false))
+                    .exceptionally(failure -> {
+                        Marriage.LOGGER.atWarning().log("Finishing the wedding of " + requester.getUsername()
+                                + " and " + accepter.getUsername() + " failed: " + failure);
+                        return null;
+                    });
+            return;
+        }
+        RingTier theirTier = requesterEntity == null || !requesterEntity.isValid()
+                ? null : heldRingTier(store, requesterEntity);
+        finishMarriage(store, ref, accepter, requester, lowerTierOf(ownTier, theirTier), true);
+    }
+
+    /**
+     * The back half of {@link #completeMarriage}: records the tier, deals with the
+     * rings, and tells everyone. {@code onAccepterThread} is false when the tier read
+     * had to hop to the requester's world, in which case the accepter's ring work
+     * hops back to theirs.
+     */
+    private static void finishMarriage(@Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref,
+                                       @Nonnull PlayerRef accepter, @Nonnull PlayerRef requester,
+                                       @Nonnull RingTier tier, boolean onAccepterThread){
+        MarriageConfig config = Marriage.getConfig().get();
         MarriageManager.setRingTier(accepter.getUuid(), tier);
 
         if(config.ifRequireRing() && config.ifConsumeRing()){
-            // The accepter is on this thread; the requester's ring goes on theirs.
-            consumeRingInline(store, ref);
+            // Each ring goes on its own owner's thread.
+            if(onAccepterThread){
+                consumeRingInline(store, ref);
+            }else{
+                consumeRingRemote(accepter);
+            }
             consumeRingRemote(requester);
         }else if(config.ifEngraveRings()){
             // Kept rather than consumed - so it gets their names on it. This is the
             // whole trade-off of Consume-Ring-On-Marry: give the ring up, or wear it.
-            engraveInline(store, ref, accepter.getUsername(), requester.getUsername());
+            if(onAccepterThread){
+                engraveInline(store, ref, accepter.getUsername(), requester.getUsername());
+            }else{
+                engraveRemote(accepter, accepter.getUsername(), requester.getUsername());
+            }
             engraveRemote(requester, requester.getUsername(), accepter.getUsername());
         }
 
@@ -367,19 +404,25 @@ public final class MarriageUtil {
     }
 
     /**
-     * The same, for a player on another world thread.
+     * The same, for a player on another world thread: the read runs on THEIR
+     * world's thread and the future completes there.
      *
-     * <p>Returns null when they are unreachable, which the caller reads as "no
-     * ring" - the wedding then records Copper. That is the safe direction to fail:
-     * a couple never gets a better band than they can be proven to hold.</p>
+     * <p>Completes with null when they are unreachable, which the caller reads as
+     * "no ring" - the wedding then records Copper. That is the safe direction to
+     * fail: a couple never gets a better band than they can be proven to hold.</p>
      */
-    @Nullable
-    private static RingTier heldRingTier(@Nonnull PlayerRef target){
+    @Nonnull
+    private static CompletableFuture<RingTier> heldRingTierRemote(@Nonnull PlayerRef target){
         Ref<EntityStore> targetRef = target.getReference();
         if(targetRef == null || !targetRef.isValid()){
-            return null;
+            return CompletableFuture.completedFuture(null);
         }
-        return heldRingTier(targetRef.getStore(), targetRef);
+        Store<EntityStore> targetStore = targetRef.getStore();
+        World targetWorld = targetStore.getExternalData().getWorld();
+        return CompletableFuture.supplyAsync(() ->
+                // Skip if they changed worlds mid-hop - see onTargetThread.
+                targetRef.isValid() && targetRef.getStore() == targetStore
+                        ? heldRingTier(targetStore, targetRef) : null, targetWorld);
     }
 
     /** The weaker of two bands; Copper when either side brought nothing. */

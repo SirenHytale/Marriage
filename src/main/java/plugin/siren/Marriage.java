@@ -1,6 +1,7 @@
 package plugin.siren;
 
 import com.hypixel.hytale.component.ComponentType;
+import com.hypixel.hytale.event.EventPriority;
 import com.hypixel.hytale.event.EventRegistration;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.command.system.CommandRegistration;
@@ -38,9 +39,15 @@ import plugin.siren.Utils.UI.MarriageUIDefaults;
 
 import javax.annotation.Nonnull;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 public class Marriage extends JavaPlugin {
-    private static final String VERSION = "2.2.0";
+    /**
+     * The manifest's version - the single source of truth, so this class can
+     * never drift from what the server loaded. Set in the constructor, the
+     * earliest point the manifest is available, before anything reads it.
+     */
+    private static String version = "0.0.0";
     private static final boolean DEBUG = false;
 
     private static Marriage plugin;
@@ -55,10 +62,14 @@ public class Marriage extends JavaPlugin {
         super(init);
 
         plugin = this;
+        version = this.getManifest().getVersion().toString();
         this.config = this.withConfig("Marriage", MarriageConfig.CODEC);
         this.marriagesData = this.withConfig("Data/MarriagesData", MarriagesData.CODEC);
 
-        new HStats("650607f7-6c8a-4d52-ab81-f8ca3a9e9db2", VERSION);
+        // Off the boot thread: HStats' constructor makes two blocking HTTP calls, and
+        // nothing here keeps a reference to it. (Vendored file - license forbids editing it.)
+        final String statsVersion = version;
+        CompletableFuture.runAsync(() -> new HStats("650607f7-6c8a-4d52-ab81-f8ca3a9e9db2", statsVersion));
     }
 
     @Override
@@ -141,9 +152,11 @@ public class Marriage extends JavaPlugin {
 
         // registerGlobal, not register: PlayerChatEvent is IAsyncEvent<String> like
         // PlayerReadyEvent (keyed by chat channel), so it takes the "any key"
-        // overload rather than PlayerDisconnectEvent's unkeyed one.
+        // overload rather than PlayerDisconnectEvent's unkeyed one. LATE: Cultivation and
+        // Siren's Commands call setFormatter without chaining, so Marriage has to run
+        // after them to wrap their formatter rather than be overwritten by it.
         EventRegistration<String, PlayerChatEvent> chatRegistration =
-                this.getEventRegistry().registerGlobal(PlayerChatEvent.class, PlayerChatEventM::onPlayerChatEvent);
+                this.getEventRegistry().registerGlobal(EventPriority.LATE, PlayerChatEvent.class, PlayerChatEventM::onPlayerChatEvent);
         if(chatRegistration != null && chatRegistration.isRegistered()) {
             LOGGER.atInfo().log("Registered Player Chat Event.");
         }else{
@@ -178,14 +191,21 @@ public class Marriage extends JavaPlugin {
             config.save();
         }
 
-        LOGGER.atInfo().log("Version " + VERSION + " of Marriage has successfully loaded.");
+        LOGGER.atInfo().log("Version " + version + " of Marriage has successfully loaded.");
 
         if(ifDebug()){
             LOGGER.atInfo().log("= =- -=- -=- -=- -=- -=- -=- -=- -= =");
             LOGGER.atInfo().log("Loaded Marriage in Debug mode.");
         }
 
-        MarriageUpdateChecker.sendUpdateMessage(MarriageUpdateChecker.Type.StartUp);
+        // Off the boot thread: the check is a blocking HTTP call.
+        CompletableFuture.runAsync(() -> {
+            try{
+                MarriageUpdateChecker.sendUpdateMessage(MarriageUpdateChecker.Type.StartUp);
+            }catch(Exception e){
+                LOGGER.atWarning().log("Startup update check failed: " + e);
+            }
+        });
 
         LOGGER.atInfo().log("===---==---==---==---==---==---==---==---===");
     }
@@ -195,7 +215,7 @@ public class Marriage extends JavaPlugin {
         LOGGER.atInfo().log("===---==---==---== MARRIAGE ==---==---==---===");
         LOGGER.atInfo().log("Marriage has began to shutdown.");
         LOGGER.atInfo().log("Saving any necessary data.");
-        LOGGER.atInfo().log("Version " + VERSION + " of Marriage has successfully shutdown.");
+        LOGGER.atInfo().log("Version " + version + " of Marriage has successfully shutdown.");
         LOGGER.atInfo().log("===---==---==---==---==---==---==---==---===");
     }
 
@@ -212,7 +232,7 @@ public class Marriage extends JavaPlugin {
     }
 
     public static String getVersion(){
-        return VERSION;
+        return version;
     }
 
     public static Config<MarriageConfig> getConfig(){

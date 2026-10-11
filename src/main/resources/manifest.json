@@ -1,7 +1,7 @@
 {
   "Group": "Siren",
   "Name": "Marriage",
-  "Version": "2.2.0",
+  "Version": "2.3.0",
   "Description": "Marry another player - with a bond that deepens, unlockable perks, a menu, gifts, and a public API",
   "Authors": [
     {
@@ -10,7 +10,7 @@
     }
   ],
   "Website": "https://mermaids.dev/marriage/",
-  "ServerVersion": ">=0.6.0-pre.0 <0.7.0",
+  "ServerVersion": ">=0.7.0-pre.0 <0.8.0",
   "Dependencies": {},
   "OptionalDependencies": {},
   "LoadBefore": {},

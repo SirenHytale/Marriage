@@ -19,6 +19,8 @@ public class ClearHomeCmd extends AbstractPlayerCommand {
 
         if(Marriage.getConfig().get().ifCmdPermission()){
             this.requirePermission("marriage.home");
+            // empty (not null): do not inherit MarryCmd's hytale:None group, which would grant the node to everyone
+            this.setPermissionGroups();
         }else{
             this.setPermissionGroups("hytale:None");
         }

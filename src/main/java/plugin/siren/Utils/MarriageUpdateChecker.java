@@ -11,6 +11,7 @@ import java.awt.*;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -18,13 +19,20 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class MarriageUpdateChecker {
-    private static java.util.List<String> latestVersions;
+    /** How long the API gets to answer before the check gives up, per phase. */
+    private static final int TIMEOUT_MILLIS = 5_000;
 
+    // volatile: written by whichever thread ran the last fetch, read on world threads at join
+    private static volatile java.util.List<String> latestVersions;
+
+    /** Blocking HTTP - never call from a world thread or HytaleServer.SCHEDULED_EXECUTOR itself. */
     public static java.util.List<String> getVersionStrings(){
         try{
-            URL url = new URL("https://api.mermaids.dev/versions/marriage/release/");
+            URL url = URI.create("https://api.mermaids.dev/versions/marriage/release/").toURL();
 
             URLConnection connection = url.openConnection();
+            connection.setConnectTimeout(TIMEOUT_MILLIS);
+            connection.setReadTimeout(TIMEOUT_MILLIS);
             InputStream inputStream = connection.getInputStream();
 
             java.util.List<String> list = new ArrayList<>();
@@ -67,6 +75,10 @@ public class MarriageUpdateChecker {
             java.util.List<String> recentVersions = MarriageUpdateChecker.getVersionStrings();
             latestVersions = recentVersions;
 
+            if(recentVersions.isEmpty()){
+                return null;
+            }
+
             boolean outDated = true;
             String latestVersion = recentVersions.getFirst();
             for(int i = 0; i < recentVersions.size(); i++){
@@ -90,10 +102,11 @@ public class MarriageUpdateChecker {
                 return recentVersions.getFirst();
             }
         }else if(Type.MermaidsUI.getValue() == type.getValue()){
-            if(latestVersions.isEmpty()){
+            java.util.List<String> cached = latestVersions;
+            if(cached == null || cached.isEmpty()){
                 return Marriage.getVersion();
             }else{
-                return latestVersions.getFirst();
+                return cached.getFirst();
             }
         }else{
             sendUpdateMessage(false);
@@ -125,6 +138,12 @@ public class MarriageUpdateChecker {
             latestVersions = recentVersions;
         }else{
             recentVersions = latestVersions;
+        }
+
+        // Empty or not fetched yet: nothing to compare against. An exception here would
+        // silently cancel the hourly scheduled task for good.
+        if(recentVersions == null || recentVersions.isEmpty()){
+            return;
         }
 
         boolean outDated = true;

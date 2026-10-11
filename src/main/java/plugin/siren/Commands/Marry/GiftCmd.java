@@ -20,6 +20,8 @@ public class GiftCmd extends AbstractPlayerCommand {
 
         if(Marriage.getConfig().get().ifCmdPermission()){
             this.requirePermission("marriage.gift");
+            // empty (not null): do not inherit MarryCmd's hytale:None group, which would grant the node to everyone
+            this.setPermissionGroups();
         }else{
             this.setPermissionGroups("hytale:None");
         }

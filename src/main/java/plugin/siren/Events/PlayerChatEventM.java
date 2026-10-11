@@ -43,6 +43,11 @@ public final class PlayerChatEventM {
     private PlayerChatEventM(){}
 
     public static void onPlayerChatEvent(PlayerChatEvent event){
+        // Registered at LATE (see Marriage.setup), so a mod that muted or cancelled the
+        // line has already done so - leave it be, and do not count it as a love note.
+        if(event.isCancelled()){
+            return;
+        }
         PlayerRef sender = event.getSender();
         if(sender == null || !sender.isValid()){
             return;

@@ -28,5 +28,7 @@ public class ForceCmd extends AbstractCommandCollection {
         this.addSubCommand(new ForceInfoCmd());
 
         this.requirePermission(PERMISSION);
+        // empty (not null): do not inherit MarriageCmd's hytale:None group, which would grant this node to everyone
+        this.setPermissionGroups();
     }
 }

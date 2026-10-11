@@ -119,7 +119,10 @@ public class MarriageRespawnSystem extends RespawnSystems.OnRespawnSystem {
         Vector3d destination = new Vector3d(at.x() + SIDE_STEP_BLOCKS, at.y(), at.z());
 
         // null world - a same-world teleport, which is the only kind this perk does.
-        commandBuffer.addComponent(ref, Teleport.getComponentType(),
+        // put, not add: the vanilla respawn has already queued its own Teleport on this
+        // entity, and add throws "Entity already contains component type" - put replaces
+        // it, so the partner side wins.
+        commandBuffer.putComponent(ref, Teleport.getComponentType(),
                 Teleport.createForPlayer(null, destination, facing));
 
         MarriageManager.markRespawnUsed(uuid);

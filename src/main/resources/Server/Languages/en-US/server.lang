@@ -263,6 +263,8 @@ items.MarriageLoveLetter.name = Love Letter
 items.MarriageLoveLetter.description = Blank. Hold it and use /marry letter to write.
 items.MarriageLoveLetter.sealed.name = Letter from {username}
 items.MarriageLoveLetter.sealed.description = Sealed. Hold it and use /marry letter to read.
+items.MarriageWeddingDress.name = Wedding Dress
+items.MarriageWeddingDress.description = A white satin gown with lace sleeves, a pearl-edged sweetheart neckline and a blush sash. Made to be married in.
 
 # === updateChecker ===
 

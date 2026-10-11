@@ -1,0 +1,95 @@
+{
+  "Parent": "Armor_Cloth_Silk_Chest",
+  "TranslationProperties": {
+    "Name": "server.items.MarriageWeddingDress.name",
+    "Description": "server.items.MarriageWeddingDress.description"
+  },
+  "Model": "Items/Marriage/Armor/Marriage_WeddingDress.blockymodel",
+  "Texture": "Items/Marriage/Armor/Marriage_WeddingDress.png",
+  "Icon": "Icons/ItemsGenerated/Marriage_WeddingDress.png",
+  "IconProperties": {
+    "Rotation": [
+      9,
+      47.3,
+      5.6
+    ],
+    "Scale": 0.17,
+    "Translation": [
+      0,
+      -7.5
+    ]
+  },
+  "Quality": "Rare",
+  "Recipe": {
+    "TimeSeconds": 3,
+    "KnowledgeRequired": false,
+    "Input": [
+      {
+        "ItemId": "Ingredient_Bolt_Silk",
+        "Quantity": 6
+      },
+      {
+        "ItemId": "Ingredient_Bolt_Cotton",
+        "Quantity": 4
+      },
+      {
+        "ItemId": "Rock_Gem_Diamond",
+        "Quantity": 1
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Id": "Armor_Bench",
+        "Type": "Crafting",
+        "Categories": [
+          "Armor_Chest"
+        ]
+      }
+    ]
+  },
+  "Armor": {
+    "ArmorSlot": "Chest",
+    "BaseDamageResistance": 0,
+    "CosmeticsToHide": [
+      "Overtop",
+      "Undertop",
+      "Overpants"
+    ],
+    "StatModifiers": {
+      "Health": [
+        {
+          "Amount": 17,
+          "CalculationType": "Additive"
+        }
+      ],
+      "Mana": [
+        {
+          "Amount": 22,
+          "CalculationType": "Additive"
+        }
+      ]
+    },
+    "DamageResistance": {
+      "Physical": [
+        {
+          "Amount": 0.09,
+          "CalculationType": "Percent"
+        }
+      ],
+      "Projectile": [
+        {
+          "Amount": 0.09,
+          "CalculationType": "Percent"
+        }
+      ]
+    }
+  },
+  "Tags": {
+    "Type": [
+      "Armor"
+    ],
+    "Family": [
+      "Marriage"
+    ]
+  }
+}

@@ -5,6 +5,9 @@ import com.hypixel.hytale.server.core.universe.world.events.AllWorldsLoadedEvent
 import plugin.siren.Compatibility.CultivationBridge;
 import plugin.siren.Utils.MarriageUpdateChecker;
 
+import plugin.siren.Marriage;
+
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public class AllWorldsLoadedEventM {
@@ -23,7 +26,15 @@ public class AllWorldsLoadedEventM {
         Runnable updateCheckRunnable = new Runnable() {
             @Override
             public void run() {
-                MarriageUpdateChecker.sendUpdateMessage(true);
+                // SCHEDULED_EXECUTOR is one thread shared by the whole server, so the
+                // blocking HTTP goes to the common pool and the timer only hands off.
+                CompletableFuture.runAsync(() -> {
+                    try{
+                        MarriageUpdateChecker.sendUpdateMessage(true);
+                    }catch(Exception e){
+                        Marriage.LOGGER.atWarning().log("Update check failed: " + e);
+                    }
+                });
             }
         };
 

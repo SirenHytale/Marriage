@@ -6,7 +6,7 @@
 
     <groupId>plugin.siren</groupId>
     <artifactId>Marriage</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0</version>
 
     <properties>
         <maven.compiler.source>25</maven.compiler.source>
@@ -31,7 +31,7 @@
                                 <property name="marriage.serverMods"
                                           value="C:\Users\Froggy\Documents\.HytaleMods\.hytale-server\Server\mods"/>
                                 <property name="marriage.userMods"
-                                          value="C:\Users\Froggy\AppData\Roaming\Hytale\UserData\Mods"/>
+                                          value="C:\Users\Froggy\AppData\Roaming\Hytale\data\pre-release\Mods"/>
 
                                 <!-- Delete-then-copy: overwriting a jar the live JVM has open
                                      leaves it with stale zip offsets and NoClassDefFoundError on
@@ -77,7 +77,7 @@
         <dependency>
             <groupId>com.hypixel.hytale</groupId>
             <artifactId>Server</artifactId>
-            <version>0.6.0-pre.13.1</version>
+            <version>0.7.0-pre.5.1</version>
         </dependency>
     </dependencies>
 
