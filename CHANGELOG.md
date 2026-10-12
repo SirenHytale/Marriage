@@ -31,8 +31,8 @@ Paste the block below into the CurseForge "Changelog" field when uploading the v
 
 ### <span style="color: #b96ad9;"><strong>Compatibility</strong></span>
 
-*   <span style="color: #eccafa;">🔧 Updated for <strong>Hytale Server 0.7.0-pre.5.1</strong> (Update 7). This release no longer runs on Update 6 servers - stay on <strong>v2.2.0</strong> if your server hasn't updated yet. Once an Update 7 server has opened a world, an Update 6 server cannot open it again, so back up before upgrading.</span>
-*   <span style="color: #eccafa;">Update 7 now credits damage-over-time effects to whoever applied them. So a damage-over-time effect your spouse put on you counts as your spouse's damage: couple PvP protection blocks it, and Bond of Pain doesn't share it. A kill made with such an effect, with your partner nearby, now earns co-op bond XP.</span>
+*   <span style="color: #eccafa;">🔧 Updated for <strong>Hytale Server 0.7.0-pre.5.1</strong> (Update 7). This release no longer runs on Update 6 servers - stay on <strong>v2.2.0</strong> if your server hasn't updated yet. Back up your worlds before upgrading: a world saved on the pre-release isn't guaranteed to open on Update 6 again.</span>
+*   <span style="color: #eccafa;">In Update 7, a damage-over-time effect put on you by an attack or ability now counts as damage from whoever applied it. So one your spouse lands on you counts as theirs: couple PvP protection blocks it and Bond of Pain doesn't share it - and a kill made with such an effect, with your partner nearby, now earns co-op bond XP.</span>
 
 <span style="color: #843fa1;">===--===--===--===--===--===--===--===--===--===--===--===--===--===--===--===--===</span>
 
